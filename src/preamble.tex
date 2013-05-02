@@ -1,0 +1,35 @@
+% Declare name of the package
+\ProvidesPackage{ercisbeamer}
+
+% Graphics rendering using TikZ
+\RequirePackage{tikz}
+
+% Better font rendering (T1 font encoding)
+\usepackage[T1]{fontenc}
+
+% Require geometry package
+\RequirePackage{geometry}
+
+% Improves general appearance of text
+\RequirePackage{microtype}
+
+% Color management
+\RequirePackage{color}
+
+% Color minin environment
+\RequirePackage{xxcolor}
+
+% Allow caching of TikZ graphics (externalize)
+\usetikzlibrary{external}
+
+% Folder for cached pictures (depends on current mode)
+\newcommand{\renderedPath}{beamer-cache/}
+
+\mode<handout>{
+  \renewcommand{\renderedPath}{handout-cache/}
+}
+\tikzsetexternalprefix{\renderedPath}
+
+% Only named pictures are cached
+\tikzset{external/only named=true}
+
