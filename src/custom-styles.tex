@@ -1,0 +1,33 @@
+% Set 4:3 as default presentation format
+\paperSize{128mm}{96mm}
+
+% TODO test for availability of meta font
+
+% Use Meta Roman Normal as default font
+\renewcommand{\rmdefault}{fMt}
+
+% Use Meta Roman Normal as default non-serif font
+\renewcommand{\sfdefault}{fMt}
+
+% Define margin sizes
+\newcommand{\leftTextMargin}{6mm}
+\newcommand{\rightTextMargin}{5mm}
+\newcommand{\leftSidebarWidth}{0mm}
+\newcommand{\rightSidebarWidth}{0mm}
+
+% Define heights of headline and footline
+\newcommand{\headlineHeight}{19.5mm}
+\newcommand{\footlineHeight}{11mm}
+
+% Styles of TikZ pictures
+\tikzstyle{no sep}=[inner sep=0mm, outer sep=0mm]
+
+% Final page
+\setbeamercolor*{final page background}{bg=ercisred}
+
+\setbeamerfont{final page url}{size*={8}{0}, series*={b}}
+\setbeamercolor*{final page url}{fg=white}
+
+\setbeamerfont{final page contact}{size*={8}{0}}
+\setbeamercolor*{final page contact}{fg=white}
+

@@ -1,0 +1,15 @@
+% Headline template (see beamer user guide, p. 59)
+\setbeamertemplate{headline}{%
+  \cacheOnce{renderHeadline}{ercis-headline}{%
+    \begin{tikzpicture}
+      % Picture size
+      \useasboundingbox (0mm, \headlineHeight) rectangle (\paperwidth, 0mm);
+
+      % ERCIS logo
+      \node[anchor=north east, no sep] at ({\paperwidth - 5mm}, {\headlineHeight - 6mm}) {%
+        \resizebox{!}{13.5mm}{\ercislogo{ercisred}{ercisblue}{ercisred}}%
+      };
+    \end{tikzpicture}%
+  }%
+}
+

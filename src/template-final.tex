@@ -1,0 +1,55 @@
+% Shortcut to render the final page
+\newcommand{\finalpage}[1][test]{%
+  \usebeamertemplate{final page}%
+}
+
+% Set final page template
+\setbeamertemplate{final page}{%
+  \tikzsetnextfilename{ercis-final}%
+  %
+  % Undo space reservation of text margin and sidebar width
+  \hspace*{-\leftTextMargin}%
+  \hspace*{-\leftSidebarWidth}%
+  \begin{tikzpicture}
+    % Picture size and background
+    \usebeamercolor{final page background}
+    \path [fill, color={final page background.bg}, use as bounding box] (0mm, 0mm) rectangle (\paperwidth, \paperheight);
+
+    % % ERCIS logo
+    \node[anchor=north east, no sep] at ({\paperwidth - 6.75mm}, {\paperheight - 6mm}) {%
+      \resizebox{!}{22.5mm}{\ercislogotext{white}{white}{white}{white}}%
+    };
+
+    % Claim
+    \node[anchor=south west, no sep] at (6mm, 7mm) {%
+      \resizebox{!}{4.5mm}{\ercisclaim}%
+    };
+
+    % URL
+    \node[anchor=south east, no sep] at ({\paperwidth - 6.75mm}, 7mm) {%
+      \usebeamerfont{final page url}%
+      \usebeamercolor[fg]{final page url}%
+      www.ercis.org
+    };
+  \end{tikzpicture}%
+  % Undo space reservation by cached final part
+  \hspace*{-\paperwidth}%
+  \tikzset{external/export next=false}%
+  \begin{tikzpicture}
+    % Picture size
+    \path [use as bounding box] (0mm, 0mm) rectangle (\paperwidth, \paperheight);
+
+    % Content
+    % TODO content of final slide from template
+
+    % Contact details (optional)
+    \ifbeamertemplateempty{final page contact}{}{%
+      \node[anchor=south west, inner xsep=1mm, outer sep=0mm] at (6mm, 21mm) {%
+        \usebeamerfont{final page contact}%
+        \usebeamercolor[fg]{final page contact}%
+        \usebeamertemplate{final page contact}%
+      };
+    }
+  \end{tikzpicture}%
+}
+

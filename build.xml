@@ -1,0 +1,124 @@
+<project name="beamertemplate" default="build" basedir=".">
+    <description>Build process definition for beamer templates.</description>
+
+    <!-- Load properties file -->
+    <property file="build.properties"/>
+
+    <!-- Define paths using in build process -->
+    <property name="build.folder" location="build" />
+    <property name="dist.folder"  location="dist" />
+    <property name="docs.folder"  location="docs" />
+    <property name="src.folder" location="src" />
+    <property name="test.folder"  location="test" />
+
+    <!-- Define properties -->
+    <!-- No properties -->
+
+    <!-- Macros -->
+
+    <!-- Compiles a document using the selected language -->
+    <macrodef name="pdfcompile">
+        <attribute name="locale" />
+        <attribute name="dir" />
+        <attribute name="document" />
+
+        <sequential>
+            <!-- Compile document using pdflatex -->
+            <echo message="Dir: @{dir}"/>
+            <exec executable="pdflatex" dir="@{dir}"> <!-- failonerror="true" -->
+                <arg value="-shell-escape" />
+                <arg value="-synctex=1" />
+                <arg value="-interaction=nonstopmode" />
+                <arg value="&quot;\providecommand\locale{@{locale}}\input{@{document}}&quot;"/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <!-- Clean a directory from temporary build files -->
+    <macrodef name="cleanlatex">
+        <attribute name="dir" />
+
+        <sequential>
+            <delete>
+                <fileset dir="@{dir}" includes="*.aux,*.auxlock,*.gz,*.log,*.nav,*.out,*.pdf,*.snm,*.toc"/>
+            </delete>
+        </sequential>
+    </macrodef>
+
+    <!-- Targets -->
+
+    <target name="init">
+        <!-- Create the time stamp -->
+        <tstamp />
+    </target>
+
+    <target name="init-build">
+        <!-- Create the build directory -->
+        <mkdir dir="${build.folder}"/>
+    </target>
+
+    <target name="build" depends="init" description="compiles the source">
+        <!-- Concat source files into a single style -->
+        <concat destfile="${build.folder}/${build.name}.sty" overwrite="true">
+            <!-- Define list of source files in correct order -->
+            <filelist dir="${src.folder}" files="${src.include}" />
+        </concat>
+
+        <!-- Copy style to test directory -->
+        <copy file="${build.folder}/${build.name}.sty" todir="${test.folder}" overwrite="true" />
+    </target>
+
+    <target name="build-docs" depends="init" description="generates the documentation">
+        <!-- Compile documentation with locale en -->
+        <pdfcompile document="${docs.source}.tex" dir="${docs.folder}" locale="en" />
+        <pdfcompile document="${docs.source}.tex" dir="${docs.folder}" locale="en" />
+        <move file="${docs.folder}/${docs.source}.pdf" tofile="${build.folder}/${docs.source}-en.pdf" overwrite="true" />
+        <cleanlatex dir="${docs.folder}" />
+
+        <!-- Compile documentation with locale de -->
+        <pdfcompile document="${docs.source}.tex" dir="${docs.folder}" locale="de" />
+        <pdfcompile document="${docs.source}.tex" dir="${docs.folder}" locale="de" />
+        <move file="${docs.folder}/${docs.source}.pdf" tofile="${build.folder}/${docs.source}-de.pdf" overwrite="true" />
+        <cleanlatex dir="${docs.folder}" />
+    </target>
+
+    <target name="build-test" depends="init,build" description="generates the test presentation">
+        <!-- Compile test presentation (using test ant script) -->
+        <ant antfile="${test.folder}/build.xml" dir="${test.folder}" target="build"/>
+        <!-- <move file="${test.folder}/build/beamer.pdf" tofile="${build.folder}/presentation.pdf" overwrite="true" /> -->
+
+        <!-- Clean test directory -->
+        <!-- <ant antfile="${test.folder}/build.xml" dir="${test.folder}" target="clean"/> -->
+    </target>
+
+    <target name="dist" depends="build,build-docs,build-test" description="generates the distribution">
+        <!-- Create the distribution directory -->
+        <mkdir dir="${dist.folder}" />
+
+        <!-- Create a ZIP archive containing all files in build directory and additional files -->
+        <zip destfile="${dist.folder}/${dist.name}.zip" level="9">
+            <fileset dir="${build.folder}" includes="*" />
+
+            <filelist dir="${test.folder}">
+                <file name="presentation.tex" />
+            </filelist>
+
+            <filelist dir="${docs.folder}">
+                <file name="readme.txt" />
+                <file name="changelog.txt" />
+            </filelist>
+        </zip>
+    </target>
+
+    <target name="clean" description="cleans build process paths" >
+        <!-- Delete the build and distribution directories -->
+        <delete dir="${build.folder}" />
+        <delete dir="${dist.folder}" />
+
+        <!-- Clean test directory -->
+        <!-- TODO -->
+
+        <!-- Clean docs directory -->
+        <!-- TODO -->
+    </target>
+</project>

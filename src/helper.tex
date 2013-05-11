@@ -1,0 +1,74 @@
+% Helpers
+
+% Renders and caches a picture only once (requires for repeated use in beamer templates)
+% Parameters (render variable name, file name, picture)
+\newcommand{\cacheOnce}[3]{
+  % Initially define render command in global scope if not present
+  \expandafter\ifx\csname #1\endcsname\relax%
+    \expandafter\global\expandafter\def\csname#1\endcsname{%
+      % Set filename of cached picture
+      \tikzsetnextfilename{#2}%
+      % Optionally force rerendering TODO implement this properly
+      % \ifx\rerendercachedonceoption\empty%
+      %   \tikzset{external/force next=true}%
+      % \fi%
+      % Render picture
+      #3%
+    }%
+  \fi%
+  % Execute render command
+  \csname#1\endcsname%
+  % Replace picture if caching is enabled
+  \ifx\nocacheoption\undefined%
+    % Determine externalizing status
+    \tikzifexternalizing{%
+      % Renderer is currently in caching run, so the next time \cacheOnce is called with the same render variable name a picture is not rendered again
+      \expandafter\global\expandafter\def\csname#1\endcsname{}%
+    }{%
+      % Renderer is in presentation run, so replace further pictures by cached one
+      \expandafter\global\expandafter\def\csname#1\endcsname{%
+        \pgfimage{\renderedPath#2}%
+      }%
+    }%
+  \fi%
+}
+
+% Force the rerendering of the subsequent picture
+\providecommand{\rerenderPicture}{%
+  \tikzset{external/remake next=true}%
+}
+
+% Force the regeneration of pictures marked as cached once
+\providecommand{\rerenderAllCachedOnce}{%
+  \global\def\rerendercachedonceoption{\empty}%
+}
+
+% Force the regeneration of all pictures
+\providecommand{\rerenderAll}{%
+  \tikzset{external/force remake=true}%
+}
+
+% Explicitly enable caching of the subsequent picture
+\providecommand{\cachePicture}{%
+  \tikzset{external/export next=true}%
+}
+
+% Explicitly disable caching of the subsequent picture
+\providecommand{\nocachePicture}{%
+  \tikzset{external/export next=false}%
+}
+
+% Explicitly disable caching of all pictures
+\providecommand{\nocacheAll}{%
+  \tikzset{external/export=false}%
+}
+
+% Sets the format of the presentation
+\newcommand{\paperSize}[2]{
+  \providecommand{\paperWidth}{#1}
+  \renewcommand{\paperWidth}{#1}
+
+  \providecommand{\paperHeight}{#2}
+  \renewcommand{\paperHeight}{#2}
+}
+

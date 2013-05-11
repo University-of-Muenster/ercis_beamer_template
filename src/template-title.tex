@@ -1,0 +1,67 @@
+% Title page template (see beamer user guide, p. 86)
+\setbeamertemplate{title page}{%
+  \tikzsetnextfilename{ercis-title}%
+  %
+  % Undo space reservation of text margin and sidebar width
+  \hspace*{-\leftTextMargin}%
+  \hspace*{-\leftSidebarWidth}%
+  \begin{tikzpicture}
+    % Picture size
+    \path [use as bounding box] (0mm, 0mm) rectangle (\paperwidth, \paperheight);
+
+    % University logo
+    \node[anchor=north west, no sep] at (7.5mm, {\paperheight - 6mm}) {%
+      \usebeamercolor{title page wwu logo}%
+      \resizebox{!}{6mm}{\wwulogo{{title page wwu logo.fg}}}%
+    };
+
+    % ERCIS logo
+    \node[anchor=north east, no sep] at ({\paperwidth - 6.75mm}, {\paperheight - 6mm}) {%
+      \resizebox{!}{22.5mm}{\ercislogotext{ercisred}{ercisblue}{ercisred}{ercisblue}}%
+    };
+
+    % Partner logos
+    % TODO implement
+
+    % Footline background
+    \usebeamercolor{footline}
+    \path [fill, color={footline.bg}] (0mm, 11mm) rectangle ({\paperwidth - 5mm}, 4.25mm);
+  \end{tikzpicture}%
+  % Undo space reservation by cached title part
+  \hspace*{-\paperwidth}%
+  \tikzset{external/export next=false}%
+  \begin{tikzpicture}
+    % Picture size
+    \path [use as bounding box] (0mm, 0mm) rectangle (\paperwidth, \paperheight);
+
+    % Title
+    % TODO define text width with respect to ercis logo
+    \node[anchor=north west, no sep, align=left, text width={\paperwidth - 7.5mm - 0mm}] (title) at (7.5mm, {\paperheight - 22.5mm}) {%
+      \usebeamerfont{title page title}%
+      \usebeamercolor[fg]{title page title}%
+      \inserttitle%
+    };
+
+    % Subtitle
+    \node[anchor=north west, no sep, align=left, text width={\paperwidth - 7.5mm - 0mm}] (subtitle) at (7.5mm, {\paperheight - 34mm}) {%
+      \usebeamerfont{title page subtitle}%
+      \usebeamercolor[fg]{title page subtitle}%
+      \insertsubtitle%
+    };
+
+    % Author
+    \node[anchor=west, no sep] at (7.5mm, {11mm - 2 * 2.25mm}) {%
+      \usebeamerfont{title page author}%
+      \usebeamercolor[fg]{title page author}%
+      \insertauthor%
+    };
+
+    % Date
+    \node[anchor=east, no sep] at ({\paperwidth - 5mm - 1.75mm}, {11mm - 2 * 2.25mm}) {%
+      \usebeamerfont{title page date}%
+      \usebeamercolor[fg]{title page date}%
+      \insertdate%
+    };
+  \end{tikzpicture}%
+}
+

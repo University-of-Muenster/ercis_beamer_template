@@ -1,0 +1,72 @@
+<project name="beamer" default="build" basedir=".">
+    <description>Build process definition for a beamer presentation.</description>
+
+    <!-- Set paths using in build process -->
+    <property name="build" location="build" />
+    <property name="beamer-cache" location="beamer-cache" />
+    <property name="handout-cache" location="handout-cache" />
+
+    <!-- Set source files -->
+    <property name="presentation" value="presentation.tex" />
+
+    <target name="init">
+        <!-- Create the time stamp -->
+        <tstamp />
+
+        <!-- Verify existence of cache directories -->
+        <mkdir dir="${beamer-cache}"/>
+        <mkdir dir="${handout-cache}"/>
+    </target>
+
+    <target name="build">
+        <antcall target="build-beamer" />
+    </target>
+
+    <target name="build-beamer" depends="init" description="compile the beamer version of the presentation">
+        <!-- Compile beamer version of presentation using pdfLaTeX -->
+        <exec executable="pdflatex" failonerror="true">
+            <!-- <arg line="/c "/> -->
+            <arg value="-shell-escape" />
+            <arg value="-synctex=1" />
+            <arg value="-interaction=nonstopmode" />
+            <arg value="${presentation}"/>
+            <!-- TODO this does not work with caching -->
+            <!-- <arg value="&quot;\documentclass{beamer}\input{${presentation}}&quot;"/> -->
+        </exec>
+
+        <!-- Move resulting PDF to build directory -->
+        <copy file="presentation.pdf" tofile="${build}/beamer.pdf"/>
+    </target>
+
+    <target name="build-handout" depends="init" description="compile the handout version of the presentation">
+        <!-- Compile handout version of presentation using pdfLaTeX -->
+        <exec executable="pdflatex" failonerror="true">
+            <!-- <arg line="/c "/> -->
+            <arg value="-shell-escape" />
+            <arg value="-synctex=1" />
+            <arg value="-interaction=nonstopmode" />
+            <arg value="&quot;\documentclass[handout]{beamer}\input{${presentation}}&quot;"/>
+        </exec>
+
+        <!-- Move resulting PDF to build directory -->
+        <move file="presentation.pdf" tofile="${build}/handout.pdf"/>
+    </target>
+
+    <target name="dist" depends="build-beamer,build-handout" description="">
+        <!-- Nothing to do here -->
+    </target>
+
+    <target name="clean" depends="init" description="clean up">
+        <!-- Delete all files created during the LaTeX build process -->
+        <delete>
+            <fileset dir="${basedir}" includes="*.aux,*.auxlock,*.gz,*.log,*.nav,*.out,*.pdf,*.snm,*.toc"/>
+        </delete>
+    </target>
+
+    <target name="clean-cache" depends="init">
+        <delete>
+            <fileset dir="${beamer-cache}" includes="*" />
+            <fileset dir="${handout-cache}" includes="*" />
+        </delete>
+    </target>
+</project>

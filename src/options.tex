@@ -1,0 +1,34 @@
+% Option to use wide 16:9 format
+\DeclareOption{wide9}{
+  \paperSize{128mm}{72mm}
+}
+
+% Option to use wide 16:10 format
+\DeclareOption{wide10}{
+  \paperSize{128mm}{80mm}
+}
+
+% English language option (default)
+\DeclareOption{english}{
+
+}
+
+% German language option
+\DeclareOption{german}{
+  % Use german as language
+  \AtEndOfClass{%
+    \RequirePackage[ngerman]{babel}%
+  }
+}
+
+% Option to disable caching
+\DeclareOption{nocache}{
+  \global\def\nocacheoption{}%
+  %
+  % Disable caching for all pictures
+  \nocacheAll%
+}
+
+% Process all defined options
+\ProcessOptions\relax
+
