@@ -1,10 +1,11 @@
 % Title page template (see beamer user guide, p. 86)
 \setbeamertemplate{title page}{%
-  \tikzsetnextfilename{ercis-title}%
-  %
+  \vspace*{-2mm}% TODO Why is this needed?
   % Undo space reservation of text margin and sidebar width
   \hspace*{-\leftTextMargin}%
   \hspace*{-\leftSidebarWidth}%
+  %
+  \tikzsetnextfilename{ercis-title}%
   \begin{tikzpicture}%
     % Picture size
     \path [use as bounding box] (0mm, 0mm) rectangle (\paperwidth, \paperheight);
@@ -63,5 +64,5 @@
       \insertdate%
     };
   \end{tikzpicture}%
-}
+}%
 

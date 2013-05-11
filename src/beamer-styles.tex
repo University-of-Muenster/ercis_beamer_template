@@ -32,8 +32,14 @@
 \setbeamersize{sidebar width right=\rightSidebarWidth}
 
 % Navigation Symbols (see beamer user guide, p. 66)
-% Suppress all navigation symbols
+% Disable all navigation symbols
 \setbeamertemplate{navigation symbols}{}
+
+% Sidebars
+\setbeamertemplate{sidebar left}{}
+\setbeamertemplate{sidebar canvas left}{}
+\setbeamertemplate{sidebar right}{}
+\setbeamertemplate{sidebar canvas right}{}
 
 % Frame Title (see beamer user guide, p. 68)
 \setbeamerfont{frametitle}{size*={13}{0}, series*={b}}
@@ -68,10 +74,6 @@
 % Table of Contents (see beamer user guide, p. 88)
 \setbeamertemplate{section in toc}[sections numbered]
 \setbeamercolor*{section in toc}{fg=normal text.fg}
-% \setbeamertemplate{sections/subsections in toc}{
-%     Test
-% }
-\setbeamercolor*{section number projected}{bg=ercisred, fg=ercisred}
 
 \setbeamertemplate{subsection in toc}[square]
 \setbeamercolor*{subsection number projected}{bg=ercisred}

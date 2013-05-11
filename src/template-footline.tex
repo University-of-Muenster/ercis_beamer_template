@@ -37,6 +37,13 @@
       \usebeamercolor[fg]{date in foot}%
       \insertdate%
     };
+
+    % Navigation symbols (optional)
+    \ifbeamertemplateempty{navigation symbols}{}{%
+      \node[anchor=west, no sep] at (7.5mm, 2mm) {%
+        \usebeamertemplate***{navigation symbols}%
+      };
+    }
   \end{tikzpicture}%
 }
 
