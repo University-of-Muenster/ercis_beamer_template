@@ -17,7 +17,7 @@
     <!-- Macros -->
 
     <!-- Compiles a document using the selected language -->
-    <macrodef name="pdfcompile">
+    <macrodef name="compilepdf">
         <attribute name="locale" />
         <attribute name="dir" />
         <attribute name="document" />
@@ -34,6 +34,15 @@
         </sequential>
     </macrodef>
 
+    <!-- Compiles the documentation using the selected language -->
+    <macrodef name="compiledocs">
+        <attribute name="locale" />
+
+        <sequential>
+            <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="@{locale}" />
+        </sequential>
+    </macrodef>
+
     <!-- Clean a directory from temporary build files -->
     <macrodef name="cleanlatex">
         <attribute name="dir" />
@@ -45,15 +54,6 @@
         </sequential>
     </macrodef>
 
-    <!-- TODO -->
-    <macrodef name="compiledoc">
-        <attribute name="locale" />
-
-        <sequential>
-            <pdfcompile document="${docs.source}.tex" dir="${docs.folder}" locale="@{locale}" />
-        </sequential>
-    </macrodef>
-
     <!-- Targets -->
 
     <target name="init">
@@ -61,7 +61,7 @@
         <tstamp />
     </target>
 
-    <target name="init-build">
+    <target name="init-build" depends="init">
         <!-- Create the build directory -->
         <mkdir dir="${build.folder}"/>
     </target>
@@ -79,22 +79,23 @@
 
     <target name="build-docs" depends="init" description="generates the documentation">
         <!-- Compile documentation with locale en -->
-        <pdfcompile document="${docs.source}.tex" dir="${docs.folder}" locale="en" />
-        <pdfcompile document="${docs.source}.tex" dir="${docs.folder}" locale="en" />
-        <move file="${docs.folder}/${docs.source}.pdf" tofile="${build.folder}/${docs.source}-en.pdf" overwrite="true" />
+        <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="en" />
+        <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="en" />
+        <move file="${docs.folder}/${docs.source}.pdf" tofile="${build.folder}/${docs.name}-en.pdf" overwrite="true" />
         <cleanlatex dir="${docs.folder}" />
 
         <!-- Compile documentation with locale de -->
-        <pdfcompile document="${docs.source}.tex" dir="${docs.folder}" locale="de" />
-        <pdfcompile document="${docs.source}.tex" dir="${docs.folder}" locale="de" />
-        <move file="${docs.folder}/${docs.source}.pdf" tofile="${build.folder}/${docs.source}-de.pdf" overwrite="true" />
+        <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="de" />
+        <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="de" />
+        <move file="${docs.folder}/${docs.source}.pdf" tofile="${build.folder}/${docs.name}-de.pdf" overwrite="true" />
         <cleanlatex dir="${docs.folder}" />
     </target>
 
     <target name="build-test" depends="init,build" description="generates the test presentation">
-        <!-- Compile test presentation (using test ant script) -->
+        <!-- Compile test presentation -->
         <ant antfile="${test.folder}/build.xml" dir="${test.folder}" target="build" />
-        <!-- <copy file="${test.folder}/build/beamer.pdf" tofile="${build.folder}/presentation.pdf" overwrite="true" /> -->
+
+        <copy file="${test.folder}/build/beamer.pdf" tofile="${build.folder}/presentation.pdf" overwrite="true" />
 
         <!-- Clean test directory -->
         <!-- <ant antfile="${test.folder}/build.xml" dir="${test.folder}" target="clean"/> -->
@@ -102,15 +103,32 @@
         <!-- TODO build handout -->
     </target>
 
+    <target name="test-presentation" depends="init, build" description="generates the test presentation without copying it to the build directory">
+        <!-- Compile test presentation (using test ant script) -->
+        <ant antfile="${test.folder}/build.xml" dir="${test.folder}" target="build" />
+    </target>
+
     <target name="test-docs-en" depends="init" description="generates the english documentation">
-        <compiledoc locale="en" />
+        <compiledocs locale="en" />
     </target>
 
     <target name="test-docs-de" depends="init" description="generates the german documentation">
-        <compiledoc locale="de" />
+        <compiledocs locale="de" />
     </target>
 
-    <target name="dist" depends="build,build-docs,build-test" description="generates the distribution">
+    <target name="init-dist">
+        <!-- Create the distribution directory -->
+        <mkdir dir="${dist.folder}"/>
+
+        <!-- Clean the distribution directory -->
+        <delete includeemptydirs="true">
+            <fileset dir="${dist.folder}" includes="**/*"/>
+        </delete>
+
+
+    </target>
+
+    <target name="dist" depends="init-dist,build,build-docs,build-test" description="generates the distribution">
         <!-- Create the distribution directory -->
         <mkdir dir="${dist.folder}" />
 
@@ -137,7 +155,7 @@
         <delete dir="${dist.folder}" />
 
         <!-- Clean test directory -->
-        <ant antfile="${test.folder}/build.xml" dir="${test.folder}" target="clean"/>
+        <cleanlatex dir="${docs.folder}" />
 
         <!-- Clean docs directory -->
         <cleanlatex dir="${docs.folder}" />

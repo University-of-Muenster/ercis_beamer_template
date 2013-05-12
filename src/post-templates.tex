@@ -1,25 +1,35 @@
 % Two-column layout
+\providecommand{\twocolumnlayout}[2]{
+  \setbeamertemplate{column layout}[two]{#1}{#2}%
+  \usebeamertemplate{column layout}%
+}
+
 \defbeamertemplate{column layout}{two}[2]{%
   \begin{columns}[t, onlytextwidth]%
-    \begin{column}{.5\textwidth}%
+    \begin{column}{.475\textwidth}%
       #1%
     \end{column}%
-    \begin{column}{.5\textwidth}%
+    \begin{column}{.475\textwidth}%
       #2%
     \end{column}%
   \end{columns}%
 }
 
 % Three-column layout
+\providecommand{\threecolumnlayout}[3]{
+  \setbeamertemplate{column layout}[three]{#1}{#2}{#3}%
+  \usebeamertemplate{column layout}%
+}
+
 \defbeamertemplate{column layout}{three}[3]{%
   \begin{columns}[t, onlytextwidth]%
-    \begin{column}{.33\textwidth}%
+    \begin{column}{0.3\textwidth}%
       #1%
     \end{column}%
-    \begin{column}{.33\textwidth}%
+    \begin{column}{0.3\textwidth}%
       #2%
     \end{column}%
-    \begin{column}{.33\textwidth}%
+    \begin{column}{0.3\textwidth}%
       #3%
     \end{column}%
   \end{columns}%

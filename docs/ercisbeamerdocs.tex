@@ -66,6 +66,9 @@ lekse@lugmedia.de}
 \date{Stand: 11.05.2012}
 
 \begin{document}
+% Select document language
+\en{\selectlanguage{english}}
+\de{\selectlanguage{ngerman}}
 
 % Title
 \maketitle
@@ -97,38 +100,63 @@ lekse@lugmedia.de}
     \en{Add the line \emph{\textbackslash usepackage[...]\{\varstylename\}} including the appropriate options to the preamble of your presentation.}
     \de{Fügen Sie \emph{\textbackslash usepackage[...]\{\varstylename\}} mit den entsprechenden Optionen der Präambel Ihrer Präsentation hinzu.}
   \item
-    \en{Create the sub folders \emph{beamer-cache} and \emph{handout-cache} inside your presentation folder. These folders are used by the template to cache embedded graphics depending on the current mode (\emph{beamer} or \emph{handout}). For more information on the caching mechanism, refer to section TODO.}
-    \de{Erstellen Sie im Präsentationordner die Unterordner \emph{beamer-cache} sowie \emph{handout-cache}. In diesen Ordnern werden abhänig vom aktuellen Modus (\emph{beamer} oder \emph{Handout}) für das Präsentationlayout benötigte bzw. Ihre eigenen TikZ-Grafiken zwischengespeichert. Weitere Informationen zum Caching-Mechanismus können Sie Kapitel TODO entnehmen.}
+    \en{Create the sub folders \emph{beamer-cache} and \emph{handout-cache} inside your presentation folder. These folders are used by the template to cache embedded graphics depending on the current mode (\emph{beamer} or \emph{handout}). For more information on the caching mechanism, refer to section~\ref{sec:features-caching}.}
+    \de{Erstellen Sie im Präsentationordner die Unterordner \emph{beamer-cache} sowie \emph{handout-cache}. In diesen Ordnern werden abhänig vom aktuellen Modus (\emph{beamer} oder \emph{Handout}) für das Präsentationlayout benötigte bzw. Ihre eigenen TikZ-Grafiken zwischengespeichert. Weitere Informationen zum Caching-Mechanismus können Sie Abschnitt~\ref{sec:features-caching} entnehmen.}
   \item
-    \en{Compiple the presentation using the command line argument \emph{-shell-escape}. This is required by the \LaTeX\ compiler to invoke the sub processes for caching individual graphics.}
+    \en{Compile the presentation using the command line argument \emph{-shell-escape}. This is required by the \LaTeX\ compiler to invoke the sub processes for caching individual graphics.}
     \de{Kompilieren Sie Ihre Präsentation mit dem Argument \emph{-shell-escape}. Dies erlaubt dem \LaTeX Kompiler Unterprozesse für die Zwischenspeicherung einzelner Grafiken zu starten}
 \end{itemize}
 
+% TODO include bootstrap presentation
+
 \section{\en{Features}\de{Funktionen}}
 
-% Als Beispiel dient die mitgelieferte Pr\"asentation presentation.tex
+\en{An overview of the features provides by the template is given in section~\ref{sec:features-overview}. In addition, the distribution of the template comprises the source \emph{presentation.tex}, which contains the use of elements commonly used in presentation.}
+\de{Eine Übersicht der Funktionen der Vorlage ist in Abschnitt~\ref{sec:features-overview} dargestellt. Zusätzlich befindet sich im Vorlagenpaket das Dokument \emph{presentation.tex}, im welchem exemplarisch die Verwendung von häufig benötigten Präsentationselementen veranschaulicht.}
 
 \subsection{\en{Overview}\de{Übersicht}}
-% TODO give a short comprehensive overview of the features (see notebook)
+\label{sec:features-overview}
+
 \begin{itemize}
   \item
+    \en{Support for all elements of the beamer package}
+    \de{Unterstützung aller Gestaltungselemente des Beamer-Pakets}
+  \item
+    \en{Multiple display formats}
+    \de{Mehrere Anzeigeformate}
+  \item
+    \en{Caching of TikZ pictures}
+    \de{Zwischenspeichern von TikZ Grafiken}
 \end{itemize}
 
 \subsection{\en{Display formats}\de{Anzeigeformate}}
-Die WWU Beamervorlage unterstützt drei verschiedene Präsentationsformate, die in der folgenden Tabelle zusammengefasst sind. Falls kein Format explizit angegeben wird, werden Präsentationen im 4:3-Format erstellt.
-% TODO illustrate format
+\label{sec:features-formats}
+
+\en{The template supports three common display formats, which are summarized in the following table~\ref{tab:features-formates}. To define the display format of a presentation, the corresponding option have to be added to the option list of the \emph{\textbackslash usepackage[...]\{\varstylename\}} command in its preamble.}
+\de{Die Vorlage unterstützt drei verschiedene Anzeigeformate, die in der folgenden Tabelle~\ref{tab:features-formates} zusammengefasst sind. Falls kein Format explizit angegeben wird, werden Präsentationen im 4:3-Format erstellt.}
+
+% Style to add white space at the top of a picture
+\tikzset{
+    cellpicture/.append style={
+        execute at end picture={
+            \path (current bounding box.south west) -- +([yshift=0.5em] current bounding box.north east);
+        }
+    }
+}
+
 \begin{table}[H]%
   \begin{center}%
     \renewcommand{\arraystretch}{1.25}
-    \begin{tabular}{>{\centering} m{2cm} >{\centering} m{2cm} >{\centering} m{2cm} >{\centering} m{2cm}}
+    \begin{tabular}{>{\centering} m{2cm} >{\centering} m{2cm} >{\centering} m{2cm} >{\centering} m{2cm} >{\centering} m{2cm}}
       \hline
-      \textbf{Format} & \textbf{Option} & \textbf{Breite} & \textbf{Höhe} \tabularnewline
+      \textbf{\en{Preview}\de{Vorschau}} & \textbf{\en{Aspect ratio}\de{Format}} & \textbf{\en{Option}\de{Option}} & \textbf{\en{Width}\de{Breite}} & \textbf{\en{Height}\de{Höhe}} \tabularnewline
       \hline
-      4:3 & - & 128 mm & 96 mm \tabularnewline
-      16:10 & wide10 & 128 mm & 80 mm \tabularnewline
-      16:9 & wide9 & 128 mm & 72 mm \tabularnewline
+      \tikz[cellpicture]{\path[draw] (0,0) rectangle (15mm, 11.25mm);} & 4:3 & - & 128 mm & 96 mm \tabularnewline
+      \tikz{\path[draw] (0,0) rectangle (15mm, 9.375mm);} & 16:10 & wide10 & 128 mm & 80 mm \tabularnewline
+      \tikz{\path[draw] (0,0) rectangle (15mm, 8.4375mm);} & 16:9 & wide9 & 128 mm & 72 mm \tabularnewline
       \hline
     \end{tabular}
+    \caption{\en{Supported display formats}\de{Unterstützte Anzeigeformate}\label{tab:features-formates}}%
     \renewcommand{\arraystretch}{1}
   \end{center}%
 \end{table}%
@@ -160,25 +188,25 @@ Die Sprache der Präsentation wird über eine Option festgelegt und beeinflusst 
 
 \begin{table}[H]%
   \begin{center}%
-    \tikzstyle{colorsample}=[rectangle, minimum width=7.5mm, minimum height=7.5mm]
+    \tikzstyle{colorsample}=[rectangle, minimum width=7.5mm, minimum height=7.5mm, use as bounding box, outer sep=2em]
     \renewcommand{\arraystretch}{1.25}
     \begin{tabular}{>{\centering} m{2cm} >{\centering} m{4cm} >{\centering} m{6cm}}
       \hline
       \textbf{\en{Color}\de{Farbe}} & \textbf{\en{Name}\de{Name}} & \textbf{\en{RGB / Hexadecimal}\de{RGB / Hexadezimal}} \tabularnewline
       \hline
-      \tikz{\node[colorsample, fill=ercisblack] {};} & ercisblack & 0 0 0 / \#000000 \tabularnewline
+      \tikz[cellpicture]{\node[colorsample, fill=ercisblack] {};} & ercisblack & 0 0 0 / \#000000 \tabularnewline
       \tikz{\node[colorsample, fill=ercisgrey] {};} & ercisgrey & 94 94 93 / \#5e5e5d \tabularnewline
       \hline
-      \tikz{\node[colorsample, fill=ercisred] {};} & ercisred & 133 35 57 / \#852339 \tabularnewline
+      \tikz[cellpicture]{\node[colorsample, fill=ercisred] {};} & ercisred & 133 35 57 / \#852339 \tabularnewline
       \tikz{\node[colorsample, fill=ercislightred] {};} & ercislightred & 200 156 166 / \#c89ca6 \tabularnewline
       \tikz{\node[colorsample, fill=ercisblue] {};} & ercisblue & 135 151 163 / \#8797a3 \tabularnewline
       \hline
-      \tikz{\node[colorsample, fill=ercisdarkblue] {};} & ercisdarkblue & 67 92 139 / \#435c8b \tabularnewline
+      \tikz[cellpicture]{\node[colorsample, fill=ercisdarkblue] {};} & ercisdarkblue & 67 92 139 / \#435c8b \tabularnewline
       \tikz{\node[colorsample, fill=erciscyan] {};} & erciscyan & 0 156 179 / \#009cb3 \tabularnewline
       \tikz{\node[colorsample, fill=ercisorange] {};} & ercisorange & 231 124 18 / \#e77c12 \tabularnewline
       \tikz{\node[colorsample, fill=ercisgreen] {};} & ercisgreen & 135 191 42 / \#87bf2a \tabularnewline
       \hline
-      \tikz{\node[colorsample, fill=pantoneblack7] {};} & pantoneblack7 & TODO \tabularnewline
+      \tikz[cellpicture]{\node[colorsample, fill=pantoneblack7] {};} & pantoneblack7 & TODO \tabularnewline
       \hline
     \end{tabular}
     \renewcommand{\arraystretch}{1}
@@ -186,6 +214,7 @@ Die Sprache der Präsentation wird über eine Option festgelegt und beeinflusst 
 \end{table}%
 
 \subsection{\en{Caching of TikZ pictures}\de{Zwischenspeichern von TikZ Grafiken}}
+\label{sec:features-caching}
 \en{}
 In der Voreinstellung werden alle in einer Präsentation eingebetteten TikZ-Grafiken gecached, d.h. sie werden einmalig in ein separates PDF-Dokument ausgelagert und bei einer erneuten Kompilierung nicht neu erstellt. Dadurch können Präsentationen, in denen viele TikZ-Grafiken eingebettet sind, schneller erstellt werden.
 
@@ -235,8 +264,8 @@ In der Voreinstellung werden alle in einer Präsentation eingebetteten TikZ-Graf
 % TODO tipp zum workflow für das erstellen von folien
 % add nocachePicture in front of unfinished
 
-\subsubsection*{Deaktivieren des Caching von TikZ-Grafiken}
-Option \emph{nocache}
+% \subsubsection*{Deaktivieren des Caching von TikZ-Grafiken}
+% Option \emph{nocache}
 
 \section{\en{Display}\de{Darstellung}}
 

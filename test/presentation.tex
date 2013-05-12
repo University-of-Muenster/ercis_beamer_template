@@ -1,29 +1,59 @@
-\documentclass[t]{beamer}
-
-% Apply WWU beamer style
-\usepackage[english]{ercisbeamer}
-% \usepackage[english,nocache]{ercisbeamer}
+\documentclass{beamer}
 
 % Use UTF-8 encoding for source
 \usepackage[utf8]{inputenc}
 
+% Apply WWU beamer style
+\usepackage[english]{ercisbeamer}
+
+% Hyphenation for supported languages
+\usepackage[english,ngerman]{babel}
+
+% Conditional branching
+\usepackage{ifthen}
+
+% Activate language
+\providecommand\locale{en}
+% \providecommand\locale{de}
+
+% Multilanguage support
+% (see http://en.wikibooks.org/wiki/LaTeX/Internationalization#Multilingual_versions)
+\def\addlocale#1#2{
+\ifthenelse{ \equal{\locale}{#1} }{
+  \selectlanguage{#2}
+  \expandafter\def\csname#1\endcsname ##1{##1}
+  }{
+  \expandafter\def\csname#1\endcsname ##1{}
+  }
+}
+
+% Define supported languages
+\addlocale{en}{english}
+\addlocale{de}{ngerman}
+
 % Enable caching
 \tikzexternalize
-
-% TODO use english and dummy for supressing german text
-\newcommand{\de}[1]{}
-\newcommand{\en}[1]{#1}
 
 % Meta information
 \author{Dominik Lekse}
 \title{\en{ERCIS beamer template}\de{ERCIS Beamervorlage}}
 \subtitle{\en{Examples for typesetting beautiful presentations}\de{Beispiele f\"ur die Erstellung einer Pr\"asentation}}
 
+% Partners
+\setbeamertemplate{title page partners}[one]{\pgfimage{images/msbe-logo.pdf}}
+% \setbeamertemplate{title page partners}[two]{\pgfimage{images/msbe-logo.pdf}}{\pgfimage{images/aacsb-accredited.pdf}}
+
 % Additional requirements
-% \usepackage{tikz-3dplot} % required by TODO
+\usepackage{array} % Advanced tables (required by frame-tables)
+\usepackage{adjustbox} % Advanced resizing (required by frame-pictures)
+\usetikzlibrary{calc}
 
 % Slides
 \begin{document}
+    % Select document language
+    \en{\selectlanguage{english}}
+    \de{\selectlanguage{ngerman}}
+
     \input{frames/frame-title}
 
     \section*{\en{Outline}}
@@ -41,18 +71,12 @@
     \subsection{\en{Blocks}\de{Bl\"ocke}}
     \input{frames/frame-blocks}
 
-    % TODO Boxed Text
-
     \section{\en{Layouts}}
-
-    % TODO no logo
-    % TODO no title/subtitle
 
     \subsection{\en{Two and three columns}}
     \input{frames/frame-columns}
 
     \section{\en{Tables}}
-    % TODO
     \input{frames/frame-tables}
 
     \section{\en{Figures}}

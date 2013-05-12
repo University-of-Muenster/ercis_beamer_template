@@ -1,6 +1,22 @@
+% Partner logo template
+\defbeamertemplate{title page partners}{one}[1]{%
+  \node at ({\paperwidth - 6.75mm - 13mm}, 28mm) {
+    \adjustbox{max width=26mm, max height=10mm}{#1}%
+  };
+}
+
+\defbeamertemplate{title page partners}{two}[2]{%
+  \node at ({\paperwidth - 6.75mm - 13mm}, 28mm) {
+    \adjustbox{max width=26mm, max height=10mm}{#1}%
+  };
+
+  \node at ({\paperwidth - 6.75mm - 13mm}, 40mm) {
+    \adjustbox{max width=26mm, max height=10mm}{#2}%
+  };
+}
+
 % Title page template (see beamer user guide, p. 86)
 \setbeamertemplate{title page}{%
-  \vspace*{-2mm}% TODO Why is this needed?
   % Undo space reservation of text margin and sidebar width
   \hspace*{-\leftTextMargin}%
   \hspace*{-\leftSidebarWidth}%
@@ -21,9 +37,6 @@
       \resizebox{!}{22.5mm}{\ercislogotext{ercisred}{ercisblue}{ercisred}{ercisblue}}%
     };
 
-    % Partner logos
-    % TODO implement using beamertemplates
-
     % Footline background
     \usebeamercolor{footline}
     \path [fill, color={footline.bg}] (0mm, 11mm) rectangle ({\paperwidth - 5mm}, 4.25mm);
@@ -34,6 +47,9 @@
   \begin{tikzpicture}
     % Picture size
     \path [use as bounding box] (0mm, 0mm) rectangle (\paperwidth, \paperheight);
+
+    % Partner logos
+    \usebeamertemplate{title page partners}
 
     % Title
     \node[anchor=text, no sep, align=left, text width={\paperwidth - \leftTextMargin - 40.5mm}] (title) at (\leftTextMargin, {\paperheight - 25.75mm}) {%

@@ -1,23 +1,26 @@
 % Declare name of the package
 \ProvidesPackage{ercisbeamer}
 
-% Graphics rendering using TikZ
-\RequirePackage{tikz}
-
 % Better font rendering (T1 font encoding)
 \usepackage[T1]{fontenc}
 
-% Require geometry package
-\RequirePackage{geometry}
-
 % Improves general appearance of text
 \RequirePackage{microtype}
+
+% TikZ picture rendering
+\RequirePackage{tikz}
+
+% Require geometry package
+\RequirePackage{geometry}
 
 % Color management
 \RequirePackage{color}
 
 % Color minin environment
 \RequirePackage{xxcolor}
+
+% Advanced resizing of contents
+\RequirePackage{adjustbox}
 
 % Allow caching of TikZ graphics (externalize)
 \usetikzlibrary{external}

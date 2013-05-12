@@ -13,3 +13,12 @@
 }
 \makeatother
 
+% Reduce default width of blocks
+% see http://tex.stackexchange.com/questions/12550/changing-default-width-of-blocks-in-beamer
+\newcommand{\blockwidthcorrection}{%
+  \pgfmathsetlength{\textwidth}{\textwidth - 1.425mm}%
+}
+
+\addtobeamertemplate{block begin}{\blockwidthcorrection}{}
+\addtobeamertemplate{block alerted begin}{\blockwidthcorrection}{}
+\addtobeamertemplate{block example begin}{\blockwidthcorrection}{}

@@ -1,4 +1,4 @@
-\begin{frame}
+\begin{frame}[c]
     \frametitle{Raster graphics example}
     \framesubtitle{Administrative center of the University of Münster}
 
@@ -10,7 +10,7 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[c]
     \frametitle{Vector graphics example (using PDF)}
     \framesubtitle{ERCIS logo}
 
@@ -22,98 +22,191 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}
+\begin{frame}<1-3|handout:3>[c]
     \frametitle{Vector graphics example (using PGF/TikZ)}
-    \framesubtitle{Seismic focal mechanism in 3D view}
-    \vspace*{-6mm}
+    \framesubtitle{Cuboid in a 2 vanishing points perspective}
 
-    \footnotetext{Source: http://www.texample.net/tikz/examples/seismic-focal-mechanism-in-3d-view}
-    % TODO
-    % use footnote for source
-    % see http://www.texample.net/media/tikz/examples/TEX/seismic-focal-mechanism-in-3d-view.tex
-    % \begin{center}
-    %     % \nocachePicture
-    %     \tikzsetnextfilename{seismic-focal-}
-    %     \resizebox{!}{\textheight}{
-    %         %: Styles for XYZ-Coordinate Systems
-    %         %: isometric  South West : X , South East : Y , North : Z
-    %         \tikzset{isometricXYZ/.style={x={(-0.866cm,-0.5cm)}, y={(0.866cm,-0.5cm)}, z={(0cm,1cm)}}}
+    \footnotetext{Source: http://www.texample.net/tikz/examples/cuboid}
+    \begin{figure}
+        \begin{center}
+            % \resizebox{!}{0.75\textheight}{
+            % \adjustbox{height=0.75\textheight}{
+                \tikzsetfigurename{cuboid-}
+                \begin{tikzpicture}
+                    \useasboundingbox (-2cm, -2.2cm) rectangle (3cm, 1cm);
 
-    %         %: isometric South West : Z , South East : X , North : Y
-    %         \tikzset{isometricZXY/.style={x={(0.866cm,-0.5cm)}, y={(0cm,1cm)}, z={(-0.866cm,-0.5cm)}}}
+                    %% Vanishing points for perspective handling
+                    \coordinate (P1) at (-7cm,1.5cm); % left vanishing point (To pick)
+                    \coordinate (P2) at (8cm,1.5cm); % right vanishing point (To pick)
 
-    %         %: isometric South West : Y , South East : Z , North : X
-    %         \tikzset{isometricYZX/.style={x={(0cm,1cm)}, y={(-0.866cm,-0.5cm)}, z={(0.866cm,-0.5cm)}}}
+                    %% (A1) and (A2) defines the 2 central points of the cuboid
+                    \coordinate (A1) at (0em,0cm); % central top point (To pick)
+                    \coordinate (A2) at (0em,-2cm); % central bottom point (To pick)
 
-    %         \begin{tikzpicture} [scale=4, isometricZXY, line join=round, opacity=.75, text opacity=1.0, >=latex, inner sep=0pt, outer sep=2pt]
-    %             \def\h{5}
+                    %% (A3) to (A8) are computed given a unique parameter (or 2) .8
+                    % You can vary .8 from 0 to 1 to change perspective on left side
+                    \coordinate (A3) at ($(P1)!.8!(A2)$); % To pick for perspective
+                    \coordinate (A4) at ($(P1)!.8!(A1)$);
 
-    %             \newcommand{\quadrant}[2]{
-    %                 \foreach \t in {#1} \foreach \f in {175,165,...,5}
-    %                     \draw [fill=#2]
-    %                           ({sin(\f - \h)*cos(\t - \h)}, {sin(\f - \h)*sin(\t - \h)}, {cos(\f - \h)})
-    %                        -- ({sin(\f - \h)*cos(\t + \h)}, {sin(\f - \h)*sin(\t + \h)}, {cos(\f - \h)})
-    %                        -- ({sin(\f + \h)*cos(\t + \h)}, {sin(\f + \h)*sin(\t + \h)}, {cos(\f + \h)})
-    %                        -- ({sin(\f + \h)*cos(\t - \h)}, {sin(\f + \h)*sin(\t - \h)}, {cos(\f + \h)})
-    %                        -- cycle;
-    %             }
+                    % You can vary .8 from 0 to 1 to change perspective on right side
+                    \coordinate (A7) at ($(P2)!.7!(A2)$);
+                    \coordinate (A8) at ($(P2)!.7!(A1)$);
 
-    %             %Quadrants
-    %             \quadrant{220,230,...,300}{black}
-    %             \quadrant{-60,-50,...,20}{white}
-    %             \quadrant{30,40,...,120}{black}
-    %             \quadrant{130,140,...,210}{none}
+                    %% Automatically compute the last 2 points with intersections
+                    \coordinate (A5) at
+                      (intersection cs: first line={(A8) -- (P1)},
+                                second line={(A4) -- (P2)});
+                    \coordinate (A6) at
+                      (intersection cs: first line={(A7) -- (P1)},
+                                second line={(A3) -- (P2)});
 
-    %             %Movement arrows
-    %             \foreach \t in {225,235,...,295}
-    %                 \foreach \f in {50,40,...,0}
-    %                     \draw [red, opacity=1.0, ->, thick]
-    %                         ({sin(\f - \h)*cos(\t - \h)}, {sin(\f - \h)*sin(\t - \h)}, {cos(\f - \h)})
-    %                         -- ({(1 + 0.2*cos(90 - \f))*sin(\f - \h)*cos(\t - \h)},
-    %                             {(1 + 0.2*cos(90 - \f))*sin(\f - \h)*sin(\t - \h)},
-    %                             {(1 + 0.2*cos(90 - \f))*cos(\f - \h)});
+                    %%% Depending of what you want to display, you can comment/edit
+                    %%% the following lines
 
-    %             \foreach \t in {125,135,...,205}
-    %                 \foreach \f in {110,100,...,0}
-    %                     \draw [black, ->, thick]
-    %                         ({(1 + 0.2*cos(90 - \f))*sin(\f - \h)*cos(\t - \h)},
-    %                          {(1 + 0.2*cos(90 - \f))*sin(\f - \h)*sin(\t - \h)},
-    %                          {(1 + 0.2*cos(90 - \f))*cos(\f - \h)})
-    %                         -- ({sin(\f - \h)*cos(\t - \h)},{sin(\f - \h)*sin(\t - \h)},{cos(\f - \h)});
-    %             \foreach \t in {35,45,...,115}
-    %                 \foreach \f in {130,120,...,0}
-    %                     \draw [red, opacity=1.0 ,->, thick]
-    %                         ({sin(\f - \h)*cos(\t - \h)}, {sin(\f - \h)*sin(\t - \h)}, {cos(\f - \h)})
-    %                         -- ({(1 + 0.2*cos(90 - \f))*sin(\f - \h)*cos(\t - \h)},
-    %                             {(1 + 0.2*cos(90 - \f))*sin(\f - \h)*sin(\t - \h)},
-    %                             {(1 + 0.2*cos(90 - \f))*cos(\f - \h)});
+                    %% Possibly draw back faces
+                    \only<3->{
+                        \fill[ercisblue!90] (A2) -- (A3) -- (A6) -- (A7) -- cycle; % face 6
+                        \node at (barycentric cs:A2=1,A3=1,A6=1,A7=1) {\tiny f6};
 
-    %             \foreach \t in {-55,-45,...,25}
-    %                 \foreach \f in {130,120,...,0}
-    %                     \draw [black, ->, thick]
-    %                         ({(1 + 0.2*cos(90 - \f))*sin(\f - \h)*cos(\t - \h)},
-    %                          {(1 + 0.2*cos(90 - \f))*sin(\f - \h)*sin(\t - \h)},
-    %                          {(1 + 0.2*cos(90 - \f))*cos(\f - \h)})
-    %                       -- ({sin(\f - \h)*cos(\t - \h)},{sin(\f - \h)*sin(\t - \h)},{cos(\f - \h)});
+                        \fill[ercisblue!50] (A3) -- (A4) -- (A5) -- (A6) -- cycle; % face 3
+                        \node at (barycentric cs:A3=1,A4=1,A5=1,A6=1) {\tiny f3};
 
-    %             %Annotations
-    %             \path ({1.5*sin(100)*cos(75)}, {1.5*sin(100)*sin(75)}, {1.5*cos(100)}) node [right] {Compression};
-    %             \path ({1.5*sin(70)*cos(-15)}, {1.5*sin(70)*sin(-15)}, {1.5*cos(70)})  node [right] {Dilatation};
-    %             \path ({1.25*sin(50)*cos(165)},{1.25*sin(50)*sin(165)},{1.25*cos(50)}) node [left]  {Dilatation};
-    %             \path ({1.25*sin(30)*cos(255)},{1.25*sin(30)*sin(255)},{1.25*cos(30)}) node [left]  {Compression};
+                        \fill[ercisblue!30] (A5) -- (A6) -- (A7) -- (A8) -- cycle; % face 4
+                        \node at (barycentric cs:A5=1,A6=1,A7=1,A8=1) {\tiny f4};
+                    }
 
-    %             %P and T axis
-    %             \begin{scope}[ultra thick]
-    %                 \draw[->] ({1.75*sin(90)*cos(75)}, {1.75*sin(90)*sin(75)}, {1.75*cos(90)})
-    %                     -- ({2*sin(90)*cos(75)},{2*sin(90)*sin(75)},{2*cos(90)}) node [above] {T-axis};
-    %                 \draw[->] ({1.75*sin(90)*cos(255)},{1.75*sin(90)*sin(255)},{1.75*cos(90)})
-    %                     -- ({2*sin(90)*cos(255)},{2*sin(90)*sin(255)},{2*cos(90)}) node [below] {T-axis};
-    %                 \draw[<-] ({1.5*sin(90)*cos(-15)}, {1.5*sin(90)*sin(-15)}, {1.5*cos(90)})
-    %                     -- ({1.75*sin(90)*cos(-15)},{1.75*sin(90)*sin(-15)},{1.75*cos(90)}) node [right] {P-axis};
-    %                 \draw[<-] ({1.5*sin(90)*cos(165)}, {1.5*sin(90)*sin(165)}, {1.5*cos(90)})
-    %                     -- ({1.75*sin(90)*cos(165)},{1.75*sin(90)*sin(165)},{1.75*cos(90)}) node [left] {P-axis};
-    %             \end{scope}
-    %         \end{tikzpicture}
-    %     }
-    % \end{center}
+                    \draw[thick,dashed] (A5) -- (A6);
+                    \draw[thick,dashed] (A3) -- (A6);
+                    \draw[thick,dashed] (A7) -- (A6);
+
+                    %% Possibly draw front faces
+
+                    % \fill[orange] (A1) -- (A8) -- (A7) -- (A2) -- cycle; % face 1
+                    % \node at (barycentric cs:A1=1,A8=1,A7=1,A2=1) {\tiny f1};
+                    \only<3->{
+                        \fill[ercisblue!50,opacity=0.2] (A1) -- (A2) -- (A3) -- (A4) -- cycle; % f2
+                        \node at (barycentric cs:A1=1,A2=1,A3=1,A4=1) {\tiny f2};
+                        \fill[ercisblue!90,opacity=0.2] (A1) -- (A4) -- (A5) -- (A8) -- cycle; % f5
+                        \node at (barycentric cs:A1=1,A4=1,A5=1,A8=1) {\tiny f5};
+                    }
+
+                    %% Possibly draw front lines
+                    \draw[thick] (A1) -- (A2);
+                    \draw[thick] (A3) -- (A4);
+                    \draw[thick] (A7) -- (A8);
+                    \draw[thick] (A1) -- (A4);
+                    \draw[thick] (A1) -- (A8);
+                    \draw[thick] (A2) -- (A3);
+                    \draw[thick] (A2) -- (A7);
+                    \draw[thick] (A4) -- (A5);
+                    \draw[thick] (A8) -- (A5);
+
+                    % Possibly draw points
+                    % (it can help you understand the cuboid structure)
+                    \foreach \i in {1,2,...,8}
+                    {
+                      \only<2->{
+                          \draw[fill=black] (A\i) circle (0.15em)
+                            node[above right] {\tiny \i};
+                      }
+                    }
+                    % \draw[fill=black] (P1) circle (0.1em) node[below] {\tiny p1};
+                    % \draw[fill=black] (P2) circle (0.1em) node[below] {\tiny p2};
+                \end{tikzpicture}
+            % }
+            \caption{Cuboid in a 2 vanishing points perspective.}
+        \end{center}
+    \end{figure}
 \end{frame}
+
+% \begin{frame}
+%     \frametitle{Vector graphics example (using PGF/TikZ)}
+%     \framesubtitle{Seismic focal mechanism in 3D view}
+%     % See http://www.texample.net/media/tikz/examples/TEX/seismic-focal-mechanism-in-3d-view.tex
+%     % \footnotetext{Source: http://www.texample.net/tikz/examples/seismic-focal-mechanism-in-3d-view}
+%     \begin{center}
+%         \nocachePicture
+%         \tikzsetnextfilename{seismic-focal-}
+%         \resizebox{!}{0.75\textheight}{
+%             %: Styles for XYZ-Coordinate Systems
+%             %: isometric  South West : X , South East : Y , North : Z
+%             \tikzset{isometricXYZ/.style={x={(-0.866cm,-0.5cm)}, y={(0.866cm,-0.5cm)}, z={(0cm,1cm)}}}
+
+%             %: isometric South West : Z , South East : X , North : Y
+%             \tikzset{isometricZXY/.style={x={(0.866cm,-0.5cm)}, y={(0cm,1cm)}, z={(-0.866cm,-0.5cm)}}}
+
+%             %: isometric South West : Y , South East : Z , North : X
+%             \tikzset{isometricYZX/.style={x={(0cm,1cm)}, y={(-0.866cm,-0.5cm)}, z={(0.866cm,-0.5cm)}}}
+
+%             \begin{tikzpicture} [scale=4, isometricZXY, line join=round, opacity=.75, text opacity=1.0, >=latex, inner sep=0pt, outer sep=2pt]
+%                 \def\h{5}
+
+%                 \newcommand{\quadrant}[2]{
+%                     \foreach \t in {#1} \foreach \f in {175,165,...,5}
+%                         \draw [fill=#2]
+%                               ({sin(\f - \h)*cos(\t - \h)}, {sin(\f - \h)*sin(\t - \h)}, {cos(\f - \h)})
+%                            -- ({sin(\f - \h)*cos(\t + \h)}, {sin(\f - \h)*sin(\t + \h)}, {cos(\f - \h)})
+%                            -- ({sin(\f + \h)*cos(\t + \h)}, {sin(\f + \h)*sin(\t + \h)}, {cos(\f + \h)})
+%                            -- ({sin(\f + \h)*cos(\t - \h)}, {sin(\f + \h)*sin(\t - \h)}, {cos(\f + \h)})
+%                            -- cycle;
+%                 }
+
+%                 %Quadrants
+%                 \quadrant{220,230,...,300}{black}
+%                 \quadrant{-60,-50,...,20}{white}
+%                 \quadrant{30,40,...,120}{black}
+%                 \quadrant{130,140,...,210}{none}
+
+%                 %Movement arrows
+%                 \foreach \t in {225,235,...,295}
+%                     \foreach \f in {50,40,...,0}
+%                         \draw [red, opacity=1.0, ->, thick]
+%                             ({sin(\f - \h)*cos(\t - \h)}, {sin(\f - \h)*sin(\t - \h)}, {cos(\f - \h)})
+%                             -- ({(1 + 0.2*cos(90 - \f))*sin(\f - \h)*cos(\t - \h)},
+%                                 {(1 + 0.2*cos(90 - \f))*sin(\f - \h)*sin(\t - \h)},
+%                                 {(1 + 0.2*cos(90 - \f))*cos(\f - \h)});
+
+%                 \foreach \t in {125,135,...,205}
+%                     \foreach \f in {110,100,...,0}
+%                         \draw [black, ->, thick]
+%                             ({(1 + 0.2*cos(90 - \f))*sin(\f - \h)*cos(\t - \h)},
+%                              {(1 + 0.2*cos(90 - \f))*sin(\f - \h)*sin(\t - \h)},
+%                              {(1 + 0.2*cos(90 - \f))*cos(\f - \h)})
+%                             -- ({sin(\f - \h)*cos(\t - \h)},{sin(\f - \h)*sin(\t - \h)},{cos(\f - \h)});
+%                 \foreach \t in {35,45,...,115}
+%                     \foreach \f in {130,120,...,0}
+%                         \draw [red, opacity=1.0 ,->, thick]
+%                             ({sin(\f - \h)*cos(\t - \h)}, {sin(\f - \h)*sin(\t - \h)}, {cos(\f - \h)})
+%                             -- ({(1 + 0.2*cos(90 - \f))*sin(\f - \h)*cos(\t - \h)},
+%                                 {(1 + 0.2*cos(90 - \f))*sin(\f - \h)*sin(\t - \h)},
+%                                 {(1 + 0.2*cos(90 - \f))*cos(\f - \h)});
+
+%                 \foreach \t in {-55,-45,...,25}
+%                     \foreach \f in {130,120,...,0}
+%                         \draw [black, ->, thick]
+%                             ({(1 + 0.2*cos(90 - \f))*sin(\f - \h)*cos(\t - \h)},
+%                              {(1 + 0.2*cos(90 - \f))*sin(\f - \h)*sin(\t - \h)},
+%                              {(1 + 0.2*cos(90 - \f))*cos(\f - \h)})
+%                           -- ({sin(\f - \h)*cos(\t - \h)},{sin(\f - \h)*sin(\t - \h)},{cos(\f - \h)});
+
+%                 %Annotations
+%                 \path ({1.5*sin(100)*cos(75)}, {1.5*sin(100)*sin(75)}, {1.5*cos(100)}) node [right] {Compression};
+%                 \path ({1.5*sin(70)*cos(-15)}, {1.5*sin(70)*sin(-15)}, {1.5*cos(70)})  node [right] {Dilatation};
+%                 \path ({1.25*sin(50)*cos(165)},{1.25*sin(50)*sin(165)},{1.25*cos(50)}) node [left]  {Dilatation};
+%                 \path ({1.25*sin(30)*cos(255)},{1.25*sin(30)*sin(255)},{1.25*cos(30)}) node [left]  {Compression};
+
+%                 %P and T axis
+%                 \begin{scope}[ultra thick]
+%                     \draw[->] ({1.75*sin(90)*cos(75)}, {1.75*sin(90)*sin(75)}, {1.75*cos(90)})
+%                         -- ({2*sin(90)*cos(75)},{2*sin(90)*sin(75)},{2*cos(90)}) node [above] {T-axis};
+%                     \draw[->] ({1.75*sin(90)*cos(255)},{1.75*sin(90)*sin(255)},{1.75*cos(90)})
+%                         -- ({2*sin(90)*cos(255)},{2*sin(90)*sin(255)},{2*cos(90)}) node [below] {T-axis};
+%                     \draw[<-] ({1.5*sin(90)*cos(-15)}, {1.5*sin(90)*sin(-15)}, {1.5*cos(90)})
+%                         -- ({1.75*sin(90)*cos(-15)},{1.75*sin(90)*sin(-15)},{1.75*cos(90)}) node [right] {P-axis};
+%                     \draw[<-] ({1.5*sin(90)*cos(165)}, {1.5*sin(90)*sin(165)}, {1.5*cos(90)})
+%                         -- ({1.75*sin(90)*cos(165)},{1.75*sin(90)*sin(165)},{1.75*cos(90)}) node [left] {P-axis};
+%                 \end{scope}
+%             \end{tikzpicture}
+%         }
+%     \end{center}
+% \end{frame}

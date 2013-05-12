@@ -35,7 +35,7 @@
         </exec>
 
         <!-- Move resulting PDF to build directory -->
-        <copy file="presentation.pdf" tofile="${build}/beamer.pdf"/>
+        <move file="presentation.pdf" tofile="${build}/beamer.pdf"/>
     </target>
 
     <target name="build-handout" depends="init" description="compile the handout version of the presentation">
