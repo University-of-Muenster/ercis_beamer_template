@@ -9,14 +9,14 @@
     \useasboundingbox (0mm, {\headlineHeight - 6mm}) rectangle ({\paperwidth - \leftSidebarWidth- \leftTextMargin - \rightSidebarWidth - \rightTextMargin}, 0mm);
 
     % Frame title
-    \node [anchor=north west, no sep] at (0mm, {\headlineHeight - 6mm - 3.75mm}) {%
+    \node [anchor=text, no sep, align=left, text width={\paperwidth - \leftSidebarWidth- \leftTextMargin - \rightSidebarWidth - \rightTextMargin - 23.2mm - 2mm}] at (0mm, {\headlineHeight - 6mm - 7mm}) {%
       \usebeamerfont{frametitle}%
       \usebeamercolor[fg]{frametitle}%
       \insertframetitle%
     };
 
     % Frame subtitle
-    \node [anchor=north west, no sep] at (0mm, {\headlineHeight - 6mm - 10mm}) {%
+    \node [anchor=text, no sep, align=left, text width={\paperwidth - \leftSidebarWidth- \leftTextMargin - \rightSidebarWidth - \rightTextMargin - 23.2mm - 2mm}] at (0mm, {\headlineHeight - 6mm - 12mm}) {%
       \usebeamerfont{framesubtitle}%
       \usebeamercolor[fg]{framesubtitle}%
       \insertframesubtitle%

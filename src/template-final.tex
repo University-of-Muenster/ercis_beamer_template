@@ -41,16 +41,25 @@
     \path [use as bounding box] (0mm, 0mm) rectangle (\paperwidth, \paperheight);
 
     % Content
-    % TODO content of final slide from template
+    \ifbeamertemplateempty{final page content}{}{%
+      \node[anchor=text, no sep, text width={\paperwidth - \leftTextMargin - \rightTextMargin}] at (6mm, {\paperheight / 2}) {%
+        \usebeamerfont{final page content}%
+        \usebeamercolor[fg]{final page content}%
+        \usebeamertemplate{final page content}%
+      };
+    }
 
     % Contact details (optional)
     \ifbeamertemplateempty{final page contact}{}{%
-      \node[anchor=south west, inner xsep=1mm, outer sep=0mm] at (6mm, 21mm) {%
+      \node[anchor=text, no sep, align=left, text width={\paperwidth - \leftTextMargin - \rightTextMargin}] at (6mm, {\paperheight - 75mm}) {%
         \usebeamerfont{final page contact}%
         \usebeamercolor[fg]{final page contact}%
         \usebeamertemplate{final page contact}%
       };
     }
+    % Undo space reservation by prior final part
+    \hspace*{-\paperwidth}%
+    Test
   \end{tikzpicture}%
 }
 

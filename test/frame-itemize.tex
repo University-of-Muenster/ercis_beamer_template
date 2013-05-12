@@ -1,15 +1,33 @@
-\begin{frame}
-    \frametitle{Auflistungen}
-    \framesubtitle{von unsortierten Listenelementen}
+% Itemizations (see beamer user guide, p. 103)
 
-    Ein Text vor einer Auflistung.
-    \begin{itemize}
-        \item In Auflistungspunkten werden
-        \item wesentliche Aspekte zusammengefasst,
+\begin{frame}
+    \frametitle{\en{Itemizations}\de{Auflistungen}}
+    \framesubtitle{\en{Structuring unsorted elements}\de{Strukturierung unsortierter Elemente}}
+
+    \en{A text can precede an itemization.}
+    \de{Ein Text kann einer Auflistung voranstehen.}
+
+    \en{
         \begin{itemize}
-            \item die optional durch Unterauflistungen
-            \item vertieft werden k\"onnen,
+            \item List item summarize
+            \item significant aspects,
+            \begin{itemize}
+                \item which can be optionally augmented
+                \item by nested itemizations.
+            \end{itemize}
+            \item Oversized list items will be automatically wrapped in multiple lines while ensuring proper indention.
         \end{itemize}
-        \item und Text automatisch mit korrektem Zeileneinzug in mehrere Zeilen umgebrochen
-    \end{itemize}
+    }
+
+    \de{
+        \begin{itemize}
+            \item In Auflistungspunkten werden
+            \item wesentliche Aspekte zusammengefasst,
+            \begin{itemize}
+                \item die optional durch Unterauflistungen
+                \item vertieft werden k\"onnen,
+            \end{itemize}
+            \item und Text automatisch mit korrektem Zeileneinzug in mehrere Zeilen umgebrochen.
+        \end{itemize}
+    }
 \end{frame}

@@ -11,7 +11,7 @@
     \path [use as bounding box] (0mm, 0mm) rectangle (\paperwidth, \paperheight);
 
     % University logo
-    \node[anchor=north west, no sep] at (7.5mm, {\paperheight - 6mm}) {%
+    \node[anchor=north west, no sep] at (\leftTextMargin, {\paperheight - 6mm}) {%
       \usebeamercolor{title page wwu logo}%
       \resizebox{!}{6mm}{\wwulogo{{title page wwu logo.fg}}}%
     };
@@ -22,7 +22,7 @@
     };
 
     % Partner logos
-    % TODO implement
+    % TODO implement using beamertemplates
 
     % Footline background
     \usebeamercolor{footline}
@@ -36,22 +36,21 @@
     \path [use as bounding box] (0mm, 0mm) rectangle (\paperwidth, \paperheight);
 
     % Title
-    % TODO define text width with respect to ercis logo
-    \node[anchor=north west, no sep, align=left, text width={\paperwidth - 7.5mm - 0mm}] (title) at (7.5mm, {\paperheight - 22.5mm}) {%
+    \node[anchor=text, no sep, align=left, text width={\paperwidth - \leftTextMargin - 40.5mm}] (title) at (\leftTextMargin, {\paperheight - 25.75mm}) {%
       \usebeamerfont{title page title}%
       \usebeamercolor[fg]{title page title}%
       \inserttitle%
     };
 
     % Subtitle
-    \node[anchor=north west, no sep, align=left, text width={\paperwidth - 7.5mm - 0mm}] (subtitle) at (7.5mm, {\paperheight - 34mm}) {%
+    \node[anchor=text, no sep, align=left, text width={\paperwidth - \leftTextMargin - \rightTextMargin}] (subtitle) at (\leftTextMargin, {\paperheight - 36mm}) {%
       \usebeamerfont{title page subtitle}%
       \usebeamercolor[fg]{title page subtitle}%
       \insertsubtitle%
     };
 
     % Author
-    \node[anchor=west, no sep] at (7.5mm, {11mm - 2 * 2.25mm}) {%
+    \node[anchor=west, no sep] at (\leftTextMargin, {11mm - 2 * 2.25mm}) {%
       \usebeamerfont{title page author}%
       \usebeamercolor[fg]{title page author}%
       \insertauthor%

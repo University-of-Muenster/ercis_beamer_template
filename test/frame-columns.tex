@@ -1,0 +1,49 @@
+% Splitting a Frame into Multiple Columns (see beamer user guide, p. 118)
+\begin{frame}
+    \frametitle{Two-column layout}
+    \framesubtitle{Contrasting two aspects}
+
+    \setbeamertemplate{column layout}[two]
+    {
+        \begin{itemize}
+            \item Left bullet 1
+            \item Left bullet 2
+            \item Left bullet 3
+        \end{itemize}
+    }{
+        \begin{itemize}
+            \item Right bullet 1
+            \item Right bullet 2
+            \item Right bullet 3
+        \end{itemize}
+    }
+    \usebeamertemplate{column layout}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Three-column layout}
+    \framesubtitle{When things are more complicated}
+
+    \setbeamertemplate{column layout}[three]
+    {
+        \begin{itemize}
+            \item Left bullet 1
+            \item Left bullet 2
+            \item Left bullet 3
+        \end{itemize}
+    }
+    {
+        \begin{itemize}
+            \item Center bullet 1
+            \item Center bullet 2
+            \item Center bullet 3
+        \end{itemize}
+    }{
+        \begin{itemize}
+            \item Right bullet 1
+            \item Right bullet 2
+            \item Right bullet 3
+        \end{itemize}
+    }
+    \usebeamertemplate{column layout}
+\end{frame}

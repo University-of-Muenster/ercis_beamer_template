@@ -1,0 +1,26 @@
+% Two-column layout
+\defbeamertemplate{column layout}{two}[2]{%
+  \begin{columns}[t, onlytextwidth]%
+    \begin{column}{.5\textwidth}%
+      #1%
+    \end{column}%
+    \begin{column}{.5\textwidth}%
+      #2%
+    \end{column}%
+  \end{columns}%
+}
+
+% Three-column layout
+\defbeamertemplate{column layout}{three}[3]{%
+  \begin{columns}[t, onlytextwidth]%
+    \begin{column}{.33\textwidth}%
+      #1%
+    \end{column}%
+    \begin{column}{.33\textwidth}%
+      #2%
+    \end{column}%
+    \begin{column}{.33\textwidth}%
+      #3%
+    \end{column}%
+  \end{columns}%
+}

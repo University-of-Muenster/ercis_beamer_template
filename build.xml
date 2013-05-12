@@ -45,6 +45,15 @@
         </sequential>
     </macrodef>
 
+    <!-- TODO -->
+    <macrodef name="compiledoc">
+        <attribute name="locale" />
+
+        <sequential>
+            <pdfcompile document="${docs.source}.tex" dir="${docs.folder}" locale="@{locale}" />
+        </sequential>
+    </macrodef>
+
     <!-- Targets -->
 
     <target name="init">
@@ -84,18 +93,28 @@
 
     <target name="build-test" depends="init,build" description="generates the test presentation">
         <!-- Compile test presentation (using test ant script) -->
-        <ant antfile="${test.folder}/build.xml" dir="${test.folder}" target="build"/>
-        <!-- <move file="${test.folder}/build/beamer.pdf" tofile="${build.folder}/presentation.pdf" overwrite="true" /> -->
+        <ant antfile="${test.folder}/build.xml" dir="${test.folder}" target="build" />
+        <!-- <copy file="${test.folder}/build/beamer.pdf" tofile="${build.folder}/presentation.pdf" overwrite="true" /> -->
 
         <!-- Clean test directory -->
         <!-- <ant antfile="${test.folder}/build.xml" dir="${test.folder}" target="clean"/> -->
+
+        <!-- TODO build handout -->
+    </target>
+
+    <target name="test-docs-en" depends="init" description="generates the english documentation">
+        <compiledoc locale="en" />
+    </target>
+
+    <target name="test-docs-de" depends="init" description="generates the german documentation">
+        <compiledoc locale="de" />
     </target>
 
     <target name="dist" depends="build,build-docs,build-test" description="generates the distribution">
         <!-- Create the distribution directory -->
         <mkdir dir="${dist.folder}" />
 
-        <!-- Create a ZIP archive containing all files in build directory and additional files -->
+        <!-- Create distribution archive containing all files in build directory and additional files -->
         <zip destfile="${dist.folder}/${dist.name}.zip" level="9">
             <fileset dir="${build.folder}" includes="*" />
 
@@ -108,6 +127,8 @@
                 <file name="changelog.txt" />
             </filelist>
         </zip>
+
+        <!-- TODO create development archieve -->
     </target>
 
     <target name="clean" description="cleans build process paths" >
@@ -116,9 +137,9 @@
         <delete dir="${dist.folder}" />
 
         <!-- Clean test directory -->
-        <!-- TODO -->
+        <ant antfile="${test.folder}/build.xml" dir="${test.folder}" target="clean"/>
 
         <!-- Clean docs directory -->
-        <!-- TODO -->
+        <cleanlatex dir="${docs.folder}" />
     </target>
 </project>

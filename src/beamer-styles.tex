@@ -6,13 +6,7 @@
 % Headline (see beamer user guide, p. 59)
 \setbeamercolor*{logo in head}{fg=pantoneblack7}
 
-% \setbeamerfont{title in head}{size*={6}{0}} % TODO
-% \setbeamercolor*{title in head}{fg=pantoneblack7} % TODO
-
-% \setbeamerfont{frame number in head}{size*={6}{0}} % TODO
-% \setbeamercolor*{frame number in head}{fg=pantoneblack7} % TODO
-
-% Footline (see beamer user guide, p. 61) % TODO
+% Footline (see beamer user guide, p. 61)
 \setbeamercolor*{footline}{bg=ercisred}
 
 \setbeamerfont{title in foot}{size*={6}{0}}
@@ -72,18 +66,22 @@
 \setbeamercolor*{title page date}{fg=white}
 
 % Table of Contents (see beamer user guide, p. 88)
-\setbeamertemplate{section in toc}[sections numbered]
+\setbeamertemplate{section in toc}[sections numbered] % TODO color only section number
 \setbeamercolor*{section in toc}{fg=normal text.fg}
 
 \setbeamertemplate{subsection in toc}[square]
 \setbeamercolor*{subsection number projected}{bg=ercisred}
 
+\setbeamertemplate{subsubsection in toc}[square]
+\setbeamercolor*{subsubsection number projected}{bg=ercisred}
+
 % Bibliography (see beamer user guide, p. 95)
-\setbeamercolor*{bibliography entry author}{fg=primarycolor}
+\setbeamertemplate{bibliography item}[article]
+\setbeamercolor*{bibliography item}{fg=ercisred}
+\setbeamercolor*{bibliography entry author}{fg=ercisred}
 % \setbeamercolor{bibliography entry title}{}
 % \setbeamercolor{bibliography entry journal}{}
 % \setbeamercolor{bibliography entry note}{}
-% \setbeamercolor{bibliography item}{}
 
 % General indention of itemizations, enumerations, and descriptions
 \setlength{\leftmargini}{1.2em}
@@ -103,26 +101,58 @@
 \setbeamercolor*{enumerate subsubitem}{fg=ercisred}
 
 % Hilighting (see beamer user guide, p. 108)
-% \setbeamercolor*{structure}{fg=primarycolor} % TODO
+\setbeamercolor*{structure}{fg=ercisred}
 \setbeamercolor*{alerted text}{fg=ercisred}
 
-% Block Environments (see beamer user guide, p. 109)
+% Blocks (see beamer user guide, p. 109)
 \setbeamercolor*{block title}{fg=white, bg=ercisred}
 \setbeamercolor*{block body}{bg=ercisred!10}
 
-\setbeamercolor*{block title alerted}{fg=white, bg=ercisdarkblue}
-\setbeamercolor*{block body alerted}{bg=ercisdarkblue!10}
+\setbeamercolor*{block title alerted}{fg=white, bg=ercislightred}
+\setbeamercolor*{block body alerted}{bg=ercislightred!10}
 
-\setbeamercolor*{block title example}{fg=white, bg=ercisblue}
-\setbeamercolor*{block body example}{bg=ercisblue!10}
+\setbeamercolor*{block title example}{fg=white, bg=ercisdarkblue}
+\setbeamercolor*{block body example}{bg=ercisdarkblue!10}
+
+% Theorems (see beamer user guide, p. 111)
+% TODO
+
+% Figures and Tables (see beamer user guide, p. 117)
+\setbeamertemplate{caption}[default]
+\setbeamercolor*{caption name}{fg=ercisred}
+
+% Abstracts (see beamer user guide, p. 120)
+% TODO
+
+% Verse, Quotations, Quotes (see beamer user guide, p. 120)
+% Use default styles
+\setbeamerfont{attrib}{size*={8}{0}}
+\setbeamercolor*{attrib}{fg=ercisblue}
+\providecommand{\attrib}[1]{%
+  \nopagebreak%
+  {%
+    \raggedleft%
+    \usebeamerfont{attrib}%
+    \usebeamercolor[fg]{attrib}%
+    #1\hspace*{1.75mm}\par%
+    \vspace*{0.5em}%
+  }%
+}
+
+% Footnotes (see beamer user guide, p. 121)
+\renewcommand\footnoterule{} % Disable vertical line above footnotes
+
+\setbeamertemplate{footnote}{%
+  \insertfootnotetext%
+}
+\setbeamerfont{footnote}{size*={6}{0}}
+\setbeamercolor*{footnote}{fg=ercisblue}
+
 
 % Color of Mathematical Text (see beamer user guide, p. 173)
 % \setbeamercolor*{math text}{}
 
 % Miscellaneous Colors (see beamer user guide, p. 174)
-\setbeamercolor*{normal text}{fg=black!80}
-% \setbeamercolor*{example text}{fg=pantone369} % TODO
-
-% Verse, Quotations, Quotes
-% TODO
+\setbeamercolor*{normal text}{fg=black}
+\setbeamercolor*{example text}{fg=normal text.fg}
 

@@ -1,6 +1,26 @@
+% Verse, Quotations, Quotes (see beamer user guide, p. 120)
+
 \begin{frame}
-    \frametitle{Zitate}
+    \frametitle{\en{Quotation and Quotes}\de{Zitate}}
+
+    % For a short quotation, or a series of small quotes, separated by blank lines.
     \begin{quote}
-    Imagination is more important than knowledge. For knowledge is limited, whereas imagination embraces the entire world, stimulating progress, giving birth to evolution. It is, strictly speaking, a real factor in scientific research.
+        ``I would have written a shorter letter, but I did not have the time.''
     \end{quote}
+    \attrib{Blaise Pascal}
+
+    % For use with longer quotations, of more than one paragraph, because it indents the first line of each paragraph.
+    \begin{quotation}
+        ``Imagination is more important than knowledge. For knowledge is limited, whereas imagination embraces the entire world, stimulating progress, giving birth to evolution.''
+    \end{quotation}
+    \attrib{Albert Einstein}
+
+    % Is for quotations where line breaks are important, such as poetry. Once in, new stanzas are created with a blank line, and new lines within a stanza are indicated using the newline command, \\. If a line takes up more than one line on the page, then all subsequent lines are indented until explicitly separated with \\.
+    \begin{verse}
+        ``Shall I compare thee to a summer's day?\\
+        Thou art more lovely and more temperate;\\
+        Rough winds do shake the darling buds of May,\\
+        And summer's lease hath all too short a date;''
+    \end{verse}
+    \attrib{William Shakespeare}
 \end{frame}

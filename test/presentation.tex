@@ -10,57 +10,59 @@
 % Enable caching
 \tikzexternalize
 
-% Meta information
-\author{Name des Autors}
-\title{Titel der Pr\"asentation}
-\subtitle{Untertitel der Pr\"asentation}
+% TODO use english and dummy for supressing german text
+\newcommand{\de}[1]{}
+\newcommand{\en}[1]{#1}
 
-% \rerenderAll
-% \rerenderCachedOnce
+% Meta information
+\author{Dominik Lekse}
+\title{\en{ERCIS beamer template}\de{ERCIS Beamervorlage}}
+\subtitle{\en{Examples for typesetting beautiful presentations}\de{Beispiele f\"ur die Erstellung einer Pr\"asentation}}
+
+% Additional requirements
+% \usepackage{tikz-3dplot} % required by TODO
 
 % Slides
 \begin{document}
     \input{frame-title}
 
-    \section*{Outline}
-    \begin{frame}
-        \frametitle{Agenda}
-        \framesubtitle{dieser Pr\"asentation}
-        \tableofcontents
-    \end{frame}
+    \section*{\en{Outline}}
+    \input{frame-outline}
 
-    \section{Grundlagen}
+    \section{\en{Content structuring}}
 
-    % \begin{frame}
-    %     \tikzset{external/export next=false}%
-    %     \begin{tikzpicture}
-    %         % Picture size
-    %         \path [use as bounding box, fill=black] (0mm, 0mm) rectangle (20mm, 20mm);
-    %     \end{tikzpicture}%
-    %     \tikzset{external/export next=false}%
-    %     \begin{tikzpicture}
-    %         % Picture size
-    %         \path [use as bounding box, fill=red] (0mm, 0mm) rectangle (20mm, 20mm);
-    %     \end{tikzpicture}%
-    % \end{frame}
-
-    \subsection{Auflistungen}
-
+    \subsection{\en{Itemizations, Enumerations}\de{Auflistungen, Aufz\"ahlungen}}
     \input{frame-itemize}
-
-    \subsection{Aufz\"ahlungen}
-
     \input{frame-enumerate}
 
-    \section{Inhalt}
-
+    \subsection{\en{Hilighting}\de{Hervorhebungen}}
     \input{frame-hilighting}
 
-    \section{Weitere Konstrukte}
-
+    \subsection{\en{Blocks}\de{Bl\"ocke}}
     \input{frame-blocks}
 
+    % TODO Boxed Text
+
+    \section{\en{Layouts}}
+
+    % TODO no logo
+    % TODO no title/subtitle
+
+    \subsection{\en{Two and three columns}}
+    \input{frame-columns}
+
+    \section{\en{Tables}}
+    % TODO
+    \input{frame-tables}
+
+    \section{\en{Figures}}
+    \input{frame-pictures}
+
+    \section{\en{Additional features}}
+
     \input{frame-quotes}
+
+    \input{frame-bibliography}
 
     \input{frame-final}
 \end{document}

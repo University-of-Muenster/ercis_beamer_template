@@ -1,0 +1,13 @@
+\select@language {english}
+\select@language {ngerman}
+\contentsline {section}{\numberline {1}Prerequisites}{2}{section.1}
+\contentsline {section}{\numberline {2}Notes on Usage}{2}{section.2}
+\contentsline {section}{\numberline {3}Features}{2}{section.3}
+\contentsline {subsection}{\numberline {3.1}Overview}{2}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Display formats}{2}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Font selection}{2}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Languages}{2}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}Colors}{3}{subsection.3.5}
+\contentsline {subsection}{\numberline {3.6}Caching of TikZ pictures}{3}{subsection.3.6}
+\contentsline {section}{\numberline {4}Display}{4}{section.4}
+\contentsline {subsection}{\numberline {4.1}Bleeding logo in Adobe Reader and Adobe Acrobat Professional}{4}{subsection.4.1}
