@@ -66,7 +66,7 @@
         <mkdir dir="${build.folder}"/>
     </target>
 
-    <target name="build" depends="init" description="compiles the source">
+    <target name="build" depends="init,init-build" description="compiles the source">
         <!-- Concat source files into a single style -->
         <concat destfile="${build.folder}/${build.name}.sty" overwrite="true">
             <!-- Define list of source files in correct order -->
@@ -77,7 +77,7 @@
         <copy file="${build.folder}/${build.name}.sty" todir="${test.folder}" overwrite="true" />
     </target>
 
-    <target name="build-docs" depends="init" description="generates the documentation">
+    <target name="build-docs" depends="init,init-build" description="generates the documentation">
         <!-- Compile documentation with locale en -->
         <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="en" />
         <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="en" />
@@ -105,6 +105,7 @@
 
     <target name="test-presentation" depends="init, build" description="generates the test presentation without copying it to the build directory">
         <!-- Compile test presentation (using test ant script) -->
+        <!-- TODO -->
         <ant antfile="${test.folder}/build.xml" dir="${test.folder}" target="build" />
     </target>
 
@@ -119,34 +120,69 @@
     <target name="init-dist">
         <!-- Create the distribution directory -->
         <mkdir dir="${dist.folder}"/>
-
-        <!-- Clean the distribution directory -->
-        <delete includeemptydirs="true">
-            <fileset dir="${dist.folder}" includes="**/*"/>
-        </delete>
-
-
     </target>
 
     <target name="dist" depends="init-dist,build,build-docs,build-test" description="generates the distribution">
-        <!-- Create the distribution directory -->
-        <mkdir dir="${dist.folder}" />
+        <!-- Clean the distribution directory -->
+        <delete includeemptydirs="true">
+            <fileset dir="${dist.folder}">
+                <!-- <include name="**/*" /> -->
+                <exclude name="*.zip" />
+            </fileset>
+        </delete>
 
-        <!-- Create distribution archive containing all files in build directory and additional files -->
-        <zip destfile="${dist.folder}/${dist.name}.zip" level="9">
-            <fileset dir="${build.folder}" includes="*" />
+        <!-- Create the distribution directory structure -->
+        <mkdir dir="${dist.folder}/template" />
+        <mkdir dir="${dist.folder}/docs" />
+        <mkdir dir="${dist.folder}/test" />
+
+        <!-- Copy template contents -->
+        <copy todir="${dist.folder}/template">
+            <filelist dir="${build.folder}">
+                <file name="${build.name}.sty" />
+            </filelist>
+        </copy>
+
+        <!-- Copy docs contents -->
+        <copy todir="${dist.folder}/docs">
+            <fileset dir="${build.folder}">
+                <include name="${docs.name}-*.pdf"/>
+            </fileset>
+        </copy>
+
+        <!-- Copy test contents -->
+        <copy todir="${dist.folder}/test">
+            <filelist dir="${build.folder}" >
+                <file name="${build.name}.sty" />
+                <file name="presentation.pdf" />
+            </filelist>
 
             <filelist dir="${test.folder}">
                 <file name="presentation.tex" />
+                <!-- <file name="build.xml" /> -->
             </filelist>
 
-            <filelist dir="${docs.folder}">
-                <file name="readme.txt" />
-                <file name="changelog.txt" />
-            </filelist>
+            <fileset dir="${test.folder}" includes="frames/**,images/**" />
+        </copy>
+
+        <!-- Create caching directories -->
+        <mkdir dir="${dist.folder}/test/beamer-cache" />
+        <mkdir dir="${dist.folder}/test/handout-cache" />
+        <mkdir dir="${dist.folder}/test/article-cache" />
+
+        <!-- Create distribution archive -->
+        <zip destfile="${dist.folder}/${dist.name}.zip" level="9">
+            <fileset dir="${dist.folder}" />
         </zip>
+    </target>
 
-        <!-- TODO create development archieve -->
+    <target name="dist-dev" depends="init-dist" description="generates the development distribution">
+
+        <!-- Create development distribution -->
+        <zip destfile="${dist.folder}/${dist.name}-dev.zip" level="9">
+            <fileset dir="${basedir}" excludes="build,dist,**/*.aux,**/*.auxlock,**/*.gz,**/*.log,**/*.nav,**/*.out,**/*.snm,**/*.toc">
+            </fileset>
+        </zip>
     </target>
 
     <target name="clean" description="cleans build process paths" >
@@ -155,7 +191,8 @@
         <delete dir="${dist.folder}" />
 
         <!-- Clean test directory -->
-        <cleanlatex dir="${docs.folder}" />
+        <cleanlatex dir="${test.folder}" />
+        <delete file="${test.folder}/${build.name}.sty" />
 
         <!-- Clean docs directory -->
         <cleanlatex dir="${docs.folder}" />

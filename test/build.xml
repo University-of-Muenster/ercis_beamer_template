@@ -5,6 +5,7 @@
     <property name="build" location="build" />
     <property name="beamer-cache" location="beamer-cache" />
     <property name="handout-cache" location="handout-cache" />
+    <property name="article-cache" location="article-cache" />
 
     <!-- Set source files -->
     <property name="presentation" value="presentation.tex" />
@@ -16,6 +17,7 @@
         <!-- Verify existence of cache directories -->
         <mkdir dir="${beamer-cache}"/>
         <mkdir dir="${handout-cache}"/>
+        <mkdir dir="${article-cache}"/>
     </target>
 
     <target name="build">
@@ -52,8 +54,8 @@
         <move file="presentation.pdf" tofile="${build}/handout.pdf"/>
     </target>
 
-    <target name="dist" depends="build-beamer,build-handout" description="">
-        <!-- Nothing to do here -->
+    <target name="build-article" depends="init" description="compile the article version of the presentation">
+        <!-- TODO -->
     </target>
 
     <target name="clean" depends="init" description="clean up">
