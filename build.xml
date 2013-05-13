@@ -11,25 +11,26 @@
     <property name="src.folder" location="src" />
     <property name="test.folder"  location="test" />
 
-    <!-- Define properties -->
-    <!-- No properties -->
-
     <!-- Macros -->
 
     <!-- Compiles a document using the selected language -->
     <macrodef name="compilepdf">
-        <attribute name="locale" />
         <attribute name="dir" />
         <attribute name="document" />
+        <attribute name="locale" default="" />
 
         <sequential>
+            <local name="lastarg"/>
+            <condition property="lastarg" value="@{document}" else="&quot;\providecommand\locale{@{locale}}\input{@{document}}&quot;">
+                <equals arg1="@{locale}" arg2="" />
+            </condition>
+
             <!-- Compile document using pdflatex -->
-            <echo message="Dir: @{dir}"/>
             <exec executable="pdflatex" dir="@{dir}"> <!-- failonerror="true" -->
                 <arg value="-shell-escape" />
                 <arg value="-synctex=1" />
                 <arg value="-interaction=nonstopmode" />
-                <arg value="&quot;\providecommand\locale{@{locale}}\input{@{document}}&quot;"/>
+                <arg value="${lastarg}"/>
             </exec>
         </sequential>
     </macrodef>
@@ -93,20 +94,20 @@
 
     <target name="build-test" depends="init,build" description="generates the test presentation">
         <!-- Compile test presentation -->
-        <ant antfile="${test.folder}/build.xml" dir="${test.folder}" target="build" />
+        <compilepdf document="presentation.tex" dir="${test.folder}" />
+        <compilepdf document="presentation.tex" dir="${test.folder}" />
 
-        <copy file="${test.folder}/build/beamer.pdf" tofile="${build.folder}/presentation.pdf" overwrite="true" />
+        <copy file="${test.folder}/presentation.pdf" tofile="${build.folder}/presentation.pdf" overwrite="true" />
 
         <!-- Clean test directory -->
-        <!-- <ant antfile="${test.folder}/build.xml" dir="${test.folder}" target="clean"/> -->
+        <cleanlatex dir="${test.folder}" />
 
         <!-- TODO build handout -->
     </target>
 
     <target name="test-presentation" depends="init, build" description="generates the test presentation without copying it to the build directory">
         <!-- Compile test presentation (using test ant script) -->
-        <!-- TODO -->
-        <ant antfile="${test.folder}/build.xml" dir="${test.folder}" target="build" />
+        <compilepdf document="presentation.tex" dir="${test.folder}" />
     </target>
 
     <target name="test-docs-en" depends="init" description="generates the english documentation">
@@ -127,7 +128,7 @@
         <delete includeemptydirs="true">
             <fileset dir="${dist.folder}">
                 <!-- <include name="**/*" /> -->
-                <exclude name="*.zip" />
+                <exclude name="*-dev.zip" />
             </fileset>
         </delete>
 
@@ -177,8 +178,8 @@
     </target>
 
     <target name="dist-dev" depends="init-dist" description="generates the development distribution">
-
         <!-- Create development distribution -->
+        <!-- TODO -->
         <zip destfile="${dist.folder}/${dist.name}-dev.zip" level="9">
             <fileset dir="${basedir}" excludes="build,dist,**/*.aux,**/*.auxlock,**/*.gz,**/*.log,**/*.nav,**/*.out,**/*.snm,**/*.toc">
             </fileset>
