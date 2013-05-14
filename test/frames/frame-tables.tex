@@ -6,21 +6,23 @@
     \tikzset{
         cellpicture/.append style={
             execute at end picture={
-                \path (current bounding box.south west) -- +([yshift=0.5em] current bounding box.north east);
+                \useasboundingbox (current bounding box.south west) rectangle ([yshift=0.5em] current bounding box.north east);
             }
         }
     }
 
+    \tikzstyle{ratiobox}=[draw, rectangle, text centered, inner sep=0mm, outer sep= 0mm]
+
     \begin{table}[H]%
         \begin{center}%
             \renewcommand{\arraystretch}{1.25}
-            \begin{tabular}{>{\centering} m{2cm} >{\centering} m{2cm} >{\centering} m{15mm} >{\centering} m{15mm} >{\centering} m{15mm}}
+            \begin{tabular}{>{\centering} m{2cm} >{\centering} m{15mm} >{\centering} m{15mm} >{\centering} m{15mm}}
                 \hline
-                \textbf{\en{Preview}\de{Vorschau}} & \textbf{\en{Aspect ratio}\de{Format}} & \textbf{\en{Option}\de{Option}} & \textbf{\en{Width}\de{Breite}} & \textbf{\en{Height}\de{Höhe}} \tabularnewline
+                \textbf{\en{Aspect ratio}\de{Format}} & \textbf{\en{Option}\de{Option}} & \textbf{\en{Width}\de{Breite}} & \textbf{\en{Height}\de{Höhe}} \tabularnewline
                 \hline
-                \nocachePicture\tikz[cellpicture]{\path[draw] (0,0) rectangle (15mm, 11.25mm);} & 4:3 & - & 128 mm & 96 mm \tabularnewline
-                \nocachePicture\tikz{\path[draw] (0,0) rectangle (15mm, 9.375mm);} & 16:10 & wide10 & 128 mm & 80 mm \tabularnewline
-                \nocachePicture\tikz{\path[draw] (0,0) rectangle (15mm, 8.4375mm);} & 16:9 & wide9 & 128 mm & 72 mm \tabularnewline
+                \nocachePicture\tikz[cellpicture]{\node [ratiobox, text width=15mm, minimum height=11.25mm] {4:3};} & - & 128 mm & 96 mm \tabularnewline
+                \nocachePicture\tikz{\node [ratiobox, text width=15mm, minimum height=9.375mm] {16:10};} & wide10 & 128 mm & 80 mm \tabularnewline
+                \nocachePicture\tikz{\node [ratiobox, text width=15mm, minimum height=8.4375mm] {16:9};} & wide9 & 128 mm & 72 mm \tabularnewline
                 \hline
             \end{tabular}
             \caption{\en{Supported display formats}\de{Unterstützte Anzeigeformate}}%

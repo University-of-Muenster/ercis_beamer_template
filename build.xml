@@ -32,6 +32,7 @@
                 <arg value="-interaction=nonstopmode" />
                 <arg value="${lastarg}"/>
             </exec>
+            <!-- TODO redirect pipe and filter by errors and warnings -->
         </sequential>
     </macrodef>
 
