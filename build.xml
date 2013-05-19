@@ -18,19 +18,27 @@
         <attribute name="dir" />
         <attribute name="document" />
         <attribute name="locale" default="" />
+        <attribute name="draft" default="false" />
 
         <sequential>
-            <local name="lastarg"/>
-            <condition property="lastarg" value="@{document}" else="&quot;\providecommand\locale{@{locale}}\input{@{document}}&quot;">
+            <local name="inputarg"/>
+            <condition property="inputarg" value="@{document}" else="&quot;\providecommand\locale{@{locale}}\input{@{document}}&quot;">
                 <equals arg1="@{locale}" arg2="" />
+            </condition>
+
+            <local name="draftmodearg"/>
+            <condition property="draftmodearg" value="-draftmode" else="">
+                <equals arg1="@{draft}" arg2="true" />
             </condition>
 
             <!-- Compile document using pdflatex -->
             <exec executable="pdflatex" dir="@{dir}"> <!-- failonerror="true" -->
                 <arg value="-shell-escape" />
-                <arg value="-synctex=1" />
-                <arg value="-interaction=nonstopmode" />
-                <arg value="${lastarg}"/>
+                <!-- <arg value="-synctex=1" /> -->
+                <!-- <arg value="-interaction=nonstopmode" /> -->
+                <arg value="-interaction=batchmode" />
+                <arg value="${draftmodearg}" />
+                <arg value="${inputarg}"/>
             </exec>
             <!-- TODO redirect pipe and filter by errors and warnings -->
         </sequential>
@@ -81,13 +89,13 @@
 
     <target name="build-docs" depends="init,init-build" description="generates the documentation">
         <!-- Compile documentation with locale en -->
-        <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="en" />
+        <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="en" draft="true" />
         <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="en" />
         <move file="${docs.folder}/${docs.source}.pdf" tofile="${build.folder}/${docs.name}-en.pdf" overwrite="true" />
         <cleanlatex dir="${docs.folder}" />
 
         <!-- Compile documentation with locale de -->
-        <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="de" />
+        <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="de" draft="true" />
         <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="de" />
         <move file="${docs.folder}/${docs.source}.pdf" tofile="${build.folder}/${docs.name}-de.pdf" overwrite="true" />
         <cleanlatex dir="${docs.folder}" />
@@ -95,7 +103,7 @@
 
     <target name="build-test" depends="init,build" description="generates the test presentation">
         <!-- Compile test presentation -->
-        <compilepdf document="presentation.tex" dir="${test.folder}" />
+        <compilepdf document="presentation.tex" dir="${test.folder}" draft="true" />
         <compilepdf document="presentation.tex" dir="${test.folder}" />
 
         <copy file="${test.folder}/presentation.pdf" tofile="${build.folder}/presentation.pdf" overwrite="true" />
