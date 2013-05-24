@@ -38,7 +38,7 @@
             <arg value="${presentation}"/>
             <!-- TODO this does not work with caching -->
             <!-- SOLUTION use [-no]-parse-first-line option when compiling with external document class -->
-            <!-- also set this for tikz externalize call? -->
+            <!-- also set this for tikz externalize call? is it required or set automatically? -->
             <!-- <arg value="&quot;\documentclass{beamer}\input{${presentation}}&quot;"/> -->
         </exec>
 
