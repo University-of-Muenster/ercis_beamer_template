@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[handout]{beamer}
 
 % Use UTF-8 encoding for source
 \usepackage[utf8]{inputenc}
@@ -33,6 +33,9 @@
 
 % Enable caching
 \tikzexternalize
+% \nocacheAll
+
+\tikzset{external/system call={pdflatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
 
 % Meta information
 \author{Dominik Lekse}
