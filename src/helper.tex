@@ -3,7 +3,7 @@
 \makeatletter
 
 % Parameters (picture name, picture)
-\newcommand{\cacheOnly}[2]{%
+\newcommand{\beamer@cacheOnly}[2]{%
   \if\tikzexternalize@hasbeencalled1%
     {%
       % Do not include picture after rendering
@@ -22,7 +22,7 @@
 }%
 
 % Parameters (picture name, picture)
-\newcommand{\cacheUse}[2]{%
+\newcommand{\beamer@cacheUse}[2]{%
   \IfFileExists{\tikzexternal@filenameprefix#1.pdf}{\pgfimage{\tikzexternal@filenameprefix#1.pdf}}{#2}%
 }%
 

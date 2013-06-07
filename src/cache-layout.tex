@@ -1,29 +1,33 @@
-% Cache required pictures at the begin of the document
-% \makeatletter
-% \AtBeginDocument{%
-% \g@addto@macro\beamer@firstminutepatches{%
-% \g@addto@macro\beamer@lastminutepatches{%
-% \g@addto@macro\document{%
-%   % Cache ERCIS logo for the headline
-%   \cacheOnly{headline-ercis-logo}{\headlineErcisLogo}%
-%   %
-%   % Cache university logo for title page
-%   \cacheOnly{title-wwu-logo}{\titleWwuLogo}%
-%   %
-%   % Cache ERCIS logo for title page
-%   \cacheOnly{title-ercis-logo}{\titleErcisLogo}%
-% }%
-% \makeatother
+\makeatletter
 
-% does not work properly
-\newcommand{\cacheLayout}{%
+% Cache required pictures at the begin of the document
+\newcommand{\beamer@cacheLayout}{%
   % Cache ERCIS logo for the headline
-  \cacheOnly{headline-ercis-logo}{\headlineErcisLogo}%
+  \beamer@cacheOnly{headline-ercis-logo}{\headlineErcisLogo}%
   %
   % Cache university logo for title page
-  \cacheOnly{title-wwu-logo}{\titleWwuLogo}%
+  \beamer@cacheOnly{title-wwu-logo}{\titleWwuLogo}%
   %
   % Cache ERCIS logo for title page
-  \cacheOnly{title-ercis-logo}{\titleErcisLogo}%
+  \beamer@cacheOnly{title-ercis-logo}{\titleErcisLogo}%
+  %
+  % Override caching command
+  \global\def\beamer@cacheLayout{}%
 }%
 
+% Perform caching in background canvas
+\setbeamertemplate{background canvas}{%
+  \beamer@cacheLayout%
+}%
+
+\makeatother
+
+% Perform caching at the beginning of the first frame
+% \makeatletter
+% \let\ercisbeamer@caching@beamer@@@@frame\beamer@@@@frame
+% \def\beamer@@@@frame<#1>[#2]{%
+%   \cacheLayout%
+%   \renewcommand{\cacheLayout}{}%
+%   \ercisbeamer@caching@beamer@@@@frame<#1>[#2]%
+% }
+% \makeatother

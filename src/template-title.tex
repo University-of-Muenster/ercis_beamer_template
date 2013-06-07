@@ -35,6 +35,7 @@
 }%
 
 % Title page template (see beamer user guide, p. 86)
+\makeatletter
 \setbeamertemplate{title page}{%
   % Undo space reservation of text margin and sidebar width
   \hspace*{-\leftTextMargin}%
@@ -47,12 +48,12 @@
 
       % University logo
       \node[anchor=north west, no sep] at (\leftTextMargin, {\paperheight - 6mm}) {%
-        \cacheUse{title-wwu-logo}{\titleWwuLogo}%
+        \beamer@cacheUse{title-wwu-logo}{\titleWwuLogo}%
       };
 
       % ERCIS logo
       \node[anchor=north east, no sep] at ({\paperwidth - 6.75mm}, {\paperheight - 6mm}) {%
-        \cacheUse{title-ercis-logo}{\titleErcisLogo}%
+        \beamer@cacheUse{title-ercis-logo}{\titleErcisLogo}%
       };
 
       % Partner logos
@@ -92,4 +93,5 @@
     \end{tikzpicture}%
   }%
 }%
+\makeatother
 
