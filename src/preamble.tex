@@ -26,12 +26,17 @@
 \usetikzlibrary{external}
 
 % Folder for cached pictures (depends on current mode)
-\newcommand{\renderedPath}{beamer-cache/}
+\newcommand{\cachePath}{beamer-cache/}
 
 \mode<handout>{
-  \renewcommand{\renderedPath}{handout-cache/}
+  \renewcommand{\cachePath}{handout-cache/}
 }
-\tikzsetexternalprefix{\renderedPath}
+
+\mode<article>{
+  \renewcommand{\cachePath}{article-cache/}
+}
+
+\tikzsetexternalprefix{\cachePath}
 
 % Only named pictures are cached
 % \tikzset{external/only named=true}

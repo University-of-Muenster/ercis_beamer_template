@@ -1,4 +1,5 @@
 % Frame title template (see beamer user guide, p. 69)
+\makeatletter
 \setbeamertemplate{frametitle}{%
   % Undo space reservation by (partial) headline
   \vspace*{-13.5mm}%
@@ -9,18 +10,23 @@
     \useasboundingbox (0mm, {\headlineHeight - 6mm}) rectangle ({\paperwidth - \leftSidebarWidth- \leftTextMargin - \rightSidebarWidth - \rightTextMargin}, 0mm);
 
     % Frame title
-    \node [anchor=text, no sep, align=flush left, text width={\paperwidth - \leftSidebarWidth- \leftTextMargin - \rightSidebarWidth - \rightTextMargin - 23.2mm - 2mm}] at (0mm, {\headlineHeight - 6mm - 7mm}) {%
-      \usebeamerfont{frametitle}%
-      \usebeamercolor[fg]{frametitle}%
-      \insertframetitle%
-    };
+    \ifbeamer@renderheadlinetitle
+      \node [anchor=text, no sep, align=flush left, text width={\paperwidth - \leftSidebarWidth- \leftTextMargin - \rightSidebarWidth - \rightTextMargin - 23.2mm - 2mm}] at (0mm, {\headlineHeight - 6mm - 7mm}) {%
+        \usebeamerfont{frametitle}%
+        \usebeamercolor[fg]{frametitle}%
+        \insertframetitle%
+      };
+    \fi
 
     % Frame subtitle
-    \node [anchor=text, no sep, align=flush left, text width={\paperwidth - \leftSidebarWidth- \leftTextMargin - \rightSidebarWidth - \rightTextMargin - 23.2mm - 2mm}] at (0mm, {\headlineHeight - 6mm - 12mm}) {%
-      \usebeamerfont{framesubtitle}%
-      \usebeamercolor[fg]{framesubtitle}%
-      \insertframesubtitle%
-    };
+    \ifbeamer@renderheadlinesubtitle
+      \node [anchor=text, no sep, align=flush left, text width={\paperwidth - \leftSidebarWidth- \leftTextMargin - \rightSidebarWidth - \rightTextMargin - 23.2mm - 2mm}] at (0mm, {\headlineHeight - 6mm - 12mm}) {%
+        \usebeamerfont{framesubtitle}%
+        \usebeamercolor[fg]{framesubtitle}%
+        \insertframesubtitle%
+      };
+    \fi
   \end{tikzpicture}%
 }
+\makeatother
 

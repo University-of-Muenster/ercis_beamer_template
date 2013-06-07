@@ -139,9 +139,9 @@
 
     <target name="clean-cache" depends="init">
         <delete>
-            <fileset dir="${beamer-cache}" includes="*" />
-            <fileset dir="${handout-cache}" includes="*" />
-            <fileset dir="${article-cache}" includes="*" />
+            <fileset dir="${beamer.cache}" includes="*" />
+            <fileset dir="${handout.cache}" includes="*" />
+            <fileset dir="${article.cache}" includes="*" />
         </delete>
     </target>
 </project>

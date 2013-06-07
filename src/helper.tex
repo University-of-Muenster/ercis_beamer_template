@@ -1,37 +1,32 @@
 % Helpers
 
-% Renders and caches a picture only once (requires for repeated use in beamer templates)
-% Parameters (render variable name, file name, picture)
-\newcommand{\cacheOnce}[3]{
-  % Initially define render command in global scope if not present
-  \expandafter\ifx\csname #1\endcsname\relax%
-    \expandafter\global\expandafter\def\csname#1\endcsname{%
-      % Set filename of cached picture
-      \tikzsetnextfilename{#2}%
-      % Optionally force rerendering TODO implement this properly
-      % \ifx\rerendercachedonceoption\empty%
-      %   \tikzset{external/force next=true}%
-      % \fi%
+\makeatletter
+
+% Parameters (picture name, picture)
+\newcommand{\cacheOnly}[2]{%
+  \if\tikzexternalize@hasbeencalled1%
+    {%
+      % Do not include picture after rendering
+      \pgfkeys{/pgf/images/include external/.code={}}%
+      %
+      % Set file name of the picture
+      \tikzsetnextfilename{#1}%
+      %
+      % Enable export mechanism
+      \tikzset{external/export=true}%
+      %
       % Render picture
-      #3%
+      #2%
     }%
   \fi%
-  % Execute render command
-  \csname#1\endcsname%
-  % Replace picture if caching is enabled
-  \ifx\nocacheoption\undefined%
-    % Determine externalizing status
-    \tikzifexternalizing{%
-      % Renderer is currently in caching run, so the next time \cacheOnce is called with the same render variable name a picture is not rendered again
-      \expandafter\global\expandafter\def\csname#1\endcsname{}%
-    }{%
-      % Renderer is in presentation run, so replace further pictures by cached one
-      \expandafter\global\expandafter\def\csname#1\endcsname{%
-        \pgfimage{\renderedPath#2}%
-      }%
-    }%
-  \fi%
-}
+}%
+
+% Parameters (picture name, picture)
+\newcommand{\cacheUse}[2]{%
+  \IfFileExists{\tikzexternal@filenameprefix#1.pdf}{\pgfimage{\tikzexternal@filenameprefix#1.pdf}}{#2}%
+}%
+
+\makeatother
 
 % Force the rerendering of the subsequent picture
 \providecommand{\rerenderPicture}{%
@@ -59,7 +54,6 @@
 }
 
 % Explicitly disable caching of all pictures
-% TODO \nocacheAll does not render the headline correctly or render it at all (problems with \cacheOnce)
 \providecommand{\nocacheAll}{%
   \tikzset{external/export=false}%
 }

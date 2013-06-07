@@ -1,4 +1,4 @@
-\documentclass[handout]{beamer}
+\documentclass{beamer}
 
 % Use UTF-8 encoding for source
 \usepackage[utf8]{inputenc}
@@ -27,15 +27,21 @@
   }
 }
 
+\AtBeginDocument{%
+  % Select document language
+  \en{\selectlanguage{english}}%
+  \de{\selectlanguage{ngerman}}%
+}%
+
 % Define supported languages
 \addlocale{en}{english}
 \addlocale{de}{ngerman}
 
 % Enable caching
 \tikzexternalize
-% \nocacheAll
 
-\tikzset{external/system call={pdflatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
+% Explicitly disable caching of all pictures
+% \tikzset{external/export=false}
 
 % Meta information
 \author{Dominik Lekse}
@@ -53,16 +59,12 @@
 
 % Slides
 \begin{document}
-    % Select document language
-    \en{\selectlanguage{english}}
-    \de{\selectlanguage{ngerman}}
-
     \input{frames/frame-title}
 
-    \section*{\en{Outline}}
+    \section*{\en{Outline}\de{Agenda}}
     \input{frames/frame-outline}
 
-    \section{\en{Content structuring}}
+    \section{\en{Content structuring}\de{Inhaltsstrukturierung}}
 
     \subsection{\en{Itemizations, Enumerations}\de{Auflistungen, Aufz\"ahlungen}}
     \input{frames/frame-itemize}
@@ -74,18 +76,19 @@
     \subsection{\en{Blocks}\de{Bl\"ocke}}
     \input{frames/frame-blocks}
 
-    \section{\en{Layouts}}
-
-    \subsection{\en{Two and three columns}}
+    \subsection{\en{Columns}\de{Spalten}}
     \input{frames/frame-columns}
 
-    \section{\en{Tables}}
+    \section{\en{Frames}\de{Folien}}
+    \input{frames/frame-options}
+
+    \section{\en{Tables}\de{Tabellen}}
     \input{frames/frame-tables}
 
-    \section{\en{Figures}}
+    \section{\en{Figures}\de{Abbildungen}}
     \input{frames/frame-pictures}
 
-    \section{\en{Additional features}}
+    \section{\en{Additional features}\de{Weitere Funktionen}}
 
     \input{frames/frame-quotes}
 

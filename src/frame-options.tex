@@ -1,0 +1,51 @@
+\makeatletter
+
+% Define option for hiding the logo in the headline
+\define@key{beamerframe}{nologo}[]{%
+  \beamer@renderheadlinelogofalse%
+}
+
+% Define option for hiding the title in the headline
+\define@key{beamerframe}{notitle}[]{%
+  \beamer@renderheadlinetitlefalse%
+}
+
+% Define option for hiding the subtitle in the headline
+\define@key{beamerframe}{nosubtitle}[]{%
+  \beamer@renderheadlinesubtitlefalse%
+}
+
+% Define option for disabling the footline of a frame
+\define@key{beamerframe}{nofootline}[]{%
+  \beamer@renderfootlinefalse%
+}
+
+% Define condition macros
+\newif\ifbeamer@renderheadlinelogo
+\newif\ifbeamer@renderheadlinetitle
+\newif\ifbeamer@renderheadlinesubtitle
+\newif\ifbeamer@renderfootline
+
+% Apply default values
+\beamer@renderheadlinelogotrue
+\beamer@renderheadlinetitletrue
+\beamer@renderheadlinesubtitletrue
+\beamer@renderfootlinetrue
+
+% Patch beamer frame macro to apply default value for each frame
+\let\ercisbeamer@beamer@@@@frame\beamer@@@@frame
+\def\beamer@@@@frame<#1>[#2]{%
+  \beamer@renderheadlinelogotrue%
+  \beamer@renderheadlinetitletrue%
+  \beamer@renderheadlinesubtitletrue%
+  \beamer@renderfootlinetrue%
+  \ercisbeamer@beamer@@@@frame<#1>[#2]%
+}
+
+% TODO define option for final page
+\define@key{beamerframe}{final}[]{%
+  %
+}
+
+\makeatother
+

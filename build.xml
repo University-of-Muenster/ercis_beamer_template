@@ -35,8 +35,8 @@
             <exec executable="pdflatex" dir="@{dir}"> <!-- failonerror="true" -->
                 <arg value="-shell-escape" />
                 <!-- <arg value="-synctex=1" /> -->
-                <!-- <arg value="-interaction=nonstopmode" /> -->
-                <arg value="-interaction=batchmode" />
+                <arg value="-interaction=nonstopmode" />
+                <!-- <arg value="-interaction=batchmode" /> -->
                 <arg value="${draftmodearg}" />
                 <arg value="${inputarg}"/>
             </exec>

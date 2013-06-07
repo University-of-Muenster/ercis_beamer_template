@@ -15,69 +15,81 @@
   };
 }
 
+% Define university logo for title page
+\newcommand{\titleWwuLogo}{%
+  \begin{tikzpicture}%
+    \usebeamercolor{title page wwu logo}%
+    \node [no sep] {%
+      \resizebox{!}{6mm}{\wwulogo{{title page wwu logo.fg}}}%
+    };%
+  \end{tikzpicture}%
+}%
+
+% Define ERCIS logo for title page
+\newcommand{\titleErcisLogo}{%
+  \begin{tikzpicture}%
+    \node [no sep] {%
+      \resizebox{!}{22.5mm}{\ercislogotext{ercisred}{ercisblue}{ercisred}{ercisblue}}%
+    };%
+  \end{tikzpicture}%
+}%
+
 % Title page template (see beamer user guide, p. 86)
 \setbeamertemplate{title page}{%
   % Undo space reservation of text margin and sidebar width
   \hspace*{-\leftTextMargin}%
   \hspace*{-\leftSidebarWidth}%
-  %
-  \tikzsetnextfilename{ercis-title}%
-  \begin{tikzpicture}%
-    % Picture size
-    \path [use as bounding box] (0mm, 0mm) rectangle (\paperwidth, \paperheight);
+  {%
+    \tikzset{external/export=false}%
+    \begin{tikzpicture}%
+      % Picture size
+      \path [use as bounding box] (0mm, 0mm) rectangle (\paperwidth, \paperheight);
 
-    % University logo
-    \node[anchor=north west, no sep] at (\leftTextMargin, {\paperheight - 6mm}) {%
-      \usebeamercolor{title page wwu logo}%
-      \resizebox{!}{6mm}{\wwulogo{{title page wwu logo.fg}}}%
-    };
+      % University logo
+      \node[anchor=north west, no sep] at (\leftTextMargin, {\paperheight - 6mm}) {%
+        \cacheUse{title-wwu-logo}{\titleWwuLogo}%
+      };
 
-    % ERCIS logo
-    \node[anchor=north east, no sep] at ({\paperwidth - 6.75mm}, {\paperheight - 6mm}) {%
-      \resizebox{!}{22.5mm}{\ercislogotext{ercisred}{ercisblue}{ercisred}{ercisblue}}%
-    };
+      % ERCIS logo
+      \node[anchor=north east, no sep] at ({\paperwidth - 6.75mm}, {\paperheight - 6mm}) {%
+        \cacheUse{title-ercis-logo}{\titleErcisLogo}%
+      };
 
-    % Footline background
-    \usebeamercolor{footline}
-    \path [fill, color={footline.bg}] (0mm, 11mm) rectangle ({\paperwidth - 5mm}, 4.25mm);
-  \end{tikzpicture}%
-  % Undo space reservation by cached title part
-  \hspace*{-\paperwidth}%
-  \tikzset{external/export next=false}%
-  \begin{tikzpicture}
-    % Picture size
-    \path [use as bounding box] (0mm, 0mm) rectangle (\paperwidth, \paperheight);
+      % Partner logos
+      \usebeamertemplate{title page partners}
 
-    % Partner logos
-    \usebeamertemplate{title page partners}
+      % Title
+      \node[anchor=text, no sep, align=flush left, text width={\paperwidth - \leftTextMargin - 40.5mm}] (title) at (\leftTextMargin, {\paperheight - 25.75mm}) {%
+        \usebeamerfont{title page title}%
+        \usebeamercolor[fg]{title page title}%
+        \inserttitle%
+      };
 
-    % Title
-    \node[anchor=text, no sep, align=flush left, text width={\paperwidth - \leftTextMargin - 40.5mm}] (title) at (\leftTextMargin, {\paperheight - 25.75mm}) {%
-      \usebeamerfont{title page title}%
-      \usebeamercolor[fg]{title page title}%
-      \inserttitle%
-    };
+      % Subtitle
+      \node[anchor=text, no sep, align=flush left, text width={\paperwidth - \leftTextMargin - \rightTextMargin}] (subtitle) at (\leftTextMargin, {\paperheight - 36mm}) {%
+        \usebeamerfont{title page subtitle}%
+        \usebeamercolor[fg]{title page subtitle}%
+        \insertsubtitle%
+      };
 
-    % Subtitle
-    \node[anchor=text, no sep, align=flush left, text width={\paperwidth - \leftTextMargin - \rightTextMargin}] (subtitle) at (\leftTextMargin, {\paperheight - 36mm}) {%
-      \usebeamerfont{title page subtitle}%
-      \usebeamercolor[fg]{title page subtitle}%
-      \insertsubtitle%
-    };
+      % Author
+      \node[anchor=west, no sep] at (\leftTextMargin, {11mm - 2 * 2.25mm}) {%
+        \usebeamerfont{title page author}%
+        \usebeamercolor[fg]{title page author}%
+        \insertauthor%
+      };
 
-    % Author
-    \node[anchor=west, no sep] at (\leftTextMargin, {11mm - 2 * 2.25mm}) {%
-      \usebeamerfont{title page author}%
-      \usebeamercolor[fg]{title page author}%
-      \insertauthor%
-    };
+      % Date
+      \node[anchor=east, no sep] at ({\paperwidth - 5mm - 1.75mm}, {11mm - 2 * 2.25mm}) {%
+        \usebeamerfont{title page date}%
+        \usebeamercolor[fg]{title page date}%
+        \insertdate%
+      };
 
-    % Date
-    \node[anchor=east, no sep] at ({\paperwidth - 5mm - 1.75mm}, {11mm - 2 * 2.25mm}) {%
-      \usebeamerfont{title page date}%
-      \usebeamercolor[fg]{title page date}%
-      \insertdate%
-    };
-  \end{tikzpicture}%
+      % Footline background
+      \usebeamercolor{footline}
+      \path [fill, color={footline.bg}] (0mm, 11mm) rectangle ({\paperwidth - 5mm}, 4.25mm);
+    \end{tikzpicture}%
+  }%
 }%
 

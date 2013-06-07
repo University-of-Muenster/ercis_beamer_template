@@ -1,18 +1,29 @@
+% Define ERCIS logo for the headline
+\newcommand{\headlineErcisLogo}{%
+  \begin{tikzpicture}%
+    \node [no sep] {%
+      \resizebox{!}{13.5mm}{\ercislogo{ercisred}{ercisblue}{ercisred}}%
+    };%
+  \end{tikzpicture}%
+}%
+
 % Headline template (see beamer user guide, p. 59)
+\makeatletter
 \setbeamertemplate{headline}{%
-  \cacheOnce{renderHeadline}{ercis-headline}{%
+  {%
+    \tikzset{external/export=false}%
     \begin{tikzpicture}
       % Picture size
       \useasboundingbox (0mm, \headlineHeight) rectangle (\paperwidth, 0mm);
 
       % ERCIS logo
-      \node[anchor=north east, no sep] at ({\paperwidth - 5mm}, {\headlineHeight - 6mm}) {%
-        \resizebox{!}{13.5mm}{\ercislogo{ercisred}{ercisblue}{ercisred}}%
-      };
+      \ifbeamer@renderheadlinelogo
+        \node[anchor=north east, no sep] at ({\paperwidth - 5mm}, {\headlineHeight - 6mm}) {%
+          \cacheUse{headline-ercis-logo}{\headlineErcisLogo}%
+        };
+      \fi
     \end{tikzpicture}%
   }%
 }
-
-% TODO provide option to hide the logo on a frame
-% TODO provide option to hide the title/subtitle on a frame
+\makeatother
 

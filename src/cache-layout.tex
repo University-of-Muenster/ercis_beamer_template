@@ -1,0 +1,29 @@
+% Cache required pictures at the begin of the document
+% \makeatletter
+% \AtBeginDocument{%
+% \g@addto@macro\beamer@firstminutepatches{%
+% \g@addto@macro\beamer@lastminutepatches{%
+% \g@addto@macro\document{%
+%   % Cache ERCIS logo for the headline
+%   \cacheOnly{headline-ercis-logo}{\headlineErcisLogo}%
+%   %
+%   % Cache university logo for title page
+%   \cacheOnly{title-wwu-logo}{\titleWwuLogo}%
+%   %
+%   % Cache ERCIS logo for title page
+%   \cacheOnly{title-ercis-logo}{\titleErcisLogo}%
+% }%
+% \makeatother
+
+% does not work properly
+\newcommand{\cacheLayout}{%
+  % Cache ERCIS logo for the headline
+  \cacheOnly{headline-ercis-logo}{\headlineErcisLogo}%
+  %
+  % Cache university logo for title page
+  \cacheOnly{title-wwu-logo}{\titleWwuLogo}%
+  %
+  % Cache ERCIS logo for title page
+  \cacheOnly{title-ercis-logo}{\titleErcisLogo}%
+}%
+
