@@ -1,0 +1,33 @@
+<!-- <arg value="&quot;\newcommand\preinput{\documentclass[handout]{beamer}\renewcommand\documentclass[2][]{}${localearg}\input{@{document}}}\preinput&quot;" /> -->
+
+                <!-- <arg value="&quot;\documentclass[handout]{beamer}\renewcommand\documentclass[2][]{}${localearg}\input{@{document}}&quot;" /> -->
+
+                <!-- <arg value="&quot;\documentclass[handout]{beamer}\renewcommand\documentclass[2][]{}\usepackage{tikz}\tikzset{external/system call={pdflatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname \image \string\def\string\tikzexternalrealjob{presentation}\string\documentclass[handout]{beamer}\string\renewcommand\string\documentclass[2][]{}\string\input{presentation}}}${localearg}\input{@{document}}&quot;" /> -->
+
+                <!-- <arg value="&quot;\documentclass[handout]{beamer}\renewcommand\documentclass[2][]{}\newcommand\tikzsyscall{pdflatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname \string\image \string\def\string\tikzexternalrealjob{presentation}\string\documentclass[handout]{beamer}\string\renewcommand\string\documentclass[2][]{}\string\input{presentation}}${localearg}\input{@{document}}&quot;" /> -->
+
+
+
+<!-- \tikzset{external/system call={pdflatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname "\image" "\string\def\string\tikzexternalrealjob{presentation}\string\documentclass[handout]{beamer}\string\renewcommand\string\documentclass[2][]{}\string\input{presentation}"}} -->
+
+
+                <!-- <arg value="&quot;\newcommand\preinput{\documentclass[handout]{beamer}\renewcommand\documentclass[2][]{}\usepackage{tikz}\tikzset{external/system call={pdflatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname &quot;\image&quot; &quot;\string\def\string\tikzexternalrealjob{presentation}\string\documentclass[handout]{beamer}\string\renewcommand\string\documentclass[2][]{}\string\input{presentation}&quot;}}${localearg}\input{@{document}}}\preinput&quot;" /> -->
+                <!-- <arg value="@{document}" /> -->
+                <!-- <arg value="handout" /> -->
+
+
+                <!-- \newcommand{\preinput}{\documentclass[handout]{beamer}\renewcommand{\documentclass}[2][]{}${localearg}}\preinput\input{@{document}}&quot;" />
+                <arg value="@{document} -->
+
+<!-- \newcommand{\preinput}{
+    \documentclass[handout]{beamer}
+    \renewcommand{\documentclass}[2][]{}
+    ${localearg}
+    \input{@{document}}
+}
+\renewcommand{\texsource}{\preinput}
+\preinput -->
+
+
+                <!-- TODO set external system call to args above, integrate the args also in the system call -->
+                <!-- \tikzset{external/system call={pdflatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname &quot;\image&quot; &quot;\texsource&quot;} -->
