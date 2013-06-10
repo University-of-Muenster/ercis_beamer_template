@@ -37,6 +37,7 @@
                 <!-- <arg value="-synctex=1" /> -->
                 <arg value="-interaction=nonstopmode" />
                 <!-- <arg value="-interaction=batchmode" /> -->
+                <arg value="-jobname=@{document}" />
                 <arg value="${draftarg}" />
                 <arg value="${cmd}"/>
             </exec>
@@ -80,14 +81,14 @@
 
     <target name="build-docs" depends="init,init-build" description="generates the documentation">
         <!-- Compile documentation with locale en -->
-        <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="en" draft="true" />
-        <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="en" />
+        <compilepdf document="${docs.source}" dir="${docs.folder}" locale="en" draft="true" />
+        <compilepdf document="${docs.source}" dir="${docs.folder}" locale="en" />
         <move file="${docs.folder}/${docs.source}.pdf" tofile="${build.folder}/${docs.name}-en.pdf" overwrite="true" />
         <cleanlatex dir="${docs.folder}" />
 
         <!-- Compile documentation with locale de -->
-        <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="de" draft="true" />
-        <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="de" />
+        <compilepdf document="${docs.source}" dir="${docs.folder}" locale="de" draft="true" />
+        <compilepdf document="${docs.source}" dir="${docs.folder}" locale="de" />
         <move file="${docs.folder}/${docs.source}.pdf" tofile="${build.folder}/${docs.name}-de.pdf" overwrite="true" />
         <cleanlatex dir="${docs.folder}" />
     </target>
