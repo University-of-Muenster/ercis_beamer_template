@@ -1,0 +1,98 @@
+\documentclass{beamer}
+
+% Use UTF-8 encoding for source
+\usepackage[utf8]{inputenc}
+
+% Apply WWU beamer style
+\usepackage[german]{ercisbeamer}
+
+% Hyphenation for supported languages
+\usepackage[english,ngerman]{babel}
+
+% Conditional branching
+\usepackage{ifthen}
+
+% Activate language
+\providecommand\locale{en}
+% \providecommand\locale{de}
+
+% Multilanguage support
+% (see http://en.wikibooks.org/wiki/LaTeX/Internationalization#Multilingual_versions)
+\def\addlocale#1#2{
+\ifthenelse{ \equal{\locale}{#1} }{
+  \selectlanguage{#2}
+  \expandafter\def\csname#1\endcsname ##1{##1}
+  }{
+  \expandafter\def\csname#1\endcsname ##1{}
+  }
+}
+
+\AtBeginDocument{%
+  % Select document language
+  \en{\selectlanguage{english}}%
+  \de{\selectlanguage{ngerman}}%
+}%
+
+% Define supported languages
+\addlocale{en}{english}
+\addlocale{de}{ngerman}
+
+% Enable caching
+\tikzexternalize
+
+% Explicitly disable caching of all pictures
+% \tikzset{external/export=false}
+
+% Meta information
+\author{Dominik Lekse}
+\title{\en{ERCIS beamer template}\de{ERCIS Beamervorlage}}
+\subtitle{\en{Examples for typesetting beautiful presentations}\de{Beispiele f\"ur die Erstellung einer Pr\"asentation}}
+
+% Partners
+\setbeamertemplate{title page partners}[one]{\pgfimage{images/msbe-logo.pdf}}
+% \setbeamertemplate{title page partners}[two]{\pgfimage{images/msbe-logo.pdf}}{\pgfimage{images/aacsb-accredited.pdf}}
+
+% Additional requirements
+\usepackage{array} % Advanced tables (required by frame-tables)
+\usepackage{adjustbox} % Advanced resizing (required by frame-pictures)
+\usetikzlibrary{calc}
+
+% Slides
+\begin{document}
+    \input{frames/frame-title}
+
+    \section*{\en{Outline}\de{Agenda}}
+    \input{frames/frame-outline}
+
+    \section{\en{Content structuring}\de{Inhaltsstrukturierung}}
+
+    \subsection{\en{Itemizations, Enumerations}\de{Auflistungen, Aufz\"ahlungen}}
+    \input{frames/frame-itemize}
+    \input{frames/frame-enumerate}
+
+    \subsection{\en{Hilighting}\de{Hervorhebungen}}
+    \input{frames/frame-hilighting}
+
+    \subsection{\en{Blocks}\de{Bl\"ocke}}
+    \input{frames/frame-blocks}
+
+    \subsection{\en{Columns}\de{Spalten}}
+    \input{frames/frame-columns}
+
+    \section{\en{Frames}\de{Folien}}
+    \input{frames/frame-options}
+
+    \section{\en{Tables}\de{Tabellen}}
+    \input{frames/frame-tables}
+
+    \section{\en{Figures}\de{Abbildungen}}
+    \input{frames/frame-pictures}
+
+    \section{\en{Additional features}\de{Weitere Funktionen}}
+
+    \input{frames/frame-quotes}
+
+    \input{frames/frame-bibliography}
+
+    \input{frames/frame-final}
+\end{document}

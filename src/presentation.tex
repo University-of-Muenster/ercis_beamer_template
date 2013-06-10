@@ -1,0 +1,42 @@
+\documentclass{beamer}
+
+% Use UTF-8 encoding for source
+\usepackage[utf8]{inputenc}
+
+% Apply WWU beamer style
+\usepackage[german]{ercisbeamer}
+
+% Hyphenation for supported languages
+\usepackage[english,ngerman]{babel}
+
+% Enable caching
+\tikzexternalize
+
+% Meta information
+\author{Name of the author}
+\title{Title of the presentation}
+\subtitle{Subtitle of the presentation}
+
+% Slides
+\begin{document}
+    \begin{frame}[plain]
+        \titlepage
+    \end{frame}
+
+    \begin{frame}
+      \frametitle{Title of the frame}
+      \framesubtitle{Subtitle of the frame}
+
+      % Contents
+    \end{frame}
+
+    \begin{frame}[plain]
+      \setbeamerfont{final page content}{size*={48}{0}}
+
+      \setbeamertemplate{final page contact}{ERCIS - Headquarters, Leonardo-Campus 3, 48149 M\"unster, Germany}
+      \setbeamertemplate{final page content}{%
+          Thank \ you
+      }
+      \finalpage
+    \end{frame}
+\end{document}

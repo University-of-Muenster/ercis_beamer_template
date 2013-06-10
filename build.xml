@@ -9,7 +9,7 @@
     <property name="dist.folder"  location="dist" />
     <property name="docs.folder"  location="docs" />
     <property name="src.folder" location="src" />
-    <property name="test.folder"  location="test" />
+    <property name="presentation.folder"  location="presentation" />
 
     <!-- Macros -->
 
@@ -21,12 +21,12 @@
         <attribute name="draft" default="false" />
 
         <sequential>
-            <local name="inputarg"/>
-            <condition property="inputarg" value="@{document}" else="&quot;\providecommand\locale{@{locale}}\input{@{document}}&quot;">
+            <local name="cmd"/>
+            <condition property="cmd" value="@{document}" else="&quot;\providecommand\locale{@{locale}}\input{@{document}}&quot;">
                 <equals arg1="@{locale}" arg2="" />
             </condition>
 
-            <local name="draftmodearg"/>
+            <local name="draftarg"/>
             <condition property="draftmodearg" value="-draftmode" else="">
                 <equals arg1="@{draft}" arg2="true" />
             </condition>
@@ -37,19 +37,10 @@
                 <!-- <arg value="-synctex=1" /> -->
                 <arg value="-interaction=nonstopmode" />
                 <!-- <arg value="-interaction=batchmode" /> -->
-                <arg value="${draftmodearg}" />
-                <arg value="${inputarg}"/>
+                <arg value="${draftarg}" />
+                <arg value="${cmd}"/>
             </exec>
             <!-- TODO redirect pipe and filter by errors and warnings -->
-        </sequential>
-    </macrodef>
-
-    <!-- Compiles the documentation using the selected language -->
-    <macrodef name="compiledocs">
-        <attribute name="locale" />
-
-        <sequential>
-            <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="@{locale}" />
         </sequential>
     </macrodef>
 
@@ -83,8 +74,8 @@
             <filelist dir="${src.folder}" files="${src.include}" />
         </concat>
 
-        <!-- Copy style to test directory -->
-        <copy file="${build.folder}/${build.name}.sty" todir="${test.folder}" overwrite="true" />
+        <!-- Copy style to presentation directory -->
+        <copy file="${build.folder}/${build.name}.sty" todir="${presentation.folder}" overwrite="true" />
     </target>
 
     <target name="build-docs" depends="init,init-build" description="generates the documentation">
@@ -101,30 +92,32 @@
         <cleanlatex dir="${docs.folder}" />
     </target>
 
-    <target name="build-test" depends="init,build" description="generates the test presentation">
-        <!-- Compile test presentation -->
-        <compilepdf document="presentation.tex" dir="${test.folder}" draft="true" />
-        <compilepdf document="presentation.tex" dir="${test.folder}" />
+    <target name="build-presentation" depends="init,build" description="generates the presentation">
+        <!-- Compile beamer version -->
+        <ant dir="${presentation.folder}" target="build-beamer" />
+        <move file="${presentation.folder}/build/beamer.pdf" tofile="${build.folder}/beamer.pdf" overwrite="true" />
 
-        <copy file="${test.folder}/presentation.pdf" tofile="${build.folder}/presentation.pdf" overwrite="true" />
+        <!-- Compile handout version -->
+        <ant dir="${presentation.folder}" target="build-handout" />
+        <move file="${presentation.folder}/build/handout.pdf" tofile="${build.folder}/handout.pdf" overwrite="true" />
 
-        <!-- Clean test directory -->
-        <cleanlatex dir="${test.folder}" />
+        <!-- Clean presentation directory -->
+        <ant dir="${presentation.folder}" target="clean" />
 
-        <!-- TODO build handout -->
+        <!-- TODO different languages -->
     </target>
 
-    <target name="test-presentation" depends="init, build" description="generates the test presentation without copying it to the build directory">
-        <!-- Compile test presentation (using test ant script) -->
-        <compilepdf document="presentation.tex" dir="${test.folder}" />
+    <target name="test-presentation" depends="init, build" description="generates the presentation without copying it to the build directory">
+        <!-- Compile  presentation (using presentation ant script) -->
+        <compilepdf document="presentation.tex" dir="${presentation.folder}" />
     </target>
 
     <target name="test-docs-en" depends="init" description="generates the english documentation">
-        <compiledocs locale="en" />
+        <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="en" />
     </target>
 
     <target name="test-docs-de" depends="init" description="generates the german documentation">
-        <compiledocs locale="de" />
+        <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="de" />
     </target>
 
     <target name="init-dist">
@@ -132,7 +125,7 @@
         <mkdir dir="${dist.folder}"/>
     </target>
 
-    <target name="dist" depends="init-dist,build,build-docs,build-test" description="generates the distribution">
+    <target name="dist" depends="init-dist,build,build-docs,build-presentation" description="generates the distribution">
         <!-- Clean the distribution directory -->
         <delete includeemptydirs="true">
             <fileset dir="${dist.folder}">
@@ -144,12 +137,16 @@
         <!-- Create the distribution directory structure -->
         <mkdir dir="${dist.folder}/template" />
         <mkdir dir="${dist.folder}/docs" />
-        <mkdir dir="${dist.folder}/test" />
+        <mkdir dir="${dist.folder}/presentation" />
 
         <!-- Copy template contents -->
         <copy todir="${dist.folder}/template">
             <filelist dir="${build.folder}">
                 <file name="${build.name}.sty" />
+            </filelist>
+
+            <filelist dir="${src.folder}">
+                <file name="presentation.tex" />
             </filelist>
         </copy>
 
@@ -160,25 +157,26 @@
             </fileset>
         </copy>
 
-        <!-- Copy test contents -->
-        <copy todir="${dist.folder}/test">
+        <!-- Copy presentation contents -->
+        <copy todir="${dist.folder}/presentation">
             <filelist dir="${build.folder}" >
-                <file name="${build.name}.sty" />
-                <file name="presentation.pdf" />
+                <!-- <file name="${build.name}.sty" /> -->
+                <file name="beamer.pdf" />
+                <file name="handout.pdf" />
             </filelist>
 
-            <filelist dir="${test.folder}">
+            <filelist dir="${presentation.folder}">
                 <file name="presentation.tex" />
                 <!-- <file name="build.xml" /> -->
             </filelist>
 
-            <fileset dir="${test.folder}" includes="frames/**,images/**" />
+            <fileset dir="${presentation.folder}" includes="frames/**,images/**" />
         </copy>
 
         <!-- Create caching directories -->
-        <mkdir dir="${dist.folder}/test/beamer-cache" />
+        <!-- <mkdir dir="${dist.folder}/test/beamer-cache" />
         <mkdir dir="${dist.folder}/test/handout-cache" />
-        <mkdir dir="${dist.folder}/test/article-cache" />
+        <mkdir dir="${dist.folder}/test/article-cache" /> -->
 
         <!-- Create distribution archive -->
         <zip destfile="${dist.folder}/${dist.name}.zip" level="9">
@@ -189,10 +187,10 @@
     <target name="dist-dev" depends="init-dist" description="generates the development distribution">
         <!-- Create development distribution -->
         <!-- TODO -->
-        <zip destfile="${dist.folder}/${dist.name}-dev.zip" level="9">
+        <!-- <zip destfile="${dist.folder}/${dist.name}-dev.zip" level="9">
             <fileset dir="${basedir}" excludes="build,dist,**/*.aux,**/*.auxlock,**/*.gz,**/*.log,**/*.nav,**/*.out,**/*.snm,**/*.toc">
             </fileset>
-        </zip>
+        </zip> -->
     </target>
 
     <target name="clean" description="cleans build process paths" >
