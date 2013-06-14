@@ -33,11 +33,6 @@
   \tikzset{external/remake next=true}%
 }
 
-% Force the regeneration of pictures marked as cached once
-\providecommand{\rerenderAllCachedOnce}{%
-  \global\def\rerendercachedonceoption{\empty}%
-}
-
 % Force the regeneration of all pictures
 \providecommand{\rerenderAll}{%
   \tikzset{external/force remake=true}%

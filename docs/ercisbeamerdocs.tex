@@ -33,11 +33,17 @@
 \def\addlocale#1#2{
 \ifthenelse{ \equal{\locale}{#1} }{
   \selectlanguage{#2}
-  \expandafter\def\csname#1\endcsname ##1{##1}
+  \expandafter\long\expandafter\def\csname#1\endcsname ##1{##1}
   }{
-  \expandafter\def\csname#1\endcsname ##1{}
+  \expandafter\long\expandafter\def\csname#1\endcsname ##1{}
   }
 }
+
+\AtBeginDocument{%
+  % Select document language
+  \en{\selectlanguage{english}}%
+  \de{\selectlanguage{ngerman}}%
+}%
 
 % Define supported languages
 \addlocale{en}{english}
@@ -46,7 +52,7 @@
 % Support for hyperlinks
 \usepackage[
   hidelinks,
-  pdftitle={WWU Beamervorlage},
+  pdftitle={\en{ERCIS beamer style}\de{ERCIS Beamervorlage}},
   pdfsubject={},
   pdfauthor={Dominik Lekse},
   pdfkeywords={}
@@ -58,20 +64,23 @@
 % Document variables
 \newcommand{\varstylename}{ercisbeamer}
 \newcommand{\varstylefile}{\varstylename.sty}
+\newcommand{\vartemplatefile}{template\textbackslash presentation.tex}
 
 % Meta information
 \title{\en{ERCIS beamer template}\de{ERCIS Beamervorlage}}
 \author{Dominik Lekse\\
 lekse@lugmedia.de}
-\date{Stand: 11.05.2012}
+\date{\en{Last update}\de{Letzte Aktualisierung}: 10.06.2013}
 
 \begin{document}
-% Select document language
-\en{\selectlanguage{english}}
-\de{\selectlanguage{ngerman}}
+% ERCIS Logo
+\begin{center}
+  \includegraphics[height=4cm]{images/ercis-logo.pdf}
+\end{center}
 
 % Title
-\maketitle
+% \maketitle
+{\let\newpage\relax\maketitle}
 
 % Table of contents
 \renewcommand{\contentsname}{\en{Contents}\de{Inhalt}}
@@ -79,7 +88,7 @@ lekse@lugmedia.de}
 \pagebreak
 
 \section{\en{Prerequisites}\de{Voraussetzungen}}
-\en{Prior to the use of the template, the following requirements must be satisfied to ensure proper rendering of presentations.}
+\en{Prior to the use of the style, the following requirements must be satisfied to ensure proper rendering of presentations.}
 \de{Für eine einwandfreie Darstellung der Präsentationen müssen vor der Verwendung der Vorlage die folgenden Voraussetzungen erfüllt sein.}
 
 \begin{itemize}
@@ -88,31 +97,32 @@ lekse@lugmedia.de}
     \de{Installieren Sie die Schriftart \emph{FF Meta}, die Angehörigen der Universität Münster im \href{https://www.uni-muenster.de/marketing/corporatedesign/schriften.html}{Corporate Design Manual} zur Verfügung steht.}
 \end{itemize}
 
-\section{\en{Notes on Usage}\de{Hinweise zur Verwendung}}
+\section{\en{Usage}\de{Verwendung}}
 \en{To create a presentation using the template, the following issues have to be considered.}
 \de{Bei der Erstellung einer neuen Präsentation mit der Vorlage, müssen die folgenden Hinweise beachtet werden.}
 
 \begin{itemize}
   \item
-    \en{Copy the style \emph{\varstylefile} in the folder which contains the source files of your presentation.}
+    \en{Copy the style \emph{\varstylefile} into the folder which contains the source files of your presentation.}
     \de{Kopieren Sie den Stil \emph{\varstylefile} in den Ordner, der die Quelldateien ihrer Präsentation enthält.}
   \item
-    \en{Add the line \emph{\textbackslash usepackage[...]\{\varstylename\}} including the appropriate options to the preamble of your presentation.}
-    \de{Fügen Sie \emph{\textbackslash usepackage[...]\{\varstylename\}} mit den entsprechenden Optionen der Präambel Ihrer Präsentation hinzu.}
+    \en{Add the line \texttt{\textbackslash usepackage[...]\{\varstylename\}} including the appropriate options to the preamble of your presentation.}
+    \de{Fügen Sie \texttt{\textbackslash usepackage[...]\{\varstylename\}} mit den entsprechenden Optionen der Präambel Ihrer Präsentation hinzu.}
   \item
-    \en{Create the sub folders \emph{beamer-cache} and \emph{handout-cache} inside your presentation folder. These folders are used by the template to cache embedded graphics depending on the current mode (\emph{beamer} or \emph{handout}). For more information on the caching mechanism, refer to section~\ref{sec:features-caching}.}
-    \de{Erstellen Sie im Präsentationordner die Unterordner \emph{beamer-cache} sowie \emph{handout-cache}. In diesen Ordnern werden abhänig vom aktuellen Modus (\emph{beamer} oder \emph{Handout}) für das Präsentationlayout benötigte bzw. Ihre eigenen TikZ-Grafiken zwischengespeichert. Weitere Informationen zum Caching-Mechanismus können Sie Abschnitt~\ref{sec:features-caching} entnehmen.}
+    \en{Create the sub folders \emph{beamer-cache}, \emph{handout-cache} and \emph{article-cache} inside your presentation folder. These folders are used by the template to cache embedded graphics depending on the current mode (\emph{beamer}, \emph{handout} or \emph{article}). For more information on the caching mechanism, refer to section~\ref{sec:features-caching}.}
+    \de{Erstellen Sie im Präsentationordner die Unterordner \emph{beamer-cache}, \emph{handout-cache} sowie \emph{article-cache}. In diesen Ordnern werden abhänig vom aktuellen Modus (\emph{Beamer}, \emph{Handout} oder \emph{Article}) für das Präsentationlayout benötigte bzw. Ihre eigenen TikZ-Grafiken zwischengespeichert. Weitere Informationen zum Caching-Mechanismus können Sie Abschnitt~\ref{sec:features-caching} entnehmen.}
   \item
-    \en{Compile the presentation using the command line argument \emph{-shell-escape}. This is required by the \LaTeX\ compiler to invoke the sub processes for caching individual graphics.}
-    \de{Kompilieren Sie Ihre Präsentation mit dem Argument \emph{-shell-escape}. Dies erlaubt dem \LaTeX Kompiler Unterprozesse für die Zwischenspeicherung einzelner Grafiken zu starten}
+    \en{Compile the presentation using the command line argument \emph{-shell-escape}. This is required by the \LaTeX\ compiler to invoke sub processes for caching individual graphics.}
+    \de{Kompilieren Sie Ihre Präsentation mit dem Argument \emph{-shell-escape}. Dies erlaubt dem \LaTeX\ Kompiler das Starten von Unterprozessen für die Zwischenspeicherung einzelner Grafiken.}
 \end{itemize}
 
-% TODO include bootstrap presentation
+\en{In addition to the style, the distribution includes a template \emph{\vartemplatefile}, which can be used as a starting point when creating a new presentation.}
+\de{Das Vorlagenpaket beinhaltet neben dem Stil auch eine Vorlage \emph{\vartemplatefile}, die für die Erstellung einer neuen Präsentation verwendet werden kann.}
 
 \section{\en{Features}\de{Funktionen}}
 
-\en{An overview of the features provides by the template is given in section~\ref{sec:features-overview}. In addition, the distribution of the template comprises the source \emph{presentation.tex}, which contains the use of elements commonly used in presentation.}
-\de{Eine Übersicht der Funktionen der Vorlage ist in Abschnitt~\ref{sec:features-overview} dargestellt. Zusätzlich befindet sich im Vorlagenpaket das Dokument \emph{presentation.tex}, im welchem exemplarisch die Verwendung von häufig benötigten Präsentationselementen veranschaulicht.}
+\en{An overview of the features provides by the template is given in section~\ref{sec:features-overview}. In addition, the distribution of the template comprises the source \emph{presentation\textbackslash presentation.tex}, which contains the use of elements commonly used in presentation.}
+\de{Eine Übersicht der Funktionen der Vorlage ist in Abschnitt~\ref{sec:features-overview} dargestellt. Zusätzlich befindet sich im Vorlagenpaket das Dokument \emph{presentation\textbackslash presentation.tex}, im welchem exemplarisch die Verwendung von häufig benötigten Präsentationselementen veranschaulicht.}
 
 \subsection{\en{Overview}\de{Übersicht}}
 \label{sec:features-overview}
@@ -132,17 +142,8 @@ lekse@lugmedia.de}
 \subsection{\en{Display formats}\de{Anzeigeformate}}
 \label{sec:features-formats}
 
-\en{The template supports three common display formats, which are summarized in the following table~\ref{tab:features-formates}. To define the display format of a presentation, the corresponding option have to be added to the option list of the \emph{\textbackslash usepackage[...]\{\varstylename\}} command in its preamble.}
-\de{Die Vorlage unterstützt drei verschiedene Anzeigeformate, die in der folgenden Tabelle~\ref{tab:features-formates} zusammengefasst sind. Falls kein Format explizit angegeben wird, werden Präsentationen im 4:3-Format erstellt.}
-
-% Style to add white space at the top of a picture
-\tikzset{
-    cellpicture/.append style={
-        execute at end picture={
-            \useasboundingbox (current bounding box.south west) rectangle ([yshift=0.5em] current bounding box.north east);
-        }
-    }
-}
+\en{The template supports three common display formats, which are summarized in the following table~\ref{tab:features-formats}. To define the display format of a presentation, the corresponding option have to be added to the option list of the \texttt{\textbackslash usepackage[...]\{\varstylename\}} command in its preamble.}
+\de{Die Vorlage unterstützt drei verschiedene Anzeigeformate, die in der folgenden Tabelle~\ref{tab:features-formats} zusammengefasst sind. Um das Anzeigeformat einer Präsentation festzulegen, muss die entsprechende Option zu der Liste der Optionen innerhalb Befehls \texttt{\textbackslash usepackage[...]\{\varstylename\}} hinzugefügt werden. Falls kein Format explizit angegeben wird, werden Präsentationen im 4:3-Format erstellt.}
 
 \tikzstyle{ratiobox}=[draw, rectangle, text centered, inner sep=0mm, outer sep= 0mm]
 
@@ -152,34 +153,57 @@ lekse@lugmedia.de}
         \begin{tabular}{>{\centering} m{2cm} >{\centering} m{2cm} >{\centering} m{2cm} >{\centering} m{2cm}}
             \hline
             \textbf{\en{Aspect ratio}\de{Format}} & \textbf{\en{Option}\de{Option}} & \textbf{\en{Width}\de{Breite}} & \textbf{\en{Height}\de{Höhe}} \tabularnewline
-            \hline
-            \tikz[cellpicture]{\node [ratiobox, text width=15mm, minimum height=11.25mm] {4:3};} & - & 128 mm & 96 mm \tabularnewline
-            \tikz{\node [ratiobox, text width=15mm, minimum height=9.375mm] {16:10};} & wide10 & 128 mm & 80 mm \tabularnewline
-            \tikz{\node [ratiobox, text width=15mm, minimum height=8.4375mm] {16:9};} & wide9 & 128 mm & 72 mm \tabularnewline
+            \hline\noalign{\vskip 6pt}
+            \tikz{\node [ratiobox, text width=15mm, minimum height=11.25mm] {4:3};} & - & 128 mm & 96 mm \tabularnewline
+            \tikz{\node [ratiobox, text width=15mm, minimum height=9.375mm] {16:10};} & \texttt{wide10} & 128 mm & 80 mm \tabularnewline
+            \tikz{\node [ratiobox, text width=15mm, minimum height=8.4375mm] {16:9};} & \texttt{wide9} & 128 mm & 72 mm \tabularnewline
             \hline
         \end{tabular}
-        \caption{\en{Supported display formats}\de{Unterstützte Anzeigeformate}\label{tab:features-formates}}%
+        \caption{\en{Supported display formats}\de{Unterstützte Anzeigeformate}\label{tab:features-formats}}%
         \renewcommand{\arraystretch}{1}
     \end{center}%
 \end{table}%
 
-\subsection{Font selection}
-% TODO describe fallback mechanism
+\subsection{\en{Frame layouts}\de{Folienlayouts}}
+
+\en{The template extends the \texttt{frame} environment of the beamer package with additional options to influence the layout of a frame. These options are summarized in table~\ref{tab:features-framelayouts} can be combined with each other.}
+\de{Die Vorlage erweitert die \texttt{frame} Umgebung des beamer Pakets um zusätzliche Optionen, die das Layout einer Folie beeinflussen. Diese zusätzlich verfügbaren Optionen sind in Tabelle~\ref{tab:features-framelayouts} zusammengefasst und können beliebig miteinander kombiniert werden.}
+\begin{table}[H]%
+  \begin{center}%
+    \renewcommand{\arraystretch}{1.25}
+    \begin{tabular}{>{\centering} m{3cm} m{8cm}}
+      \hline
+      \textbf{\en{Option}\de{Option}} & \textbf{\en{Layout effect}\de{Layouteffekt}} \tabularnewline
+      \hline
+      \texttt{nologo} & \en{Hides the ERCIS logo in the headline}\de{Unterdrückt das ERCIS Logo in der Kopfzeile} \tabularnewline
+      \texttt{notitle} & \en{Hides the title in the headline}\de{Unterdrückt den Titel in der Kopfzeile} \tabularnewline
+      \texttt{nosubtitle} & \en{Hides the subtitle in the headline}\de{Unterdrückt den Untertitel in der Kopfzeile} \tabularnewline
+      \texttt{nofootline} & \en{Hides the footline}\de{Unterdrückt die Fußzeile} \tabularnewline
+      \hline
+    \end{tabular}
+    \caption{\en{Additional frame layouts}\de{Zusätzliche Folienlayouts}\label{tab:features-framelayouts}}%
+    \renewcommand{\arraystretch}{1}
+  \end{center}%
+\end{table}%
+
+% \subsection{Font selection}
+% TODO describe font fallback mechanism
 
 \subsection{\en{Languages}\de{Sprachen}}
-\en{}
-Die Sprache der Präsentation wird über eine Option festgelegt und beeinflusst den Schriftzug des Claims auf der Titelseite und in der Seitenleiste einer Folie. Falls keine Option angegeben wird, ist \emph{deutsch} als Sprache voreingestellt.
+\en{The language of the presentation is defined using an option. \emph{English} is used by default if a language is not specified.}
+\de{Die Sprache der Präsentation wird über eine Option festgelegt. Falls keine Option angegeben wird, ist \emph{English} als Sprache voreingestellt.}
 \begin{table}[H]%
   \begin{center}%
     \renewcommand{\arraystretch}{1.25}
     \begin{tabular}{>{\centering} m{2cm} >{\centering} m{2cm}}
       \hline
-      \textbf{Spache} & \textbf{Option} \tabularnewline
+      \textbf{\en{Language}\de{Spache}} & \textbf{\en{Option}\de{Option}} \tabularnewline
       \hline
-      Deutsch & german \tabularnewline
-      Englisch & english \tabularnewline
+      \en{English}\de{Englisch} & \texttt{english} \tabularnewline
+      \en{German}\de{Deutsch} & \texttt{german} \tabularnewline
       \hline
     \end{tabular}
+    \caption{\en{Supported languages}\de{Unterstützte Sprachen}\label{tab:features-languages}}%
     \renewcommand{\arraystretch}{1}
   \end{center}%
 \end{table}%
@@ -192,89 +216,76 @@ Die Sprache der Präsentation wird über eine Option festgelegt und beeinflusst 
   \begin{center}%
     \tikzstyle{colorsample}=[rectangle, minimum width=7.5mm, minimum height=7.5mm, use as bounding box, outer sep=2em]
     \renewcommand{\arraystretch}{1.25}
-    \begin{tabular}{>{\centering} m{2cm} >{\centering} m{4cm} >{\centering} m{6cm}}
+    \begin{tabular}{>{\centering} m{2cm} >{\centering} m{3cm} >{\centering} m{5cm}}
       \hline
       \textbf{\en{Color}\de{Farbe}} & \textbf{\en{Name}\de{Name}} & \textbf{\en{RGB / Hexadecimal}\de{RGB / Hexadezimal}} \tabularnewline
-      \hline
-      \tikz[cellpicture]{\node[colorsample, fill=ercisblack] {};} & ercisblack & 0 0 0 / \#000000 \tabularnewline
+      \hline\noalign{\vskip 6pt}
+      \tikz{\node[colorsample, fill=ercisblack] {};} & ercisblack & 0 0 0 / \#000000 \tabularnewline
       \tikz{\node[colorsample, fill=ercisgrey] {};} & ercisgrey & 94 94 93 / \#5e5e5d \tabularnewline
-      \hline
-      \tikz[cellpicture]{\node[colorsample, fill=ercisred] {};} & ercisred & 133 35 57 / \#852339 \tabularnewline
+      \hline\noalign{\vskip 6pt}
+      \tikz{\node[colorsample, fill=ercisred] {};} & ercisred & 133 35 57 / \#852339 \tabularnewline
       \tikz{\node[colorsample, fill=ercislightred] {};} & ercislightred & 200 156 166 / \#c89ca6 \tabularnewline
       \tikz{\node[colorsample, fill=ercisblue] {};} & ercisblue & 135 151 163 / \#8797a3 \tabularnewline
-      \hline
-      \tikz[cellpicture]{\node[colorsample, fill=ercisdarkblue] {};} & ercisdarkblue & 67 92 139 / \#435c8b \tabularnewline
+      \hline\noalign{\vskip 6pt}
+      \tikz{\node[colorsample, fill=ercisdarkblue] {};} & ercisdarkblue & 67 92 139 / \#435c8b \tabularnewline
       \tikz{\node[colorsample, fill=erciscyan] {};} & erciscyan & 0 156 179 / \#009cb3 \tabularnewline
       \tikz{\node[colorsample, fill=ercisorange] {};} & ercisorange & 231 124 18 / \#e77c12 \tabularnewline
       \tikz{\node[colorsample, fill=ercisgreen] {};} & ercisgreen & 135 191 42 / \#87bf2a \tabularnewline
-      \hline
-      \tikz[cellpicture]{\node[colorsample, fill=pantoneblack7] {};} & pantoneblack7 & TODO \tabularnewline
+      \hline\noalign{\vskip 6pt}
+      \tikz{\node[colorsample, fill=pantoneblack7] {};} & pantoneblack7 & 62 62 59 / \#3e3e3b \tabularnewline
       \hline
     \end{tabular}
+    \caption{\en{Supported colors}\de{Unterstützte Farben}\label{tab:features-colors}}%
     \renewcommand{\arraystretch}{1}
   \end{center}%
 \end{table}%
 
 \subsection{\en{Caching of TikZ pictures}\de{Zwischenspeichern von TikZ Grafiken}}
 \label{sec:features-caching}
-\en{}
-In der Voreinstellung werden alle in einer Präsentation eingebetteten TikZ-Grafiken gecached, d.h. sie werden einmalig in ein separates PDF-Dokument ausgelagert und bei einer erneuten Kompilierung nicht neu erstellt. Dadurch können Präsentationen, in denen viele TikZ-Grafiken eingebettet sind, schneller erstellt werden.
+\en{By default, all TikZ pictures embedded in a presentation are cached using the externalization mechanism of the PGF/TikZ package.\footnote{For detailed information on the externalization mechanism, refer to chapter 32, pp.~343ff. of the \href{http://www.ctan.org/tex-archive/graphics/pgf/base/doc/generic/pgf/pgfmanual.pdf}{TikZ and PGF manual}.} The main idea of this mechanism is to render a TikZ picture only once and cache it in a separate PDF document. In subsequent compilations, the cached PDF document substitutes the original TikZ picture instead of rendering it again.
 
-% TODO write more details on caching
-% naming of pictures is required
-% overlay pictures cannot be cached: try to avoid overlay pictures (even 2nd reason: the \LaTeX \ compiler needs two runs for an overlay picture to be position properly.)
+The template required this mechanism since it internally uses it to generate the logos on the title and final page as well as on the headline during the first compile run.}
+\de{In der Voreinstellung werden alle in einer Präsentation eingebetteten TikZ-Grafiken mittels der Externalization-Funktion des PFG/TikZ Pakets zwischengespeichert.\footnote{Für weitere Informationen zur Externalization-Funktion, siehe Kapitel 32, pp.~343ff. des \href{http://www.ctan.org/tex-archive/graphics/pgf/base/doc/generic/pgf/pgfmanual.pdf}{TikZ/PGF Handbuchs}. } Die Grundidee dieser Funktion ist, TikZ Grafiken einmalig zu rendern und in einem separaten PDF-Dokument zwischenzuspeichern. In weiteren Kompiliervorgängen wird dann das zwischenzuspeicherte PDF-Dokument eingebunden anstatt die zugehörige TikZ-Grafik erneut zu rendern. Dadurch können Präsentationen, in denen viele TikZ-Grafiken eingebettet sind, schneller erstellt werden.
 
-% TODO create table for helper commands
-\emph{\textbackslash rerenderAll} Erstellt alle TikZ-Grafiken neu und cached diese.
+Die Vorlage setzt diese Funktion unbedingt voraus, da sie intern für die Erstellung der Logos auf der Titel- und Schlussseite sowie in der Kopfzeile verwendet wird.}
 
-\emph{\textbackslash rerenderPicture} Erstellt die folgende TikZ-Grafik neu und cached diese.
+\begin{itemize}
+  \item
+    \en{Prepend a picture with \texttt{\textbackslash tikzsetfigurename\{name-of-picture-\}} to name the cached file accordingly.}
+    \de{Verwenden Sie den Befehl \texttt{\textbackslash tikzsetfigurename\{name-of-picture-\}} um das zwischengespeicherte PDF-Dokument zu benennen.}
+  \item
+    \en{TikZ pictures which contain the \texttt{overlay} option cannot be cached and must be prepended with \texttt{\textbackslash nocachePicture}. Try to avoid overlay pictures since they require two compile runs to be positioned properly.}
+    \de{Eine Zwischenspeicherung von TikZ Grafiken mit der \texttt{overlay} Option ist nicht möglich und muss durch das Voranstellen von \texttt{\textbackslash nocachePicture} unterdrückt werden. Versuchen Sie Overlay-TikZ-Grafiken zu vermeiden, da sie außerdem zwei Komplierungsdurchgänge benötigen um korrekt positioniert zu werden.}
+\end{itemize}
 
-\emph{\textbackslash nocachePicture} Verhindert das Caching der folgenden TikZ-Grafik.
+\en{To support the iterative workflow of creating TikZ pictures in a presentation, the template provides some macros as shortcuts for influencing the caching of a particular picture. These macros are summarizes in table~\ref{tab:features-tikz-caching-macros} and can be prepended to a TikZ picture in order to achieve the corresponding effect. For example, prepend \texttt{\textbackslash nocachePicture} to supress the caching of a single picture while creating and testing it. Once it has been finished, remove or put the macro in comments to cache the final version of the picture.}
+\de{Die Vorlage stellt zur Untersützung des iterativen Erstellungsprozesses von TikZ Grafiken einige Makros als Kurzbefehle bereit. Diese Makro sind in der folgenden Tabelle~\ref{tab:features-tikz-caching-macros} zusammengefasst und können einer TikZ Grafik vorangestellt werden um den entsprechenden Effekt zu erreichen. Beispielsweise kann während der Erstellung einer TikZ Grafik das Makro \texttt{\textbackslash nocachePicture} vorangestellt werden, so dass das Zwischenspeichern der Grafik unterdrückt wird. Sobald die TikZ Grafik fertiggestellt ist, kann das Makro entfernt bzw. auskommentiert werden.}
 
-% Force the rerendering of the subsequent picture
-\providecommand{\rerenderPicture}{%
-  \tikzset{external/remake next=true}%
-}
+\begin{table}[H]%
+  \begin{center}%
+    \renewcommand{\arraystretch}{1.25}
+    \begin{tabular}{m{3.5cm} m{6cm} m{5.5cm}}
+      \hline
+      \textbf{\en{Command}\de{Befehl}} & \textbf{\en{Name}\de{Name}} & \textbf{\en{Description}\de{Beschreibung}} \tabularnewline
+      \hline
+      \texttt{\textbackslash rerenderPicture} & \texttt{\textbackslash tikzset\{external/remake next=true\}} & \en{Force the rerendering of the subsequent picture}\de{Erzwingt das erneute Rendern und Zwischenspeichern der nachfolgenden Grafik} \tabularnewline
+      \texttt{\textbackslash rerenderAll} & \texttt{\textbackslash tikzset\{external/force next=true\}} & \en{Force the rerendering of all pictures}\de{Erzwingt das erneute Rendern und Zwischenspeichern aller Grafiken} \tabularnewline
+      \hline
+      \texttt{\textbackslash cachePicture} & \texttt{\textbackslash tikzset\{external/export next=true\}} & \en{Explicitly enable caching of the subsequent picture}\de{Aktiviert explizit das Zwischenspeichern der nachfolgenden Grafik} \tabularnewline
+      \hline
+      \texttt{\textbackslash nocachePicture} & \texttt{\textbackslash tikzset\{external/export next=false\}} & \en{Explicitly disable caching of the subsequent picture}\de{Verhindert das Zwischenspeichern der nachfolgenden Grafik} \tabularnewline
+      \texttt{\textbackslash nocacheAll} & \texttt{\textbackslash tikzset\{external/export=false\}} & \en{Explicitly disable caching of all pictures}\de{Verhindert das Zwischenspeichern aller Grafiken} \tabularnewline
+      \hline
+    \end{tabular}
+    \caption{\en{TikZ caching helper macros}\de{Unterstützte Farben}\label{tab:features-tikz-caching-macros}}%
+    \renewcommand{\arraystretch}{1}
+  \end{center}%
+\end{table}%
 
-% % Force the regeneration of pictures marked as cached once
-% \providecommand{\rerenderAllCachedOnce}{%
-%   \global\def\rerendercachedonceoption{\empty}%
-% }
+\section{\en{Display issues}\de{Darstellungsprobleme}}
 
-% % Force the regeneration of all pictures
-% \providecommand{\rerenderAll}{%
-%   \tikzset{external/force remake=true}%
-% }
-
-% % Explicitly enable caching of the subsequent picture
-% \providecommand{\cachePicture}{%
-%   \tikzset{external/export next=true}%
-% }
-
-% % Explicitly disable caching of the subsequent picture
-% \providecommand{\nocachePicture}{%
-%   \tikzset{external/export next=false}%
-% }
-
-% % Explicitly disable caching of all pictures
-% \providecommand{\nocacheAll}{%
-%   \tikzset{external/export=false}%
-% }
-
-% TODO more helper
-
-% TODO tipp zum workflow für das erstellen von folien
-% add nocachePicture in front of unfinished
-
-% \subsubsection*{Deaktivieren des Caching von TikZ-Grafiken}
-% Option \emph{nocache}
-
-\section{\en{Display}\de{Darstellung}}
-
-\subsection{Bleeding logo in Adobe Reader and Adobe Acrobat Professional}
-
-gap between the boxes in the ERCIS logo is narrow
-Viewing the presentation in Adobe Reader and Adobe Acrobat Professional
-disable the option Edit > Preferences > Page Display > Enhance thin lines
+\subsection{\en{ERCIS logo in Adobe Reader and Adobe Acrobat Professional}\de{ERCIS logo in Adobe Reader und Adobe Acrobat Professional}}
+\en{When viewing a presentation in Adobe Reader or Adobe Acrobat Professional, the space between the grey dots in the ERCIS logo seem to disappear. This issue is caused by the gap between these dots being too narrow in relation to the size of the logo. In Adobe Reader and Adobe Acrobat Professional, a feature to enhance such thin lines is enabled by default, but unfortunately causes the logo not to be rendered properly. To disable this feature, click \emph{Edit} > \emph{Preferences} > \emph{Page Display} and remove the checkmark from the option \emph{Enhance thin lines}.}
+\de{Bei der Anzeige einer Präsentation im in Adobe Reader oder im Adobe Acrobat Professional scheinen die Zwischenräume zwischen den grauen Punkten im ERCIS Logo zu verschwinden. Dies wird durch einen im Verhältnis zur Größe des Logos zu schmalen Zwischenraum verursacht. Der Adobe Reader bzw. Adobe Acrobat Professional korrigieren in der Standardeinstellung die Darstellung von dünnen Linien und stellen dadurch die das Logo verzerrt bzw. fehlerhaft dar. Die entsprechende Funktion kann unter \emph{Bearbeiten} > \emph{Voreinstellungen} > \emph{Seitenanzeige} durch Deaktivieren der Option \emph{Dünne Linien deutlicher darstellen} unterdrückt werden.}
 
 \end{document}

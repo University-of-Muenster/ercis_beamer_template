@@ -35,8 +35,8 @@
             <exec executable="pdflatex" dir="@{dir}"> <!-- failonerror="true" -->
                 <arg value="-shell-escape" />
                 <!-- <arg value="-synctex=1" /> -->
-                <arg value="-interaction=nonstopmode" />
-                <!-- <arg value="-interaction=batchmode" /> -->
+                <!-- <arg value="-interaction=nonstopmode" /> -->
+                <arg value="-interaction=batchmode" />
                 <arg value="-jobname=@{document}" />
                 <arg value="${draftarg}" />
                 <arg value="${cmd}"/>
@@ -96,9 +96,11 @@
     <target name="build-presentation" depends="init,build" description="generates the presentation">
         <!-- Compile beamer version -->
         <ant dir="${presentation.folder}" target="build-beamer" />
+        <ant dir="${presentation.folder}" target="build-beamer" />
         <move file="${presentation.folder}/build/beamer.pdf" tofile="${build.folder}/beamer.pdf" overwrite="true" />
 
         <!-- Compile handout version -->
+        <ant dir="${presentation.folder}" target="build-handout" />
         <ant dir="${presentation.folder}" target="build-handout" />
         <move file="${presentation.folder}/build/handout.pdf" tofile="${build.folder}/handout.pdf" overwrite="true" />
 
@@ -114,11 +116,11 @@
     </target>
 
     <target name="test-docs-en" depends="init" description="generates the english documentation">
-        <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="en" />
+        <compilepdf document="${docs.source}" dir="${docs.folder}" locale="en" />
     </target>
 
     <target name="test-docs-de" depends="init" description="generates the german documentation">
-        <compilepdf document="${docs.source}.tex" dir="${docs.folder}" locale="de" />
+        <compilepdf document="${docs.source}" dir="${docs.folder}" locale="de" />
     </target>
 
     <target name="init-dist">
@@ -175,9 +177,13 @@
         </copy>
 
         <!-- Create caching directories -->
-        <!-- <mkdir dir="${dist.folder}/test/beamer-cache" />
-        <mkdir dir="${dist.folder}/test/handout-cache" />
-        <mkdir dir="${dist.folder}/test/article-cache" /> -->
+        <mkdir dir="${dist.folder}/template/beamer-cache" />
+        <mkdir dir="${dist.folder}/template/handout-cache" />
+        <mkdir dir="${dist.folder}/template/article-cache" />
+
+        <mkdir dir="${dist.folder}/presentation/beamer-cache" />
+        <mkdir dir="${dist.folder}/presentation/handout-cache" />
+        <mkdir dir="${dist.folder}/presentation/article-cache" />
 
         <!-- Create distribution archive -->
         <zip destfile="${dist.folder}/${dist.name}.zip" level="9">
