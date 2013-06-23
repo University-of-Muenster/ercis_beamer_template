@@ -31,3 +31,158 @@
 
                 <!-- TODO set external system call to args above, integrate the args also in the system call -->
                 <!-- \tikzset{external/system call={pdflatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname &quot;\image&quot; &quot;\texsource&quot;} -->
+
+
+
+
+
+
+    <!-- Compiles a document using pdflatex compiler -->
+    <macrodef name="compilepdf">
+        <attribute name="dir" />
+        <attribute name="document" />
+        <attribute name="outputdir" default="build" />
+        <attribute name="version" default="beamer" />
+        <attribute name="locale" default="" />
+        <attribute name="draft" default="false" />
+
+        <sequential>
+            <!-- Provide document class -->
+            <local name="documentclass"/>
+            <!-- <condition property="documentclass" value="\documentclass{beamer}" else="">
+                <equals arg1="@{version}" arg2="beamer" />
+            </condition> -->
+            <condition property="documentclass" value="\documentclass[handout]{beamer}" else="\documentclass{beamer}">
+                <equals arg1="@{version}" arg2="handout" />
+            </condition>
+
+            <!-- Provide locale command -->
+            <local name="localecmd"/>
+            <condition property="localecmd" value="\newcommand\locale{@{locale}}" else="">
+                <not>
+                    <equals arg1="@{locale}" arg2="" />
+                </not>
+            </condition>
+
+            <!-- Provide draft argument -->
+            <local name="draftarg"/>
+            <condition property="draftarg" value="-draftmode" else="">
+                <equals arg1="@{draft}" arg2="true" />
+            </condition>
+
+            <!-- TODO use script task to construct input for pdflatex -->
+
+            <script language="javascript"><![CDATA[
+                // Document class
+
+                // Locale
+                //if ()
+
+                // Draft
+
+                documentclass = project.getProperty("documentclass");
+                echo = project.createTask("echo");
+                echo.setMessage("Testecho "+ documentclass);
+                echo.perform();
+
+                // Execute pdf latex
+
+            // import statements
+            // importPackage(java.io);
+            //importClass(java.io.File);
+
+            // Access to Ant-Properties by their names
+            //dir      = project.getProperty("fs.dir");
+            //includes = MyProject.getProperty("fs.includes");
+            //excludes = self.getProject()  .getProperty("fs.excludes");
+
+            // Create a <fileset dir="" includes=""/>
+            //fs = project.createDataType("fileset");
+            //fs.setDir( new File(dir) );
+            //fs.setIncludes(includes);
+            //fs.setExcludes(excludes);
+
+            // Get the files (array) of that fileset
+            //ds = fs.getDirectoryScanner(project);
+            //srcFiles = ds.getIncludedFiles();
+
+            // iterate over that array
+            //for (i=0; i<srcFiles.length; i++) {
+
+            // get the values via Java API
+            //var basedir  = fs.getDir(project);
+            //var filename = srcFiles[i];
+            //var file = new File(basedir, filename);
+            //var size = file.length();
+
+            // create and use a Task via Ant API
+            //echo = MyProject.createTask("echo");
+            //echo.setMessage(filename + ": " + size + " byte");
+            //echo.perform();
+            //}
+            ]]></script>
+
+            <!--  -->
+            <local name="pdflatex.in"/>
+            <property name="pdflatex.in" value="foo">
+
+            </property>
+
+            <!-- Compile document using pdflatex -->
+            <!-- TODO redirect pipe and filter by errors and warnings -->
+            <!-- failonerror="true" -->
+            <exec executable="pdflatex" dir="@{dir}" outputproperty="pdflatex.out" errorproperty="pdflatex.err">
+                <arg value="-shell-escape" />
+                <arg value="-interaction=nonstopmode" />
+                <!-- <arg value="-interaction=batchmode" /> -->
+                <arg value="${draftarg}" />
+                <arg value="-jobname=@{version}" />
+                <arg value="-output-directory=@{outputdir}" />
+
+                <!-- <arg value="&quot;${localearg}\input{@{document}}&quot;" /> -->
+
+                <arg value="${documentclass}\renewcommand\documentclass[2][]{}\usepackage{tikz}\usetikzlibrary{external}\tikzset{external/system call={pdflatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname \&quot;\image\&quot; \&quot;\string\def\string\tikzexternalrealjob{@{document}}\string${documentclass}\string\renewcommand\string\documentclass[2][]{}\string\input{@{document}}\&quot;}}${localecmd}\input{@{document}}" />
+
+                <!--
+                ${documentclass}
+                \renewcommand\documentclass[2][]{}
+
+                \usepackage{tikz}
+                \usetikzlibrary{external}
+                \tikzset{external/system call={pdflatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname \&quot;\image\&quot; \&quot;\string\def\string\tikzexternalrealjob{@{document}}\string${documentclass}\string\renewcommand\string\documentclass[2][]{}\string\input{@{document}}\&quot;}}
+
+                ${localecmd}
+                \input{@{document}}
+                 -->
+
+                <!--
+                    System call for handout version:
+
+                    \documentclass[handout]{beamer}
+                    \renewcommand\documentclass[2][]{}
+
+                    \usepackage{tikz}
+                    \usetikzlibrary{external}
+                    \tikzset{external/system call={pdflatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname "\image" "\string\def\string\tikzexternalrealjob{presentation}\string\documentclass[handout]{beamer}\string\renewcommand\string\documentclass[2][]{}\string\input{presentation}"}}
+
+                    \newcommand\locale{en}
+                    \input{presentation}
+
+                    \documentclass{beamer}
+                    \renewcommand\documentclass[2][]{}
+
+                    \usepackage{tikz}
+                    \usetikzlibrary{external}
+                    \tikzset{external/system call={pdflatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname "\image" "\string\def\string\tikzexternalrealjob{presentation}\string\documentclass{beamer}\string\renewcommand\string\documentclass[2][]{}\string\input{presentation}"}}
+
+                    \input{presentation}
+
+                -->
+            </exec>
+
+            <echo message="${pdflatex.out}" />
+            <!-- TODO post processing of output using javascript -->
+            <!-- <echo message="SPLIT" /> -->
+            <!-- <echo message="${pdflatex.err}" /> -->
+        </sequential>
+    </macrodef>

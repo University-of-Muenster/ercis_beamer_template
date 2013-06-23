@@ -1,5 +1,5 @@
-<project name="beamer" default="build" basedir=".">
-    <description>Build process definition for a beamer presentation.</description>
+<project name="pdflatex" default="build" basedir=".">
+    <description>Build process definition for compiling documents and beamer presentations.</description>
 
     <!-- Load properties file -->
     <property file="build.properties"/>
@@ -8,80 +8,151 @@
     <property name="build" location="build" />
 
     <!-- Set cache paths -->
+    <property name="document.cache" location="${beamer.cache}" />
     <property name="beamer.cache" location="${beamer.cache}" />
     <property name="handout.cache" location="${handout.cache}" />
     <property name="article.cache" location="${article.cache}" />
 
-    <!-- Set source files -->
-    <!-- TODO make configurable -->
-    <property name="presentation" value="presentation.tex" />
-
-    <!-- Macros -->
-
-    <!-- Compiles a document using pdflatex compiler -->
-    <macrodef name="compilepdf">
+    <!-- Compiles a document using pdflatex -->
+    <scriptdef name="compilepdf" language="javascript">
         <attribute name="dir" />
         <attribute name="document" />
-        <attribute name="outputdir" default="build" />
-        <attribute name="version" default="beamer" />
-        <attribute name="locale" default="" />
-        <attribute name="draft" default="false" />
+        <attribute name="outputdir" />
+        <attribute name="version" />
+        <attribute name="locale" />
+        <attribute name="draft" />
+        <attribute name="tikzcompatibility" />
+        <![CDATA[
+            // Extensions
+            String.prototype.trim = function() {
+                return String(this).replace(/^\s+|\s+$/g, "");
+            };
 
-        <sequential>
-            <!-- Provide document class -->
-            <local name="documentclass"/>
-            <!-- <condition property="documentclass" value="\documentclass{beamer}" else="">
-                <equals arg1="@{version}" arg2="beamer" />
-            </condition> -->
-            <condition property="documentclass" value="\documentclass[handout]{beamer}" else="\documentclass{beamer}">
-                <equals arg1="@{version}" arg2="handout" />
-            </condition>
+            // Fetch attributes
+            var dir = new java.io.File(attributes.get("dir"));
+            var document = attributes.get("document");
+            var outputdir = attributes.get("outputdir");
+            var version = attributes.get("version");
+            var locale = attributes.get("locale");
+            var draft = attributes.get("draft") == "true" ? true : false;
+            var tikzcompatibility = attributes.get("tikzcompatibility") == "true" ? true : false;
 
-            <!-- Provide locale command -->
-            <local name="localecmd"/>
-            <condition property="localecmd" value="\newcommand\locale{@{locale}}" else="">
-                <not>
-                    <equals arg1="@{locale}" arg2="" />
-                </not>
-            </condition>
+            // Default output dir
+            if (outputdir == null) {
+                outputdir = "build";
+            }
 
-            <!-- Provide draft argument -->
-            <local name="draftarg"/>
-            <condition property="draftarg" value="-draftmode" else="">
-                <equals arg1="@{draft}" arg2="true" />
-            </condition>
+            // Default version
+            if (version == null) {
+                version = "document";
+            }
 
-            <!-- Compile document using pdflatex -->
-            <!-- TODO redirect pipe and filter by errors and warnings -->
-            <!-- failonerror="true" -->
-            <exec executable="pdflatex" dir="@{dir}">
-                <arg value="-shell-escape" />
-                <!-- <arg value="-interaction=nonstopmode" /> -->
-                <arg value="-interaction=batchmode" />
-                <arg value="${draftarg}" />
-                <arg value="-jobname=@{version}" />
-                <arg value="-output-directory=@{outputdir}" />
+            // Create string for preamble
+            var preamble = "";
 
-                <!-- <arg value="&quot;${localearg}\input{@{document}}&quot;" /> -->
+            // Document class
+            if (version == "beamer") {
+                // Beamer
+                var documentclass = "\\documentclass{beamer}";
+            }
+            else if (version == "handout") {
+                // Handout
+                var documentclass = "\\documentclass[handout]{beamer}";
+            }
+            else if (version == "article") {
+                // Article
+                var documentclass = "\\documentclass{article}";
+                documentclass += "\\usepackage{beamerarticle}";
+            }
 
-                <arg value="${documentclass}\renewcommand\documentclass[2][]{}\usepackage{tikz}\usetikzlibrary{external}\tikzset{external/system call={pdflatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname \&quot;\image\&quot; \&quot;\string\def\string\tikzexternalrealjob{@{document}}\string${documentclass}\string\renewcommand\string\documentclass[2][]{}\string\input{@{document}}\&quot;}}${localecmd}\input{@{document}}" />
+            if (version != "document") {
+                // Add document class to preamble
+                preamble += documentclass;
 
-                <!--
-                    System call for handout version:
+                // Replace document class
+                preamble += "\\renewcommand\\documentclass[2][]{}";
+            }
 
-                    \documentclass[handout]{beamer}
-                    \renewcommand\documentclass[2][]{}
+            // TikZ externalize compatibility
+            if (tikzcompatibility) {
+                preamble += "\\usepackage{tikz}";
+                preamble += "\\usetikzlibrary{external}";
+                preamble += "\\tikzset{external/system call={pdflatex \\tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname \"\\image\" \"\\string\\def\\string\\tikzexternalrealjob{" + document + "}\\string" + documentclass + "\\string\\renewcommand\\string\\documentclass[2][]{}\\string\\input{" + document + "}\"}}";
+            }
 
-                    \usepackage{tikz}
-                    \usetikzlibrary{external}
-                    \tikzset{external/system call={pdflatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname "\image" "\string\def\string\tikzexternalrealjob{presentation}\string\documentclass[handout]{beamer}\string\renewcommand\string\documentclass[2][]{}\string\input{presentation}"}}
+            // Locale
+            if (locale != null) {
+                preamble += "\newcommand\locale{" + locale + "}";
+            }
 
-                    \newcommand\locale{en}
-                    \input{presentation}
-                -->
-            </exec>
-        </sequential>
-    </macrodef>
+            // Set input document
+            preamble += "\\input{" + document + "}";
+
+            // Construct execution task
+            var exec = project.createTask("exec");
+            exec.setExecutable("pdflatex");
+            exec.setOutputproperty("pdflatex.out");
+            exec.setErrorProperty("pdflatex.err");
+            exec.setInputString(preamble);
+
+            // TODO suppress output from exec task
+            //exec.setOutput(new java.io.File("out.log"));
+
+            // Set working directory
+            if (dir != null) {
+                exec.setDir(dir);
+            }
+
+            // Append arguments
+            exec.createArg().setValue("-shell-escape");
+            exec.createArg().setValue("-interaction=nonstopmode");
+            exec.createArg().setValue("-jobname=" + version);
+            exec.createArg().setValue("-output-directory=" + outputdir);
+
+            if (draft) {
+                exec.createArg().setValue("-draftmode");
+            }
+
+            // Execute pdflatex
+            exec.perform();
+
+            // Get output and error stream
+            var out = project.getProperty("pdflatex.out");
+            var err = project.getProperty("pdflatex.err");
+
+            // Filter errors and warnings
+            var issues = [];
+            out_lines = out.replace("\r\n", "\n").split("\n");
+
+            for (var i = 0; i < out_lines.length; i++) {
+                var out_line = out_lines[i];
+
+                // Capture error
+                if (out_line.substr(0, 1) == "!") {
+                    var error = out_line.substr(2);
+
+                    // Append subsequent line
+                    error += " " + out_lines[i + 1];
+                    i += 1;
+
+                    // Append error to list
+                    issues.push("Error: " + error);
+                }
+                // Capture warning
+                else if (out_line.substr(0, 13) == "LaTeX Warning") {
+                    var warning = out_line.substr(15);
+
+                    // Append warning to list
+                    issues.push("Warning: " + warning);
+                }
+            }
+
+            // Display errors and warnings
+            for (var issue in issues) {
+                self.log(issues[issue]);
+            }
+        ]]>
+    </scriptdef>
 
     <!-- Targets -->
 
@@ -91,60 +162,84 @@
 
         <!-- Verify existence of build directory -->
         <mkdir dir="${build}"/>
-
-        <!-- Verify existence of cache directories -->
-        <mkdir dir="${beamer.cache}"/>
-        <mkdir dir="${handout.cache}"/>
-        <mkdir dir="${article.cache}"/>
     </target>
 
-    <target name="build" depends="init,-build.conditions,-build.beamer,-build.handout">
-        <!-- TODO propperty for enabling/disabling beamer,handout or article -->
-        <!-- TODO further calls of other targets depending on enable property -->
+    <target name="build" depends="init,-build.conditions,-build-document,-build-beamer,-build-handout,-build-article">
+
     </target>
 
     <target name="-build.conditions">
-        <!-- Is the beamer version enabled? -->
-        <condition property="beamer.is.enabled">
-            <equals arg1="beamer.is.enabled" arg2="true" />
-        </condition>
+        <scriptdef language="javascript">
+            <![CDATA[
+                // Is the document version enabled?
+                if (project.getProperty("document.enabled") == "true") {
+                    project.setProperty("document.is-enabled", "true");
+                }
 
-        <!-- Is the handout version enabled? -->
-        <condition property="handout.is.enabled">
-            <equals arg1="handout.is.enabled" arg2="true" />
-        </condition>
+                // Is the beamer version enabled?
+                if (project.getProperty("beamer.enabled") == "true") {
+                    project.setProperty("beamer.is-enabled", "true");
+                }
+
+                // Is the handout version enabled?
+                if (project.getProperty("handout.enabled") == "true") {
+                    project.setProperty("handout.is-enabled", "true");
+                }
+
+                // Is the article version enabled?
+                if (project.getProperty("article.enabled") == "true") {
+                    project.setProperty("article.is-enabled", "true");
+                }
+            ]]>
+        </scriptdef>
     </target>
 
-    <target name="-build.beamer" depends="build-beamer" if="beamer.is.enabled">
+    <target name="-build-document" depends="build-document" if="document.is-enabled">
 
     </target>
 
-    <target name="-build.handout" depends="build-handout" if="handout.is.enabled">
+    <target name="-build-beamer" depends="build-beamer" if="beamer.is-enabled">
 
     </target>
 
-    <target name="build-beamer" depends="init" description="compile the beamer version of the presentation">
-        <compilepdf document="${presentation.source}" dir="${basedir}" />
+    <target name="-build-handout" depends="build-handout" if="handout.is-enabled">
+
     </target>
 
-    <target name="draft-beamer" depends="init">
-        <compilepdf document="${presentation.source}" dir="${basedir}" draft="true" />
+    <target name="-build-article" depends="build-article" if="article.is-enabled">
+
     </target>
 
-    <target name="build-handout" depends="init" description="compile the handout version of the presentation">
+    <target name="-init-document">
+        <mkdir dir="${document.cache}"/>
+    </target>
+
+    <target name="build-document" depends="init,-init-document" description="compile the document">
+        <compilepdf document="${document.source}" dir="${basedir}" tikzcompatibility="false" />
+    </target>
+
+    <target name="-init-beamer">
+        <mkdir dir="${beamer.cache}"/>
+    </target>
+
+    <target name="build-beamer" depends="init,-init-beamer" description="compile the beamer version of the presentation">
+        <compilepdf document="${presentation.source}" dir="${basedir}" version="beamer" tikzcompatibility="true" />
+    </target>
+
+    <target name="-init-handout">
+        <mkdir dir="${handout.cache}"/>
+    </target>
+
+    <target name="build-handout" depends="init,-init-handout" description="compile the handout version of the presentation">
         <compilepdf document="${presentation.source}" dir="${basedir}" version="handout" />
     </target>
 
-    <target name="draft-handout" depends="init">
-        <compilepdf document="${presentation.source}" dir="${basedir}" version="handout" draft="true" />
+    <target name="-init-article">
+        <mkdir dir="${article.cache}"/>
     </target>
 
-    <target name="build-article" depends="init" description="compile the article version of the presentation">
-        <!-- TODO -->
-    </target>
-
-    <target name="draft-article" depends="init">
-        <!-- TODO only a single run without moving to build -->
+    <target name="build-article" depends="init,-init-article" description="compile the article version of the presentation">
+        <compilepdf document="${presentation.source}" dir="${basedir}" version="article" />
     </target>
 
     <target name="clean" depends="init" description="clean up">
@@ -152,12 +247,9 @@
         <delete>
             <fileset dir="${build}" includes="*.aux,*.auxlock,*.gz,*.log,*.nav,*.out,*.snm,*.toc"/>
         </delete>
-
-        <!-- Clean the cache -->
-        <!-- TODO -->
     </target>
 
-    <target name="clean-cache" depends="init">
+    <target name="clean-cache" depends="init" description="">
         <delete>
             <fileset dir="${beamer.cache}" includes="*" />
             <fileset dir="${handout.cache}" includes="*" />
