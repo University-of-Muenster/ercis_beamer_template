@@ -164,7 +164,7 @@
         <mkdir dir="${build}"/>
     </target>
 
-    <target name="build" depends="init,-build.conditions,-build-document,-build-beamer,-build-handout,-build-article">
+    <target name="build" depends="init,-build.conditions,-build-document,-build-beamer,-build-handout,-build-article" description="">
 
     </target>
 
