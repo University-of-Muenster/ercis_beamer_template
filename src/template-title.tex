@@ -73,6 +73,10 @@
         \insertsubtitle%
       };
 
+      % Footline background
+      \usebeamercolor{footline}
+      \path [fill, color={footline.bg}] (0mm, 11mm) rectangle ({\paperwidth - 5mm}, 4.25mm);
+
       % Author
       \node[anchor=west, no sep] at (\leftTextMargin, {11mm - 2 * 2.25mm}) {%
         \usebeamerfont{title page author}%
@@ -86,10 +90,6 @@
         \usebeamercolor[fg]{title page date}%
         \insertdate%
       };
-
-      % Footline background
-      \usebeamercolor{footline}
-      \path [fill, color={footline.bg}] (0mm, 11mm) rectangle ({\paperwidth - 5mm}, 4.25mm);
     \end{tikzpicture}%
   }%
 }%
