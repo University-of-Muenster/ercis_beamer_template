@@ -1,0 +1,36 @@
+# Temporary build, distribution and package folders
+/build
+/dist
+/package
+
+# Documentation build files
+/docs/*.aux
+/docs/*.gz
+/docs/*.log
+/docs/*.out
+/docs/*.toc
+
+# Presentation build files
+/presentation/*.aux
+/presentation/*.auxlock
+/presentation/*.gz
+/presentation/*.log
+/presentation/*.nav
+/presentation/*.out
+/presentation/*.pdf
+/presentation/*.snm
+/presentation/*.toc
+
+# Presentation caches
+/presentation/article-cache
+/presentation/beamer-cache
+/presentation/handout-cache
+
+# Temporary presentation build folder
+/presentation/build
+
+# Compiled beamer template
+/presentation/ercisbeamer.sty
+
+# Fonts (due to copyright issues)
+/fonts/*.ttf
