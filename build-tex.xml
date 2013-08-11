@@ -1,0 +1,169 @@
+<project>
+    <!-- Compiles a document using pdflatex -->
+    <scriptdef name="compilepdf" language="javascript">
+        <attribute name="dir" />
+        <attribute name="document" />
+        <attribute name="outputdir" />
+        <attribute name="version" />
+        <attribute name="locale" />
+        <attribute name="draft" />
+        <attribute name="tikzcompatibility" />
+        <![CDATA[
+            // Extensions
+            String.prototype.trim = function() {
+                return String(this).replace(/^\s+|\s+$/g, "");
+            };
+
+            // Fetch attributes
+            var dir = new java.io.File(attributes.get("dir"));
+            var document = attributes.get("document");
+            var outputdir = attributes.get("outputdir");
+            var outputfile = attributes.get("outputfile");
+            var version = attributes.get("version");
+            var locale = attributes.get("locale");
+            var draft = attributes.get("draft") == "true" ? true : false;
+            var tikzcompatibility = attributes.get("tikzcompatibility") == "true" ? true : false;
+
+            // Default output dir
+            if (outputdir == null) {
+                outputdir = "build";
+            }
+
+            // Default version
+            if (version == null) {
+                version = "document";
+            }
+
+            // Create string for preamble
+            var preamble = "";
+
+            // Document class
+            if (version == "beamer") {
+                // Beamer
+                var documentclass = "\\documentclass{beamer}";
+            }
+            else if (version == "handout") {
+                // Handout
+                var documentclass = "\\documentclass[handout]{beamer}";
+            }
+            else if (version == "article") {
+                // Article
+                var documentclass = "\\documentclass{article}";
+                documentclass += "\\usepackage{beamerarticle}";
+            }
+
+            if (version != "document") {
+                // Add document class to preamble
+                preamble += documentclass;
+
+                // Replace document class
+                preamble += "\\renewcommand\\documentclass[2][]{}";
+            }
+
+            // TikZ externalize compatibility
+            if (tikzcompatibility) {
+                preamble += "\\usepackage{tikz}";
+                preamble += "\\usetikzlibrary{external}";
+                preamble += "\\tikzset{external/system call={pdflatex \\tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname \"\\image\" \"\\string\\def\\string\\tikzexternalrealjob{" + document + "}\\string" + documentclass + "\\string\\renewcommand\\string\\documentclass[2][]{}\\string\\input{" + document + "}\"}}";
+            }
+
+            // Locale
+            if (locale != null) {
+                preamble += "\\newcommand\\locale{" + locale + "}";
+            }
+
+            // Jobname
+            if (outputfile != null) {
+                var jobname = outputfile;
+            }
+            else {
+                var jobname = version;
+            }
+
+            // Set input document
+            preamble += "\\input{" + document + "}";
+
+            // Construct execution task
+            var exec = project.createTask("exec");
+            exec.setExecutable("pdflatex");
+            exec.setOutputproperty("pdflatex.out");
+            exec.setErrorProperty("pdflatex.err");
+            exec.setInputString(preamble);
+
+            // TODO suppress output from exec task
+            //exec.setOutput(new java.io.File("out.log"));
+
+            // Set working directory
+            if (dir != null) {
+                exec.setDir(dir);
+            }
+
+            // Append arguments
+            exec.createArg().setValue("-shell-escape");
+            exec.createArg().setValue("-interaction=nonstopmode");
+            exec.createArg().setValue("-jobname=" + jobname);
+            exec.createArg().setValue("-output-directory=" + outputdir);
+
+            if (draft) {
+                exec.createArg().setValue("-draftmode");
+            }
+
+            // Execute pdflatex
+            exec.perform();
+
+            // Get output and error stream
+            var out = project.getProperty("pdflatex.out");
+            var err = project.getProperty("pdflatex.err");
+
+            // Filter errors and warnings
+            var issues = [];
+            out_lines = out.replace("\r\n", "\n").split("\n");
+
+            for (var i = 0; i < out_lines.length; i++) {
+                var out_line = out_lines[i];
+
+                // Capture error
+                if (out_line.substr(0, 1) == "!") {
+                    var error = out_line.substr(2);
+
+                    // Append subsequent line
+                    error += " " + out_lines[i + 1];
+                    i += 1;
+
+                    // Append error to list
+                    issues.push("Error: " + error);
+                }
+                // Capture warning
+                else if (out_line.substr(0, 13) == "LaTeX Warning") {
+                    var warning = out_line.substr(15);
+
+                    // Append warning to list
+                    issues.push("Warning: " + warning);
+                }
+            }
+
+            // Display errors and warnings
+            for (var issue in issues) {
+                self.log(issues[issue]);
+            }
+        ]]>
+    </scriptdef>
+
+    <!-- Clean a directory from temporary build files -->
+    <scriptdef name="clean" language="javascript">
+        <attribute name="dir" />
+        <![CDATA[
+            //self.log("delete task");
+            var dir = new java.io.File(attributes.get("dir"));
+
+            var fileset = new org.apache.tools.ant.types.FileSet();
+            fileset.setDir(dir);
+            fileset.setIncludes("*.aux,*.auxlock,*.gz,*.log,*.nav,*.out,*.pdf,*.snm,*.toc");
+
+            // TODO the following line raises an error
+            /*var delete = project.createTask("delete");
+            delete.addFileset(fileset);
+            delete.perform();*/
+        ]]>
+    </scriptdef>
+</project>

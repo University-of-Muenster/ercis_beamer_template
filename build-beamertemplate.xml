@@ -1,0 +1,177 @@
+<project name="beamertemplate" default="build" basedir=".">
+    <description>Build process definition for beamer templates.</description>
+
+    <!-- Import helper functions -->
+    <import file="build-tex.xml" />
+
+    <!-- Load properties file -->
+    <property file="build.properties"/>
+
+    <!-- Define paths using in build process -->
+    <property name="build.folder" location="build" />
+    <property name="dist.folder" location="dist" />
+    <property name="docs.folder" location="docs" />
+    <property name="docs.build.folder" location="${docs.folder}/build" />
+    <property name="src.folder" location="src" />
+    <property name="presentation.folder" location="presentation" />
+    <property name="presentation.build.folder" location="${presentation.folder}/build" />
+    <property name="package.folder" location="package" />
+
+    <!-- Targets -->
+
+    <target name="init">
+        <!-- Create the time stamp -->
+        <tstamp />
+    </target>
+
+    <target name="init-build" depends="init">
+        <!-- Create the build directory -->
+        <mkdir dir="${build.folder}"/>
+
+        <!-- Create the build directory for the documentation -->
+        <mkdir dir="${docs.build.folder}"/>
+
+        <!-- Create the build directory for the presentation -->
+        <mkdir dir="${presentation.build.folder}"/>
+    </target>
+
+    <target name="build" depends="init,init-build" description="compiles the source">
+        <!-- Concat source files into a single style -->
+        <concat destfile="${build.folder}/${build.name}.sty" overwrite="true">
+            <!-- Define list of source files in correct order -->
+            <filelist dir="${src.folder}" files="${src.include}" />
+        </concat>
+
+        <!-- Copy style to presentation directory -->
+        <copy file="${build.folder}/${build.name}.sty" todir="${presentation.folder}" overwrite="true" />
+    </target>
+
+    <target name="build-docs" depends="init,init-build" description="generates the documentation">
+        <!-- Compile documentation with locale en -->
+        <compilepdf document="${docs.source}" dir="${docs.folder}" locale="en" draft="true" />
+        <compilepdf document="${docs.source}" dir="${docs.folder}" locale="en" />
+        <copy file="${docs.build.folder}/document.pdf" tofile="${build.folder}/${docs.name}-en.pdf" overwrite="true" />
+        <clean dir="${docs.build.folder}" />
+
+        <!-- Compile documentation with locale de -->
+        <compilepdf document="${docs.source}" dir="${docs.folder}" locale="de" draft="true" />
+        <compilepdf document="${docs.source}" dir="${docs.folder}" locale="de" />
+        <copy file="${docs.build.folder}/document.pdf" tofile="${build.folder}/${docs.name}-de.pdf" overwrite="true" />
+        <clean dir="${docs.build.folder}" />
+    </target>
+
+    <target name="build-presentation" depends="init,build" description="generates the presentation">
+        <!-- Compile beamer version -->
+        <compilepdf document="${presentation.source}" dir="${presentation.folder}" version="beamer" tikzcompatibility="true" locale="en" draft="true" />
+        <compilepdf document="${presentation.source}" dir="${presentation.folder}" version="beamer" tikzcompatibility="true" locale="en" />
+        <copy file="${presentation.build.folder}/beamer.pdf" tofile="${build.folder}/beamer-en.pdf" overwrite="true" />
+
+        <!-- Compile handout version -->
+        <compilepdf document="${presentation.source}" dir="${presentation.folder}" version="handout" tikzcompatibility="true" locale="en" draft="true" />
+        <compilepdf document="${presentation.source}" dir="${presentation.folder}" version="handout" tikzcompatibility="true" locale="en" />
+        <move file="${presentation.build.folder}/handout.pdf" tofile="${build.folder}/handout-en.pdf" overwrite="true" />
+
+        <!-- Clean presentation directory -->
+        <clean dir="${presentation.build.folder}" />
+
+        <!-- TODO compile german version of the presentations -->
+    </target>
+
+    <target name="draft-presentation" depends="init, build" description="generates a draft version of the presentation">
+        <!-- Compile  presentation (using presentation ant script) -->
+        <compilepdf document="presentation.tex" dir="${presentation.folder}" version="beamer" tikzcompatibility="true" locale="en" />
+    </target>
+
+    <target name="draft-docs-en" depends="init" description="generates a draft version of the english documentation">
+        <compilepdf document="${docs.source}" dir="${docs.folder}" locale="en" />
+    </target>
+
+    <target name="draft-docs-de" depends="init" description="generates a draft version of the german documentation">
+        <compilepdf document="${docs.source}" dir="${docs.folder}" locale="de" />
+    </target>
+
+    <target name="init-dist">
+        <!-- Create the distribution directory -->
+        <mkdir dir="${dist.folder}"/>
+    </target>
+
+    <target name="dist" depends="init-dist,build,build-docs,build-presentation" description="generates the distribution">
+        <!-- Clean the distribution directory -->
+        <delete includeemptydirs="true">
+            <fileset dir="${dist.folder}">
+                <include name="**/*" />
+            </fileset>
+        </delete>
+
+        <!-- Create the distribution directory structure -->
+        <mkdir dir="${dist.folder}/template" />
+        <mkdir dir="${dist.folder}/documentation" />
+        <mkdir dir="${dist.folder}/presentation" />
+
+        <!-- Copy template contents -->
+        <copy todir="${dist.folder}/template">
+            <filelist dir="${build.folder}">
+                <file name="${build.name}.sty" />
+            </filelist>
+        </copy>
+
+        <!-- Copy documentation contents -->
+        <copy todir="${dist.folder}/documentation">
+            <fileset dir="${build.folder}">
+                <include name="${docs.name}-*.pdf"/>
+            </fileset>
+        </copy>
+
+        <!-- Copy presentation contents -->
+        <copy todir="${dist.folder}/presentation">
+            <fileset dir="${build.folder}">
+                <include name="${presentation.beamer.name}-*.pdf"/>
+                <include name="${presentation.handout.name}-*.pdf"/>
+            </fileset>
+
+            <filelist dir="${build.folder}" >
+                <file name="${build.name}.sty" />
+            </filelist>
+
+            <filelist dir="${presentation.folder}">
+                <file name="presentation.tex" />
+            </filelist>
+
+            <fileset dir="${presentation.folder}">
+                <include name="frames/**"/>
+                <include name="images/**"/>
+            </fileset>
+        </copy>
+
+        <!-- Create caching directories -->
+        <mkdir dir="${dist.folder}/presentation/beamer-cache" />
+        <mkdir dir="${dist.folder}/presentation/handout-cache" />
+        <mkdir dir="${dist.folder}/presentation/article-cache" />
+    </target>
+
+    <target name="init-package">
+        <!-- Create the package directory -->
+        <mkdir dir="${package.folder}"/>
+    </target>
+
+    <target name="package" depends="init-package,dist" description="creates a zip package containing the distribution">
+        <!-- Create distribution archive -->
+        <zip destfile="${package.folder}/${dist.name}.zip" level="9">
+            <fileset dir="${dist.folder}" />
+        </zip>
+    </target>
+
+    <target name="clean" description="cleans the project from temporary build files and folders" >
+        <!-- Delete the build, distribution and package directories -->
+        <delete dir="${build.folder}" />
+        <delete dir="${dist.folder}" />
+        <delete dir="${package.folder}" />
+
+        <!-- Clean presentation directory -->
+        <delete dir="${presentation.build.folder}" />
+        <delete file="${presentation.folder}/${build.name}.sty" />
+
+        <!-- Clean documentation directory -->
+        <delete dir="${docs.build.folder}" />
+    </target>
+</project>
