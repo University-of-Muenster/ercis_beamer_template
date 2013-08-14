@@ -15,6 +15,8 @@
     <property name="src.folder" location="src" />
     <property name="presentation.folder" location="presentation" />
     <property name="presentation.build.folder" location="${presentation.folder}/build" />
+    <property name="presentation.cache.beamer.folder" location="${presentation.folder}/beamer-cache" />
+    <property name="presentation.cache.handout.folder" location="${presentation.folder}/handout-cache" />
     <property name="package.folder" location="package" />
 
     <!-- Targets -->
@@ -33,6 +35,10 @@
 
         <!-- Create the build directory for the presentation -->
         <mkdir dir="${presentation.build.folder}"/>
+
+        <!-- Create cache directories for the presentation -->
+        <mkdir dir="${presentation.cache.beamer.folder}"/>
+        <mkdir dir="${presentation.cache.handout.folder}"/>
     </target>
 
     <target name="build" depends="init,init-build" description="compiles the source">
@@ -74,7 +80,7 @@
         <!-- Clean presentation directory -->
         <clean dir="${presentation.build.folder}" />
 
-        <!-- TODO compile german version of the presentations -->
+        <!-- TODO compile german version of the presentation -->
     </target>
 
     <target name="draft-presentation" depends="init, build" description="generates a draft version of the presentation">
@@ -143,10 +149,9 @@
             </fileset>
         </copy>
 
-        <!-- Create caching directories -->
+        <!-- Create caching directories in distribution -->
         <mkdir dir="${dist.folder}/presentation/beamer-cache" />
         <mkdir dir="${dist.folder}/presentation/handout-cache" />
-        <mkdir dir="${dist.folder}/presentation/article-cache" />
     </target>
 
     <target name="init-package">
@@ -167,11 +172,13 @@
         <delete dir="${dist.folder}" />
         <delete dir="${package.folder}" />
 
-        <!-- Clean presentation directory -->
-        <delete dir="${presentation.build.folder}" />
-        <delete file="${presentation.folder}/${build.name}.sty" />
-
         <!-- Clean documentation directory -->
         <delete dir="${docs.build.folder}" />
+
+        <!-- Clean presentation directory -->
+        <delete dir="${presentation.build.folder}" />
+        <delete dir="${presentation.cache.beamer.folder}" />
+        <delete dir="${presentation.cache.handout.folder}" />
+        <delete file="${presentation.folder}/${build.name}.sty" />
     </target>
 </project>
