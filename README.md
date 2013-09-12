@@ -2,14 +2,14 @@
 
 This repository maintains the sources of the [ERCIS](http://ercis.com/) presentation template for the LaTeX beamer package.
 
-**Note for template users:** If you just intend to *use* the template to build a presentation, refer to the [releases section](./releases) on this GitHub page and download the latest version as an archive. You do not need to clone this repository unless you want to contribute to the template.
+**Note for template users:** If you just intend to *use* the template to build a presentation, refer to the [releases section](./../../releases) on this GitHub page and download the latest version as an archive. You do not need to clone this repository unless you want to contribute to the template.
 
 ## System requirements
 The following software is required to compile the template. In particular the build script requires the  ant and the pdflatex executables.
 - [Apache Ant 1.9.2](http://ant.apache.org/)
 - [TeX Live 2013](http://www.tug.org/texlive/)
 
-Note: Older versions of the required software might also work, but have not tested.
+**Note:** Older versions of the required software might also work, but have not tested.
 
 ## Building the template
 In the root folder of the template, execute the following command to compile the template, the documentation and the example presentation. Afterwards, all generated files are available in the `dist` folder.
