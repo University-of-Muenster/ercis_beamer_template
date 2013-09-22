@@ -19,24 +19,27 @@
 % Color minin environment
 \RequirePackage{xxcolor}
 
+% Conditional commands
+\RequirePackage{ifthen}
+
 % Advanced resizing of contents
 \RequirePackage{adjustbox}
 
-% Allow caching of TikZ graphics (externalize)
+% Allow caching of TikZ graphics (externalize feature)
 \usetikzlibrary{external}
 
 % Folder for cached pictures (depends on current mode)
-\newcommand{\cachePath}{beamer-cache/}
+\ifthenelse{\equal{\tikzexternal@filenameprefix}{}}{%
+    \tikzsetexternalprefix{beamer-cache/}
 
-\mode<handout>{
-  \renewcommand{\cachePath}{handout-cache/}
-}
+    \mode<handout>{
+      \tikzsetexternalprefix{handout-cache/}
+    }
 
-\mode<article>{
-  \renewcommand{\cachePath}{article-cache/}
-}
-
-\tikzsetexternalprefix{\cachePath}
+    \mode<article>{
+      \tikzsetexternalprefix{article-cache/}
+    }
+}{}
 
 % Only named pictures are cached
 % \tikzset{external/only named=true}
