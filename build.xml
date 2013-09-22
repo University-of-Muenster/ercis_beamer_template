@@ -1,4 +1,4 @@
-<project default="build" basedir=".">
+<project name="ercisbeamer" default="build" basedir=".">
     <!-- Import main build file -->
-    <import file="build-beamertemplate.xml" />
+    <import file="${basedir}/build-beamertemplate.xml" />
 </project>
