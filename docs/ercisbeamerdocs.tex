@@ -143,7 +143,7 @@ lekse@lugmedia.de}
 \label{sec:features-formats}
 
 \en{The template supports three common display formats, which are summarized in the following table~\ref{tab:features-formats}. To define the display format of a presentation, the corresponding option have to be added to the option list of the \texttt{\textbackslash usepackage[...]\{\varstylename\}} command in its preamble.}
-\de{Die Vorlage unterstützt drei verschiedene Anzeigeformate, die in der folgenden Tabelle~\ref{tab:features-formats} zusammengefasst sind. Um das Anzeigeformat einer Präsentation festzulegen, muss die entsprechende Option zu der Liste der Optionen innerhalb Befehls \texttt{\textbackslash usepackage[...]\{\varstylename\}} hinzugefügt werden. Falls kein Format explizit angegeben wird, werden Präsentationen im 16:10-Format erstellt.}
+\de{Die Vorlage unterstützt drei verschiedene Anzeigeformate, die in der folgenden Tabelle~\ref{tab:features-formats} zusammengefasst sind. Um das Anzeigeformat einer Präsentation festzulegen, muss die entsprechende Option zu der Liste der Optionen innerhalb Befehls \texttt{\textbackslash usepackage[...]\{\varstylename\}} hinzugefügt werden. Falls kein Format explizit angegeben wird, werden Präsentationen im 16:9-Format erstellt.}
 
 \tikzstyle{ratiobox}=[draw, rectangle, text centered, inner sep=0mm, outer sep= 0mm]
 
@@ -155,8 +155,8 @@ lekse@lugmedia.de}
             \textbf{\en{Aspect ratio}\de{Format}} & \textbf{\en{Option}\de{Option}} & \textbf{\en{Width}\de{Breite}} & \textbf{\en{Height}\de{Höhe}} \tabularnewline
             \hline\noalign{\vskip 6pt}
             \tikz{\node [ratiobox, text width=15mm, minimum height=11.25mm] {4:3};} & \texttt{small43} & 128 mm & 96 mm \tabularnewline
-            \tikz{\node [ratiobox, text width=15mm, minimum height=9.375mm] {16:10};} & - & 128 mm & 80 mm \tabularnewline
-            \tikz{\node [ratiobox, text width=15mm, minimum height=8.4375mm] {16:9};} & \texttt{wide9} & 128 mm & 72 mm \tabularnewline
+            \tikz{\node [ratiobox, text width=15mm, minimum height=9.375mm] {16:10};} & \texttt{wide10} & 128 mm & 80 mm \tabularnewline
+            \tikz{\node [ratiobox, text width=15mm, minimum height=8.4375mm] {16:9};} & - & 128 mm & 72 mm \tabularnewline
             \hline
         \end{tabular}
         \caption{\en{Supported display formats}\de{Unterstützte Anzeigeformate}\label{tab:features-formats}}%
