@@ -2,7 +2,7 @@
 \newcommand{\headlineErcisLogo}{%
   \begin{tikzpicture}%
     \node [no sep] {%
-      \resizebox{!}{13.5mm}{\ercislogo{ercisred}{ercisblue}{ercisred}}%
+      \resizebox{!}{12mm}{\ercislogo{ercisred}{ercisblue}{ercisred}}%
     };%
   \end{tikzpicture}%
 }%
@@ -18,7 +18,7 @@
 
       % ERCIS logo
       \ifbeamer@renderheadlinelogo
-        \node[anchor=north east, no sep] at ({\paperwidth - 5mm}, {\headlineHeight - 6mm}) {%
+        \node[anchor=north east, no sep] at ({\paperwidth - \rightTextMargin}, {\headlineHeight - 6mm}) {%
           \beamer@cacheUse{headline-ercis-logo}{\headlineErcisLogo}%
         };
       \fi
