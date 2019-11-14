@@ -8,36 +8,22 @@
         % Picture size
         \useasboundingbox (0mm, \footlineHeight) rectangle (\paperwidth, 0mm);
 
-        % Background
-        \usebeamercolor{footline}
-        \path [fill, color={footline.bg}] (0mm, 11mm) rectangle ({\paperwidth - 5mm}, 4.25mm);
+		% Footline background
+		\usebeamercolor{footline}%
+		\path [fill, color={footline.bg}] (6mm, 7.3mm) rectangle ({\paperwidth - 6mm}, 7mm);
 
-        % Title
-        \node[anchor=west, no sep] at (6mm, {11mm - 2mm}) {%
-          \usebeamerfont{title in foot}%
-          \usebeamercolor[fg]{title in foot}%
-          \insertshorttitle%
-        };
-
-        % Author
-        \node[anchor=west, no sep] at (6mm, {11mm - 2mm - 2.5mm}) {%
-          \usebeamerfont{author in foot}%
-          \usebeamercolor[fg]{author in foot}%
-          \insertauthor%
-        };
+		% Author
+		\node[anchor=west, no sep] at (\leftTextMargin, {7mm - 2.25mm}) {%
+		 \usebeamerfont{title page author}%
+		 \usebeamercolor[fg]{title page author}%
+		 \insertauthor \, | \insertshorttitle%
+		};
 
         % Frame number
-        \node[anchor=east, no sep] at ({\paperwidth - 5mm - 1.75mm}, {11mm - 2mm}) {%
+        \node[anchor=east, no sep] at ({\paperwidth - 5mm - 1.75mm}, {7mm - 2.25mm}) {%
           \usebeamerfont{frame number in foot}%
           \usebeamercolor[fg]{frame number in foot}%
           \insertframenumber%
-        };
-
-        % Date
-        \node[anchor=east, no sep] at ({\paperwidth - 5mm - 1.75mm}, {11mm - 2mm - 2.5mm}) {%
-          \usebeamerfont{date in foot}%
-          \usebeamercolor[fg]{date in foot}%
-          \insertdate%
         };
 
         % Navigation symbols (optional)

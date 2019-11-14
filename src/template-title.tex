@@ -60,35 +60,29 @@
       \usebeamertemplate{title page partners}
 
       % Title
-      \node[anchor=text, no sep, align=flush left, text width={\paperwidth - \leftTextMargin - 40.5mm}] (title) at (\leftTextMargin, {\paperheight - 25.75mm}) {%
-        \usebeamerfont{title page title}%
-        \usebeamercolor[fg]{title page title}%
-        \inserttitle%
+      \node[anchor=text, no sep, align=flush left, text width={\paperwidth - \leftTextMarginTitle - 36.5mm}] (title) at (\leftTextMarginTitle, {\paperheight - 46.75mm}) {%
+      \usebeamerfont{title page title}%
+      \usebeamercolor[fg]{title page title}%
+      \inserttitle%
+      %
       };
 
       % Subtitle
-      \node[anchor=text, no sep, align=flush left, text width={\paperwidth - \leftTextMargin - \rightTextMargin}] (subtitle) at (\leftTextMargin, {\paperheight - 36mm}) {%
-        \usebeamerfont{title page subtitle}%
-        \usebeamercolor[fg]{title page subtitle}%
-        \insertsubtitle%
+      \node[anchor=text, no sep, align=flush left, text width={\paperwidth - \leftTextMarginTitle - \rightTextMargin}] (subtitle) at (\leftTextMarginTitle, {\paperheight - 50.75mm}) {%
+      \usebeamerfont{title page subtitle}%
+      \usebeamercolor[fg]{title page subtitle}%
+      \insertsubtitle%
       };
 
       % Footline background
       \usebeamercolor{footline}
-      \path [fill, color={footline.bg}] (0mm, 11mm) rectangle ({\paperwidth - 5mm}, 4.25mm);
+      \path [fill, color={footline.bg}] (6mm, 7.3mm) rectangle ({\paperwidth - 6mm}, 7mm);
 
       % Author
-      \node[anchor=west, no sep] at (\leftTextMargin, {11mm - 2 * 2.25mm}) {%
-        \usebeamerfont{title page author}%
-        \usebeamercolor[fg]{title page author}%
-        \insertauthor%
-      };
-
-      % Date
-      \node[anchor=east, no sep] at ({\paperwidth - 5mm - 1.75mm}, {11mm - 2 * 2.25mm}) {%
-        \usebeamerfont{title page date}%
-        \usebeamercolor[fg]{title page date}%
-        \insertdate%
+      \node[anchor=west, no sep] at (\leftTextMargin, {7mm - 2.25mm}) {%
+      \usebeamerfont{title page author}%
+      \usebeamercolor[fg]{title page author}%
+      \insertauthor%
       };
     \end{tikzpicture}%
   }%

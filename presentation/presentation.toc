@@ -1,0 +1,13 @@
+\select@language {english}
+\beamer@endinputifotherversion {3.33pt}
+\select@language {ngerman}
+\select@language {english}
+\beamer@sectionintoc {2}{Content structuring}{3}{0}{1}
+\beamer@subsectionintoc {2}{1}{Itemizations, Enumerations}{3}{0}{1}
+\beamer@subsectionintoc {2}{2}{Hilighting}{5}{0}{1}
+\beamer@subsectionintoc {2}{3}{Blocks}{6}{0}{1}
+\beamer@subsectionintoc {2}{4}{Columns}{7}{0}{1}
+\beamer@sectionintoc {3}{Frames}{10}{0}{2}
+\beamer@sectionintoc {4}{Tables}{11}{0}{3}
+\beamer@sectionintoc {5}{Figures}{12}{0}{4}
+\beamer@sectionintoc {6}{Additional features}{15}{0}{5}
