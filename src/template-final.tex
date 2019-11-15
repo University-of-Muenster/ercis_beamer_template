@@ -11,26 +11,28 @@
   \hspace*{-\leftTextMargin}%
   \hspace*{-\leftSidebarWidth}%
   \begin{tikzpicture}
+
     % Picture size and background
     \usebeamercolor{final page background}
-    \path [fill, color={final page background.bg}, use as bounding box] (0mm, 0mm) rectangle (\paperwidth, \paperheight);
+    \draw [draw = none, shading = axis, left color={final page background.bg}, right color={final page background.fg}, even odd rule] (0mm, 0mm) rectangle (\paperwidth, \paperheight)
+    (.125\paperwidth, .125\paperheight) rectangle (.875\paperwidth, .875\paperheight);
+
+    % Draw background
+    \draw [draw = none, fill = white, blur shadow={%
+        {shadow xshift=1.5mm, shadow yshift=-1.5mm, shadow scale=1.02, shadow blur radius=4mm, %
+        shadow blur steps = 10, shadow blur extra rounding}}]%
+        (.125\paperwidth, .125\paperheight) rectangle (.875\paperwidth, .875\paperheight);
 
     % % ERCIS logo
-    \node[anchor=north east, no sep] at ({\paperwidth - 6.75mm}, {\paperheight - 6mm}) {%
-      \resizebox{!}{22.5mm}{\ercislogotext{white}{white}{white}{white}}%
+    \node[anchor=north east, no sep] at ({.875\paperwidth - \textMarginFinal}, {.875\paperheight - 6mm}) {%
+      \resizebox{!}{32mm}{\ercislogotext{ercisred}{ercisblue}{ercisred}{ercisblue}}%
     };
 
-    % Claim
-    \node[anchor=south west, no sep] at (6mm, 7mm) {%
-      \resizebox{!}{4.5mm}{\ercisclaim}%
+    % University logo
+    \node[anchor=north west, no sep] at ({.125\paperwidth + \textMarginFinal}, {.875\paperheight - 6mm}) {%
+      \resizebox{!}{10mm}{\wwulogo{{final page wwu logo.fg}}}%
     };
 
-    % URL
-    \node[anchor=south east, no sep] at ({\paperwidth - 6.75mm}, 7mm) {%
-      \usebeamerfont{final page url}%
-      \usebeamercolor[fg]{final page url}%
-      www.ercis.org
-    };
   \end{tikzpicture}%
   % Undo space reservation by cached final part
   \hspace*{-\paperwidth}%
@@ -40,20 +42,20 @@
     \path [use as bounding box] (0mm, 0mm) rectangle (\paperwidth, \paperheight);
 
     % Content
-    \ifbeamertemplateempty{final page content}{}{%
-      \node[anchor=text, no sep, text width={\paperwidth - \leftTextMargin - \rightTextMargin}] at (6mm, {\paperheight / 2}) {%
-        \usebeamerfont{final page content}%
-        \usebeamercolor[fg]{final page content}%
-        \usebeamertemplate{final page content}%
+    \ifbeamertemplateempty{final page contact}{}{%
+      \node[anchor=text, no sep, text width={.75\paperwidth - \textMarginFinal - \textMarginFinal}] at ({.125\paperwidth + \textMarginFinal}, {.4\paperheight}) {%
+        \usebeamerfont{final page contact}%
+        \usebeamercolor[fg]{final page contact}%
+        \usebeamertemplate{final page contact}%
       };
     }
 
     % Contact details (optional)
-    \ifbeamertemplateempty{final page contact}{}{%
-      \node[anchor=text, no sep, align=flush left, text width={\paperwidth - \leftTextMargin - \rightTextMargin}] at (6mm, {\paperheight - 75mm}) {%
-        \usebeamerfont{final page contact}%
-        \usebeamercolor[fg]{final page contact}%
-        \usebeamertemplate{final page contact}%
+    \ifbeamertemplateempty{final page contactdetails}{}{%
+      \node[anchor=text, no sep, align=flush left, text width={.75\paperwidth - \textMarginFinal - \textMarginFinal}] at ({.125\paperwidth + \textMarginFinal}, {.4\paperheight - 6mm}) {%
+        \usebeamerfont{final page contactdetails}%
+        \usebeamercolor[fg]{final page contactdetails}%
+        \usebeamertemplate{final page contactdetails}%
       };
     }
   \end{tikzpicture}%
