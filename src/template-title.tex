@@ -60,11 +60,10 @@
       \usebeamertemplate{title page partners}
 
       % Title
-      \node[anchor=text, no sep, align=flush left, text width={\paperwidth - \leftTextMarginTitle - 36.5mm}] (title) at (\leftTextMarginTitle, {.4\paperheight}) {%
-      \usebeamerfont{title page title}%
-      \usebeamercolor[fg]{title page title}%
-      \inserttitle%
-      %
+      \newlength{\matrixtextwidth}
+      \setlength{\matrixtextwidth}{\dimexpr(\paperwidth - \leftTextMarginTitle - 36.5mm)\relax}
+      \matrix(m2)[matrix of nodes, no sep,ampersand replacement=\&, nodes={inner sep=0pt, anchor=text, font={\usebeamercolor[fg]{title page title}\usebeamerfont{title page title}}}, text width = {\matrixtextwidth}, anchor=south] at ({.5\matrixtextwidth + \leftTextMarginTitle - .5pt}, {.4\paperheight - 2mm}){
+            \inserttitle \\%
       };
 
       % Subtitle
