@@ -65,15 +65,16 @@
 \setbeamerfont{title page date}{size*={6}{0}}
 \setbeamercolor*{title page date}{fg=black}
 
+% General indention of itemizations, enumerations, and descriptions
+\setlength{\leftmargini}{1.2em}
+\setlength{\leftmarginii}{1.75em}
+\setlength{\leftmarginiii}{2.3em}
+
 % Table of Contents (see beamer user guide, p. 88)
-\setbeamertemplate{section in toc}[sections numbered] % TODO color only section number
-\setbeamercolor*{section in toc}{fg=normal text.fg}
-
-\setbeamertemplate{subsection in toc}[square]
-\setbeamercolor*{subsection number projected}{bg=ercisred}
-
-\setbeamertemplate{subsubsection in toc}[square]
-\setbeamercolor*{subsubsection number projected}{bg=ercisred}
+\setbeamercolor{section in toc}{fg=black}
+\setbeamertemplate{section in toc}{{\color{ercisred}\inserttocsectionnumber.}\;\inserttocsection\par}
+\setbeamertemplate{subsection in toc}{\leavevmode\leftskip=\leftmargini{\color{ercisred}\inserttocsectionnumber.\inserttocsubsectionnumber}\;\inserttocsubsection\par}
+\setbeamertemplate{subsubsection in toc}{\leavevmode\leftskip=\leftmarginii{\color{ercisred}\inserttocsectionnumber.\inserttocsubsectionnumber.\inserttocsubsubsectionnumber}\;\inserttocsubsection\par}
 
 % Bibliography (see beamer user guide, p. 95)
 \setbeamertemplate{bibliography item}[article]
@@ -83,19 +84,19 @@
 % \setbeamercolor{bibliography entry journal}{}
 % \setbeamercolor{bibliography entry note}{}
 
-% General indention of itemizations, enumerations, and descriptions
-\setlength{\leftmargini}{1.2em}
-\setlength{\leftmarginii}{1.75em}
-\setlength{\leftmarginiii}{2.3em}
-
+% Definition of new itemization item (see beamer user guide, p. 174)
+\defbeamertemplate{itemize item}{smallsquare}{$\filledsquare$}
+\defbeamertemplate{itemize subitem}{smallsquare}{$\filledsquare$}
+\defbeamertemplate{itemize subsubitem}{smallsquare}{$\filledsquare$}
 % Itemizations (see beamer user guide, p. 103)
-\setbeamertemplate{itemize items}[square]
-\setbeamercolor*{itemize item}{fg=ercisred}
-\setbeamercolor*{itemize subitem}{fg=ercisred}
-\setbeamercolor*{itemize subsubitem}{fg=ercisred}
+\setbeamertemplate{itemize items}[smallsquare]
+\setbeamertemplate{itemize sumitems}[smallsquare]
+\setbeamertemplate{itemize subsumitems}[smallsquare]
+\setbeamercolor*{itemize item}{fg=black}
+\setbeamercolor*{itemize subitem}{fg=black}
+\setbeamercolor*{itemize subsubitem}{fg=black}
 
 % Enumerations (see beamer user guide, p. 105)
-\setbeamertemplate{enumerate items}[default]
 \setbeamercolor*{enumerate item}{fg=ercisred}
 \setbeamercolor*{enumerate subitem}{fg=ercisred}
 \setbeamercolor*{enumerate subsubitem}{fg=ercisred}
@@ -155,4 +156,3 @@
 % Miscellaneous Colors (see beamer user guide, p. 174)
 \setbeamercolor*{normal text}{fg=black}
 \setbeamercolor*{example text}{fg=normal text.fg}
-
