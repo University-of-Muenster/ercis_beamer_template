@@ -1,13 +1,9 @@
 % Set 16:9 as default presentation format
 \paperSize{160mm}{90mm}
 
-% TODO test for availability of meta font
-
-% Use Meta Roman Normal as default font
-\renewcommand{\rmdefault}{fMt}
-
-% Use Meta Roman Normal as default non-serif font
-\renewcommand{\sfdefault}{fMt}
+% Use Fira Sans as default font
+\usepackage[sfdefault,book,medium]{FiraSans} %% option 'sfdefault' activates Fira Sans as the default text font
+\renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
 
 % Define margin sizes
 \newcommand{\leftTextMarginTitle}{11mm}
