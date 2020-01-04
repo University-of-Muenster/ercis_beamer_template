@@ -1,5 +1,43 @@
-% Set final page template
-\setbeamertemplate{section page}{%
+\defbeamertemplate{section image}{}%
 
+\defbeamertemplate{section text}{}%
+
+\renewcommand{\sectionpage}[0]{%
+  \usebeamertemplate{section page}%
 }
 
+% Set section page template
+\setbeamertemplate{section page}{%
+  \vspace*{-13mm}%
+%  \hspace*{-\leftTextMargin}%
+%  \hspace*{-\leftSidebarWidth}%
+  \tikzset{external/export next=false}%
+  \begin{tikzpicture}
+
+    %Red frame
+    \usebeamercolor{final page background}
+    \draw [draw = none, shading = axis, left color={final page background.bg}, right color={final page background.fg}, even odd rule] (.62\paperwidth, -4mm) rectangle ({\paperwidth - \leftTextMargin}, {\paperheight - \headlineHeight});
+
+    % Frame section title
+    \node [anchor=text, no sep, align=flush left] (titlenode) at ({\leftTextMargin + \leftSidebarWidth}, {.3\paperheight}) {%
+      \usebeamerfont{section page title}%
+      \usebeamercolor[fg]{section page title}%
+      \insertsection%
+    };
+
+   % Frame text
+   \path let \p1=($(titlenode.east)-(titlenode.west)$) in
+   node [anchor=text, no sep, align=flush right, text width={\x1}] at ({\leftTextMargin + \leftSidebarWidth}, {.23\paperheight}) {%
+    \usebeamerfont{framesectiontext}%
+    \usebeamercolor[fg]{framesectiontext}%
+    \usebeamertemplate{section text}%
+   };
+
+   \node[anchor=north west, draw,minimum width=6.5cm,minimum height=5.5cm](sectionimage)%
+   at ({.5\paperwidth}, {\paperheight - \headlineHeight -10mm}) {};%
+   {\clip(sectionimage.south west)rectangle(sectionimage.north east);%
+   \node[text width=6.5cm,inner xsep=0em] at (sectionimage){%
+           \usebeamertemplate{section image}%
+   };}%
+  \end{tikzpicture}%
+}
