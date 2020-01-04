@@ -24,6 +24,11 @@
 
 % Source code listing
 \usepackage{listings}
+\lstset{
+basicstyle=\ttfamily,
+frame=single,
+captionpos=b
+}
 
 % Conditional branching
 \usepackage{ifthen}
@@ -185,6 +190,20 @@ lekse@lugmedia.de}
     \renewcommand{\arraystretch}{1}
   \end{center}%
 \end{table}%
+
+\subsection{\en{Section Frame}\de{Abschnittsfolie}}
+
+\en{The template offers a standard template for section frames. An example for this slide is seen here:}
+\de{Die Vorlage bietet eine Standardvorlage für Abschnittsfolien an. Ein Beispiel dafür ist:}
+\begin{lstlisting}[caption=\en{Example for section frame}\de{Beispiel für Abschnittsfolie}]
+\section{Content structuring}
+\begin{frame}[nologo]
+    \setbeamertemplate{section image}
+        {\includegraphics[scale=.4]{images/Demo.png}}
+    \setbeamertemplate{section text}{The art of structuring}
+    \sectionpage
+\end{frame}
+\end{lstlisting}
 
 % \subsection{Font selection}
 % TODO describe font fallback mechanism
