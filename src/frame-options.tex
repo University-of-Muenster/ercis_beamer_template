@@ -5,6 +5,11 @@
   \beamer@renderheadlinelogofalse%
 }
 
+% Define option for hiding the mini navbar in the headline
+\define@key{beamerframe}{nonav}[]{%
+  \beamer@renderheadlinenavfalse%
+}
+
 % Define option for hiding the title in the headline
 \define@key{beamerframe}{notitle}[]{%
   \beamer@renderheadlinetitlefalse%
@@ -22,6 +27,7 @@
 
 % Define condition macros
 \newif\ifbeamer@renderheadlinelogo
+\newif\ifbeamer@renderheadlinenav
 \newif\ifbeamer@renderheadlinetitle
 \newif\ifbeamer@renderheadlinesubtitle
 \newif\ifbeamer@renderfootline
@@ -31,6 +37,11 @@
 \beamer@renderheadlinetitletrue
 \beamer@renderheadlinesubtitletrue
 \beamer@renderfootlinetrue
+\ifthenelse{\boolean{ercisbeamer@showsectionnav}}{%
+  \beamer@renderheadlinenavtrue%
+}{%
+  \beamer@renderheadlinenavfalse%
+}
 
 % Patch beamer frame macro to apply default value for each frame
 \let\ercisbeamer@options@beamer@@@@frame\beamer@@@@frame
@@ -39,6 +50,11 @@
   \beamer@renderheadlinetitletrue%
   \beamer@renderheadlinesubtitletrue%
   \beamer@renderfootlinetrue%
+  \ifthenelse{\boolean{ercisbeamer@showsectionnav}}{%
+    \beamer@renderheadlinenavtrue%
+  }{%
+    \beamer@renderheadlinenavfalse%
+  }%
   \ercisbeamer@options@beamer@@@@frame<#1>[#2]%
 }
 

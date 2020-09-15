@@ -32,6 +32,12 @@
   \nocacheAll%
 }
 
+\DeclareOption{navigation}{
+  \makeatletter
+  \setboolean{ercisbeamer@showsectionnav}{true}
+  \makeatother
+}
+
 % Process all defined options
 \ProcessOptions\relax
 

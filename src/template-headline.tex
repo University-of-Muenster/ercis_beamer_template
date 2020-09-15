@@ -22,6 +22,13 @@
           \beamer@cacheUse{headline-ercis-logo}{\headlineErcisLogo}%
         };
       \fi
+
+      % mininav
+      \ifbeamer@renderheadlinenav
+        \node[fill,color=white,anchor=north west, no sep, minimum width=\textwidth-\leftTextMargin-\rightTextMargin] at (\leftTextMargin, \headlineHeight-1mm) {%
+          \insertsectionnavigationhorizontal{\linewidth}{}{}%
+        };
+      \fi
     \end{tikzpicture}%
   }%
 }
