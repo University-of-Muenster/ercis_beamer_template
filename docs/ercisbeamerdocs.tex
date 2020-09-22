@@ -171,8 +171,13 @@ lekse@lugmedia.de}
 
 \subsection{\en{Frame layouts}\de{Folienlayouts}}
 
+
 \en{The template extends the \texttt{frame} environment of the beamer package with additional options to influence the layout of a frame. These options are summarized in table~\ref{tab:features-framelayouts} can be combined with each other.}
 \de{Die Vorlage erweitert die \texttt{frame} Umgebung des beamer Pakets um zusätzliche Optionen, die das Layout einer Folie beeinflussen. Diese zusätzlich verfügbaren Optionen sind in Tabelle~\ref{tab:features-framelayouts} zusammengefasst und können beliebig miteinander kombiniert werden.}
+
+\en{Optionally, frames will display a single line containing a (hyperlinked) list of section titles at the very top. This is enabled by passing the \textt{navigation} option to the \varstylename package (e.\,g., \texttt{\textbackslash usepackage[navigation]\{\varstylename\}}. This line can then be suppressed for individual frames by adding the \textt{nonav} option (see table~\ref{tab:features-framelayouts}).}
+\de{Inhaltsfolien können optional um eine einzeilige Abschnitts-Navigation ergänzt werden. Diese wird angezeigt, indem dem \varstylename-Paket die \textt{navigation}-Option übergeben wird (z.\,B. \texttt{\textbackslash usepackage[navigation]\{\varstylename\}}). Diese Navigation kann dann für einzelne Folien wieder unterdrückt werden, indem ihnen die \textt{nonav}-Option gegeben wird (s. Tabelle~\ref{tab:features-framelayouts}).}
+
 \begin{table}[H]%
   \begin{center}%
     \renewcommand{\arraystretch}{1.25}
@@ -184,6 +189,7 @@ lekse@lugmedia.de}
       \texttt{notitle} & \en{Hides the title in the headline}\de{Unterdrückt den Titel in der Kopfzeile} \tabularnewline
       \texttt{nosubtitle} & \en{Hides the subtitle in the headline}\de{Unterdrückt den Untertitel in der Kopfzeile} \tabularnewline
       \texttt{nofootline} & \en{Hides the footline}\de{Unterdrückt die Fußzeile} \tabularnewline
+      \texttt{nonav} & \en{Hides the section navigation}\de{Unterdrückt das Inhaltsverzeichnis} \tabularnewline
       \hline
     \end{tabular}
     \caption{\en{Additional frame layouts}\de{Zusätzliche Folienlayouts}\label{tab:features-framelayouts}}%
