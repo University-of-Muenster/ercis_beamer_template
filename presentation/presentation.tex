@@ -13,13 +13,13 @@
 \usepackage{ifthen}
 
 % Default language
-\providecommand\locale{en}
-% \providecommand\locale{de}
+\providecommand\curlocale{en}
+% \providecommand\curlocale{de}
 
 % Multilanguage support
 % (see http://en.wikibooks.org/wiki/LaTeX/Internationalization#Multilingual_versions)
 \def\addlocale#1#2{
-\ifthenelse{ \equal{\locale}{#1} }{
+\ifthenelse{ \equal{\curlocale}{#1} }{
   \selectlanguage{#2}
   \expandafter\def\csname#1\endcsname ##1{##1}
   }{

@@ -69,7 +69,7 @@
 
             // Locale
             if (locale != null) {
-                preamble += "\\newcommand\\locale{" + locale + "}";
+                preamble += "\\newcommand\\curlocale{" + locale + "}";
             }
 
             // Jobname
