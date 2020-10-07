@@ -9,6 +9,20 @@
 # Presentation build folder
 /presentation/build
 
+# Presentation files
+/presentation/*.aux
+/presentation/*.auxlock
+/presentation/*.log
+/presentation/*.nav
+/presentation/*.out
+/presentation/*.pdf
+/presentation/*.snm
+/presentation/*.synctex.gz
+/presentation/*.toc
+
+# Source log files
+/src/*.log
+
 # Presentation caches
 /presentation/article-cache
 /presentation/beamer-cache

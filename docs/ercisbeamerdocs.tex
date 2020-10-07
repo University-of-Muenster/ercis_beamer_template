@@ -24,6 +24,11 @@
 
 % Source code listing
 \usepackage{listings}
+\lstset{
+basicstyle=\ttfamily,
+frame=single,
+captionpos=b
+}
 
 % Conditional branching
 \usepackage{ifthen}
@@ -31,7 +36,7 @@
 % Multilanguage support
 % (see http://en.wikibooks.org/wiki/LaTeX/Internationalization#Multilingual_versions)
 \def\addlocale#1#2{
-\ifthenelse{ \equal{\locale}{#1} }{
+\ifthenelse{ \equal{\curlocale}{#1} }{
   \selectlanguage{#2}
   \expandafter\long\expandafter\def\csname#1\endcsname ##1{##1}
   }{
@@ -143,7 +148,7 @@ lekse@lugmedia.de}
 \label{sec:features-formats}
 
 \en{The template supports three common display formats, which are summarized in the following table~\ref{tab:features-formats}. To define the display format of a presentation, the corresponding option have to be added to the option list of the \texttt{\textbackslash usepackage[...]\{\varstylename\}} command in its preamble.}
-\de{Die Vorlage unterstützt drei verschiedene Anzeigeformate, die in der folgenden Tabelle~\ref{tab:features-formats} zusammengefasst sind. Um das Anzeigeformat einer Präsentation festzulegen, muss die entsprechende Option zu der Liste der Optionen innerhalb Befehls \texttt{\textbackslash usepackage[...]\{\varstylename\}} hinzugefügt werden. Falls kein Format explizit angegeben wird, werden Präsentationen im 4:3-Format erstellt.}
+\de{Die Vorlage unterstützt drei verschiedene Anzeigeformate, die in der folgenden Tabelle~\ref{tab:features-formats} zusammengefasst sind. Um das Anzeigeformat einer Präsentation festzulegen, muss die entsprechende Option zu der Liste der Optionen innerhalb Befehls \texttt{\textbackslash usepackage[...]\{\varstylename\}} hinzugefügt werden. Falls kein Format explizit angegeben wird, werden Präsentationen im 16:9-Format erstellt.}
 
 \tikzstyle{ratiobox}=[draw, rectangle, text centered, inner sep=0mm, outer sep= 0mm]
 
@@ -154,9 +159,9 @@ lekse@lugmedia.de}
             \hline
             \textbf{\en{Aspect ratio}\de{Format}} & \textbf{\en{Option}\de{Option}} & \textbf{\en{Width}\de{Breite}} & \textbf{\en{Height}\de{Höhe}} \tabularnewline
             \hline\noalign{\vskip 6pt}
-            \tikz{\node [ratiobox, text width=15mm, minimum height=11.25mm] {4:3};} & - & 128 mm & 96 mm \tabularnewline
-            \tikz{\node [ratiobox, text width=15mm, minimum height=9.375mm] {16:10};} & \texttt{wide10} & 128 mm & 80 mm \tabularnewline
-            \tikz{\node [ratiobox, text width=15mm, minimum height=8.4375mm] {16:9};} & \texttt{wide9} & 128 mm & 72 mm \tabularnewline
+            \tikz{\node [ratiobox, text width=15mm, minimum height=11.25mm] {4:3};} & \texttt{small43} & 128 mm & 96 mm \tabularnewline
+            \tikz{\node [ratiobox, text width=15mm, minimum height=9.375mm] {16:10};} & \texttt{wide10} & 144 mm & 90 mm \tabularnewline
+            \tikz{\node [ratiobox, text width=15mm, minimum height=8.4375mm] {16:9};} & - & 160 mm & 90 mm \tabularnewline
             \hline
         \end{tabular}
         \caption{\en{Supported display formats}\de{Unterstützte Anzeigeformate}\label{tab:features-formats}}%
@@ -166,8 +171,13 @@ lekse@lugmedia.de}
 
 \subsection{\en{Frame layouts}\de{Folienlayouts}}
 
+
 \en{The template extends the \texttt{frame} environment of the beamer package with additional options to influence the layout of a frame. These options are summarized in table~\ref{tab:features-framelayouts} can be combined with each other.}
 \de{Die Vorlage erweitert die \texttt{frame} Umgebung des beamer Pakets um zusätzliche Optionen, die das Layout einer Folie beeinflussen. Diese zusätzlich verfügbaren Optionen sind in Tabelle~\ref{tab:features-framelayouts} zusammengefasst und können beliebig miteinander kombiniert werden.}
+
+\en{Optionally, frames will display a single line containing a (hyperlinked) list of section titles at the very top. This is enabled by passing the \textt{navigation} option to the \varstylename package (e.\,g., \texttt{\textbackslash usepackage[navigation]\{\varstylename\}}. This line can then be suppressed for individual frames by adding the \textt{nonav} option (see table~\ref{tab:features-framelayouts}).}
+\de{Inhaltsfolien können optional um eine einzeilige Abschnitts-Navigation ergänzt werden. Diese wird angezeigt, indem dem \varstylename-Paket die \textt{navigation}-Option übergeben wird (z.\,B. \texttt{\textbackslash usepackage[navigation]\{\varstylename\}}). Diese Navigation kann dann für einzelne Folien wieder unterdrückt werden, indem ihnen die \textt{nonav}-Option gegeben wird (s. Tabelle~\ref{tab:features-framelayouts}).}
+
 \begin{table}[H]%
   \begin{center}%
     \renewcommand{\arraystretch}{1.25}
@@ -179,12 +189,35 @@ lekse@lugmedia.de}
       \texttt{notitle} & \en{Hides the title in the headline}\de{Unterdrückt den Titel in der Kopfzeile} \tabularnewline
       \texttt{nosubtitle} & \en{Hides the subtitle in the headline}\de{Unterdrückt den Untertitel in der Kopfzeile} \tabularnewline
       \texttt{nofootline} & \en{Hides the footline}\de{Unterdrückt die Fußzeile} \tabularnewline
+      \texttt{nonav} & \en{Hides the section navigation}\de{Unterdrückt das Inhaltsverzeichnis} \tabularnewline
       \hline
     \end{tabular}
     \caption{\en{Additional frame layouts}\de{Zusätzliche Folienlayouts}\label{tab:features-framelayouts}}%
     \renewcommand{\arraystretch}{1}
   \end{center}%
 \end{table}%
+
+\subsection{\en{Section Frame}\de{Abschnittsfolie}}
+
+\en{The template offers a standard template for section frames. An example for this slide is seen here:}
+\de{Die Vorlage bietet eine Standardvorlage für Abschnittsfolien an. Ein Beispiel dafür ist:}
+\begin{lstlisting}[caption=\en{Example for section frame}\de{Beispiel für Abschnittsfolie}]
+\section{Content structuring}
+\begin{frame}[nologo]
+    \setbeamertemplate{section image}
+        {\includegraphics[scale=.4]{images/Demo.png}}
+    \setbeamertemplate{section text}{The art of structuring}
+    \sectionpage
+\end{frame}
+\end{lstlisting}
+
+\en{The beamer template \texttt{section image} has to be used to insert a grayscale image to the section frame.
+The beamer template \texttt{section text} can be used to add an optional description text.
+The frame title is automatically taken from the current section title.
+The command \texttt{\textbackslash sectionpage} will render the section frame.}
+\de{Das Beamer-Template \texttt{section image} muss verwendet werden, um ein Bild in Grauschattierungen hinzuzufügen. Das Beamer-Template \texttt{section text} kann für einen optionalen Beschreibungstext verwendet werden.
+Der Folientitel ist automatisch aus dem aktuellen Abschnittstitel übernommen.
+Das Kommando \texttt{\textbackslash sectionpage} rendert die Abschnittsfolie.}
 
 % \subsection{Font selection}
 % TODO describe font fallback mechanism
@@ -239,6 +272,12 @@ lekse@lugmedia.de}
     \renewcommand{\arraystretch}{1}
   \end{center}%
 \end{table}%
+
+\subsection{\en{Multi-line title}\de{Mehrzeiliger Titel}}
+\label{sec:features-multilinetitle}
+\en{You can use a multi-line title. If the spacing between the lines does not look as expected, insert manual \texttt{\textbackslash titlenewline} commands at the respective spots of the title.}
+
+\de{Mehrzeilige Titel können verwendet werden. Falls der Zeilenabstand zwischen den Zeilen nicht identisch ist kann dies mit dem Befehl \texttt{\textbackslash titlenewline} angepasst werden. Dieser muss dafür manuell an den entsprechenden Stellen im Titel eingefügt werden.}
 
 \subsection{\en{Caching of TikZ pictures}\de{Zwischenspeichern von TikZ Grafiken}}
 \label{sec:features-caching}

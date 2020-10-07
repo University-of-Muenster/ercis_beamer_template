@@ -1,11 +1,11 @@
-% Option to use wide 16:9 format
-\DeclareOption{wide9}{
-  \paperSize{128mm}{72mm}
-}
-
 % Option to use wide 16:10 format
 \DeclareOption{wide10}{
-  \paperSize{128mm}{80mm}
+  \paperSize{144mm}{90mm}
+}
+
+% Option to use small 4:3 format
+\DeclareOption{small43}{
+  \paperSize{128mm}{96mm}
 }
 
 % English language option (default)
@@ -30,6 +30,12 @@
   %
   % Disable caching for all pictures
   \nocacheAll%
+}
+
+\DeclareOption{navigation}{
+  \makeatletter
+  \setboolean{ercisbeamer@showsectionnav}{true}
+  \makeatother
 }
 
 % Process all defined options

@@ -1,19 +1,20 @@
-% Set 4:3 as default presentation format
-\paperSize{128mm}{96mm}
+% Set 16:9 as default presentation format
+\paperSize{160mm}{90mm}
 
-% TODO test for availability of meta font
-
-% Use Meta Roman Normal as default font
-\renewcommand{\rmdefault}{fMt}
-
-% Use Meta Roman Normal as default non-serif font
-\renewcommand{\sfdefault}{fMt}
+% Use Fira Sans as default font
+\usepackage[sfdefault,medium]{FiraSans} %% option 'sfdefault' activates Fira Sans as the default text font
+\renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
 
 % Define margin sizes
-\newcommand{\leftTextMargin}{6mm}
-\newcommand{\rightTextMargin}{5mm}
+\newcommand{\leftTextMarginTitle}{12mm}
+\newcommand{\leftTextMargin}{5.5mm}
+\newcommand{\rightTextMargin}{5.5mm}
+\newcommand{\textMarginFinal}{10mm}
 \newcommand{\leftSidebarWidth}{0mm}
 \newcommand{\rightSidebarWidth}{0mm}
+
+% Fixes spacing in newline for title in title page
+\newcommand{\titlenewline}{\hspace{-1ex}\phantom{p}\newline}
 
 % Define heights of headline and footline
 \newcommand{\headlineHeight}{19.5mm}
@@ -23,13 +24,18 @@
 \tikzstyle{no sep}=[inner sep=0mm, outer sep=0mm]
 
 % Final page
-\setbeamercolor*{final page background}{bg=ercisred}
+\setbeamercolor*{final page background}{bg=ercisredbackground1, fg=ercisredbackground2}
 
 \setbeamerfont{final page url}{size*={8}{0}, series*={b}}
-\setbeamercolor*{final page url}{fg=white}
+\setbeamercolor*{final page url}{fg=black}
 
-\setbeamerfont{final page contact}{size*={8}{0}}
-\setbeamercolor*{final page contact}{fg=white}
+\setbeamerfont{final page contactdetails}{size*={8}{0}}
+\setbeamercolor*{final page contactdetails}{fg=ercisgrey}
 
-\setbeamerfont{final page content}{size*={14}{0}, series*={b}}
-\setbeamercolor*{final page content}{fg=white}
+\setbeamerfont{final page contact}{size*={14}{0}, series*={b}}
+\setbeamercolor*{final page contact}{fg=ercisred}
+
+\makeatletter
+\provideboolean{ercisbeamer@showsectionnav}
+\setboolean{ercisbeamer@showsectionnav}{false}
+\makeatother

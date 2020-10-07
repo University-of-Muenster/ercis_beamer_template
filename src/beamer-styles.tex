@@ -10,13 +10,13 @@
 \setbeamercolor*{footline}{bg=ercisred}
 
 \setbeamerfont{title in foot}{size*={6}{0}}
-\setbeamercolor*{title in foot}{fg=white}
+\setbeamercolor*{title in foot}{fg=ercisgrey}
 
 \setbeamerfont{author in foot}{size*={6}{0}}
-\setbeamercolor*{author in foot}{fg=white}
+\setbeamercolor*{author in foot}{fg=ercisgrey}
 
 \setbeamerfont{frame number in foot}{size*={6}{0}}
-\setbeamercolor*{frame number in foot}{fg=white}
+\setbeamercolor*{frame number in foot}{fg=ercisgrey}
 
 \setbeamerfont{date in foot}{size*={6}{0}}
 \setbeamercolor*{date in foot}{fg=white}
@@ -36,11 +36,14 @@
 \setbeamertemplate{sidebar canvas right}{}
 
 % Frame Title (see beamer user guide, p. 68)
-\setbeamerfont{frametitle}{size*={13}{0}, series*={b}}
+\setbeamerfont{frametitle}{size*={18}{0}, series=\bfseries}
 \setbeamercolor*{frametitle}{fg=ercisred}
 
-\setbeamerfont{framesubtitle}{size*={8}{0}, series*={b}}
+\setbeamerfont{framesubtitle}{size*={10}{0}, series*={r}}
 \setbeamercolor*{framesubtitle}{fg=ercisgrey}
+
+\setbeamerfont{framesectiontext}{size*={9}{0}, series*={r}}
+\setbeamercolor*{framesectiontext}{fg=ercisgrey}
 
 % Background (see beamer user guide, p. 70)
 \setbeamercolor*{background canvas}{bg=white}
@@ -53,27 +56,31 @@
 % Title page (see beamer user guide, p. 86)
 \setbeamercolor*{title page background}{parent=background canvas}
 
-\setbeamerfont{title page title}{size*={13}{0}, series*={b}}
+\setbeamerfont{title page title}{size*={23}{0}, series=\bfseries}
 \setbeamercolor*{title page title}{fg=ercisred}
 
-\setbeamerfont{title page subtitle}{size*={8}{0}, series*={b}}
+\setbeamerfont{title page subtitle}{size*={11}{0}}
 \setbeamercolor*{title page subtitle}{fg=ercisgrey}
 
+\setbeamerfont{section page title}{size*={20}{0}, series=\bfseries}
+\setbeamercolor*{section page title}{fg=ercisred}
+
 \setbeamerfont{title page author}{size*={6}{0}}
-\setbeamercolor*{title page author}{fg=white}
+\setbeamercolor*{title page author}{fg=ercisgrey}
 
 \setbeamerfont{title page date}{size*={6}{0}}
-\setbeamercolor*{title page date}{fg=white}
+\setbeamercolor*{title page date}{fg=ercisgrey}
+
+% General indention of itemizations, enumerations, and descriptions
+\setlength{\leftmargini}{1.2em}
+\setlength{\leftmarginii}{1.75em}
+\setlength{\leftmarginiii}{2.3em}
 
 % Table of Contents (see beamer user guide, p. 88)
-\setbeamertemplate{section in toc}[sections numbered] % TODO color only section number
-\setbeamercolor*{section in toc}{fg=normal text.fg}
-
-\setbeamertemplate{subsection in toc}[square]
-\setbeamercolor*{subsection number projected}{bg=ercisred}
-
-\setbeamertemplate{subsubsection in toc}[square]
-\setbeamercolor*{subsubsection number projected}{bg=ercisred}
+\setbeamercolor{section in toc}{fg=ercisgrey}
+\setbeamertemplate{section in toc}{{\color{ercisred}\inserttocsectionnumber.}\;\inserttocsection\par}
+\setbeamertemplate{subsection in toc}{\leavevmode\leftskip=\leftmargini{\color{ercisred}\inserttocsectionnumber.\inserttocsubsectionnumber}\;\inserttocsubsection\par}
+\setbeamertemplate{subsubsection in toc}{\leavevmode\leftskip=\leftmarginii{\color{ercisred}\inserttocsectionnumber.\inserttocsubsectionnumber.\inserttocsubsubsectionnumber}\;\inserttocsubsection\par}
 
 % Bibliography (see beamer user guide, p. 95)
 \setbeamertemplate{bibliography item}[article]
@@ -83,19 +90,28 @@
 % \setbeamercolor{bibliography entry journal}{}
 % \setbeamercolor{bibliography entry note}{}
 
-% General indention of itemizations, enumerations, and descriptions
-\setlength{\leftmargini}{1.2em}
-\setlength{\leftmarginii}{1.75em}
-\setlength{\leftmarginiii}{2.3em}
-
+% Definition of new itemization item (see beamer user guide, p. 174)
+\defbeamertemplate{itemize item}{smallsquare}{$\filledsquare$}
+\defbeamertemplate{itemize subitem}{smallsquare}{$\filledsquare$}
+\defbeamertemplate{itemize subsubitem}{smallsquare}{$\filledsquare$}
 % Itemizations (see beamer user guide, p. 103)
-\setbeamertemplate{itemize items}[square]
-\setbeamercolor*{itemize item}{fg=ercisred}
-\setbeamercolor*{itemize subitem}{fg=ercisred}
-\setbeamercolor*{itemize subsubitem}{fg=ercisred}
+\setbeamertemplate{itemize items}[smallsquare]
+\setbeamertemplate{itemize sumitems}[smallsquare]
+\setbeamertemplate{itemize subsumitems}[smallsquare]
+\setbeamercolor*{itemize item}{fg=ercisgrey}
+\setbeamercolor*{itemize subitem}{fg=ercisgrey}
+\setbeamercolor*{itemize subsubitem}{fg=ercisgrey}
+% Equal font size for itemize and enumerate
+\setbeamerfont{item}{size*={10}{12}}
+\setbeamerfont{item projected}{size*={10}{12}}
+\setbeamerfont{itemize item}{size*={10}{12}}
+\setbeamerfont{itemize subitem}{size*={10}{12}}
+\setbeamerfont{itemize subsubitem}{size*={10}{12}}
+\setbeamerfont{itemize/enumerate body}{size*={10}{12}}
+\setbeamerfont{itemize/enumerate subbody}{size*={10}{12}}
+\setbeamerfont{itemize/enumerate subsubbody}{size*={10}{12}}
 
 % Enumerations (see beamer user guide, p. 105)
-\setbeamertemplate{enumerate items}[default]
 \setbeamercolor*{enumerate item}{fg=ercisred}
 \setbeamercolor*{enumerate subitem}{fg=ercisred}
 \setbeamercolor*{enumerate subsubitem}{fg=ercisred}
@@ -153,6 +169,5 @@
 % \setbeamercolor*{math text}{}
 
 % Miscellaneous Colors (see beamer user guide, p. 174)
-\setbeamercolor*{normal text}{fg=black}
+\setbeamercolor*{normal text}{fg=ercisgrey}
 \setbeamercolor*{example text}{fg=normal text.fg}
-

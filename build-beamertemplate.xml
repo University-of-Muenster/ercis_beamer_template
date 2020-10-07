@@ -15,8 +15,8 @@
     <property name="src.folder" location="src" />
     <property name="presentation.folder" location="presentation" />
     <property name="presentation.build.folder" location="${presentation.folder}/build" />
-    <property name="presentation.cache.beamer.folder" location="${presentation.folder}/beamer-cache" />
-    <property name="presentation.cache.handout.folder" location="${presentation.folder}/handout-cache" />
+    <property name="presentation.cache.beamer.folder" location="${presentation.folder}/build/beamer-cache" />
+    <property name="presentation.cache.handout.folder" location="${presentation.folder}/build/handout-cache" />
     <property name="package.folder" location="package" />
 
     <!-- Targets -->

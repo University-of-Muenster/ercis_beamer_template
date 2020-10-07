@@ -4,7 +4,7 @@
 \usepackage[utf8]{inputenc}
 
 % Apply WWU beamer style
-\usepackage[german]{ercisbeamer}
+\usepackage[german,navigation]{ercisbeamer}
 
 % Hyphenation for supported languages
 \usepackage[english,ngerman]{babel}
@@ -13,13 +13,13 @@
 \usepackage{ifthen}
 
 % Default language
-\providecommand\locale{en}
-% \providecommand\locale{de}
+\providecommand\curlocale{en}
+% \providecommand\curlocale{de}
 
 % Multilanguage support
 % (see http://en.wikibooks.org/wiki/LaTeX/Internationalization#Multilingual_versions)
 \def\addlocale#1#2{
-\ifthenelse{ \equal{\locale}{#1} }{
+\ifthenelse{ \equal{\curlocale}{#1} }{
   \selectlanguage{#2}
   \expandafter\def\csname#1\endcsname ##1{##1}
   }{
@@ -71,6 +71,7 @@
     \input{frames/frame-enumerate}
 
     \subsection{\en{Hilighting}\de{Hervorhebungen}}
+    \input{frames/frame-section}
     \input{frames/frame-hilighting}
 
     \subsection{\en{Blocks}\de{Bl\"ocke}}
